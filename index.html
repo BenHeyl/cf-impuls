@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CF Vertriebsimpuls · 19. September</title>
+<style>
+:root{
+  --navy:#0D2B5E; --navy-d:#081C3E; --navy-dd:#061631;
+  --gold:#C8A84B; --gold-l:#E0C378; --cream:#EDE7D6;
+  --ink:#F4F1E8; --muted:#9FB0CC; --line:rgba(237,231,214,.16);
+  --card:rgba(255,255,255,.045); --ok:#5FBE8C; --warn:#E08A5B;
+  --pad:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--navy-dd); color:var(--ink);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom));
+  overscroll-behavior-y:contain;
+}
+h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:.2px}
+a{color:var(--gold-l)}
+.wrap{max-width:720px;margin:0 auto;padding:0 var(--pad)}
+
+/* Kopf */
+.top{
+  position:sticky;top:0;z-index:40;background:linear-gradient(180deg,var(--navy) 0%,var(--navy-d) 100%);
+  border-bottom:2px solid var(--gold); padding:10px 0 9px;
+  padding-top:calc(10px + env(safe-area-inset-top));
+}
+.top .wrap{display:flex;align-items:center;gap:11px}
+.top img{width:40px;height:auto;display:block}
+.top .t1{font:700 13px/1.15 Georgia,serif;letter-spacing:.4px}
+.top .t2{font-size:10px;letter-spacing:1.4px;color:var(--gold);text-transform:uppercase;margin-top:2px}
+.top .score{margin-left:auto;text-align:right}
+.backb{background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--gold-l);
+  border-radius:9px;padding:7px 10px;font:700 12px inherit;cursor:pointer;display:none;flex:none}
+.backb.on{display:block}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none;border:1px solid rgba(255,255,255,.35)}
+.top .score b{font:700 22px/1 Georgia,serif;color:var(--gold-l);display:block}
+.top .score span{font-size:9px;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+
+/* Navigation */
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;
+  background:rgba(8,28,62,.97);backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);
+}
+nav button{
+  flex:1;background:none;border:0;color:var(--muted);padding:9px 2px 10px;
+  font:600 10px/1.3 inherit;letter-spacing:.3px;cursor:pointer;
+}
+nav button .ic{display:block;font-size:17px;line-height:1.1;margin-bottom:3px;filter:grayscale(1) opacity(.65)}
+nav button.on{color:var(--gold-l)}
+nav button.on .ic{filter:none}
+
+section.page{display:none;padding:18px 0 28px}
+section.page.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}
+.card.gold{border-color:rgba(200,168,75,.45);background:rgba(200,168,75,.09)}
+.kicker{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);font-weight:700}
+h2.h{font-size:21px;margin:6px 0 4px}
+h3.h{font-size:15px;margin:0 0 6px;color:var(--cream)}
+p{margin:6px 0}
+.mut{color:var(--muted);font-size:13px}
+.small{font-size:12px}
+.hr{height:1px;background:var(--line);margin:14px 0;border:0}
+
+.btn{
+  display:inline-block;background:var(--gold);color:#14243f;border:0;border-radius:10px;
+  padding:12px 16px;font:700 14px/1 inherit;cursor:pointer;
+}
+.btn.ghost{background:transparent;color:var(--gold-l);border:1px solid rgba(200,168,75,.5)}
+.btn.wide{display:block;width:100%;text-align:center}
+.btn:active{transform:scale(.98)}
+input,select,textarea{
+  width:100%;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:10px;
+  color:var(--ink);padding:11px 12px;font:15px inherit;margin:5px 0;
+}
+input:focus,select,textarea:focus{outline:2px solid rgba(200,168,75,.5);outline-offset:1px}
+label{font-size:12px;color:var(--muted);display:block;margin-top:10px}
+
+/* Punkte-Buttons */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.pbtn{
+  background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:12px;
+  padding:13px 10px;text-align:left;color:var(--ink);cursor:pointer;position:relative;
+}
+.pbtn b{display:block;font-size:13.5px;font-weight:700}
+.pbtn i{font-style:normal;font-size:11px;color:var(--gold);font-weight:700}
+.pbtn .n{position:absolute;right:9px;top:9px;font:700 13px Georgia,serif;color:var(--muted)}
+.pbtn:active{background:rgba(200,168,75,.2)}
+.pbtn.big{grid-column:1/-1;border-color:rgba(200,168,75,.5)}
+
+/* Rangliste */
+.rank{list-style:none;margin:8px 0 0;padding:0}
+.rank li{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;
+  border:1px solid transparent;
+}
+.rank li:nth-child(odd){background:rgba(255,255,255,.035)}
+.rank li.me{border-color:var(--gold);background:rgba(200,168,75,.14)}
+.rank .pos{width:26px;font:700 15px Georgia,serif;color:var(--gold);text-align:center;flex:none}
+.rank .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:14px}
+.rank .nm em{font-style:normal;display:block;font-size:11px;color:var(--muted);font-weight:400}
+.rank .pt{font:700 16px Georgia,serif;color:var(--cream)}
+.mv{font-size:11px;width:20px;text-align:center;flex:none}
+.mv.up{color:var(--ok)} .mv.dn{color:var(--warn)} .mv.eq{color:rgba(159,176,204,.4)}
+.rank li.m1{background:rgba(200,168,75,.18);border-color:rgba(200,168,75,.55)}
+.rank li.m2{background:rgba(198,203,212,.13);border-color:rgba(198,203,212,.38)}
+.rank li.m3{background:rgba(186,124,72,.14);border-color:rgba(186,124,72,.4)}
+.rank li.m1 .pos,.rank li.m2 .pos,.rank li.m3 .pos{font-size:16px}
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px;align-items:end;margin:14px 0 6px}
+.pod{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:12px;
+  padding:12px 8px;text-align:center}
+.pod .md{font-size:26px;line-height:1}
+.pod .pn{font-weight:700;font-size:13px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod .pp{font:700 20px Georgia,serif;color:var(--gold-l);margin-top:2px}
+.pod .pg{font-size:10px;color:var(--muted);margin-top:2px}
+.pod.p1{background:rgba(200,168,75,.2);border-color:rgba(200,168,75,.6);padding:18px 8px}
+.pod.p2{background:rgba(198,203,212,.12);border-color:rgba(198,203,212,.35)}
+.pod.p3{background:rgba(186,124,72,.13);border-color:rgba(186,124,72,.38)}
+.bm .pod .md{font-size:clamp(28px,5vw,48px)}
+.bm .pod .pn{font-size:clamp(14px,2.2vw,22px)}
+.bm .pod .pp{font-size:clamp(20px,3.4vw,34px)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}
+.stat{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;padding:11px 8px;text-align:center}
+.stat b{display:block;font:700 20px/1.1 Georgia,serif;color:var(--gold-l)}
+.stat span{font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+
+.tabs{display:flex;gap:7px;margin:12px 0 4px;overflow-x:auto;padding-bottom:3px}
+.tabs button{
+  background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);
+  border-radius:999px;padding:7px 13px;font:600 12px inherit;white-space:nowrap;cursor:pointer;
+}
+.tabs button.on{background:var(--gold);color:#14243f;border-color:var(--gold)}
+
+.step{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:0}
+.step .z{flex:none;width:52px;font:700 12px Georgia,serif;color:var(--gold)}
+.step .w b{display:block;font-size:14px}
+.step .w p{font-size:12.5px;color:var(--muted);margin:2px 0 0}
+
+details{border:1px solid var(--line);border-radius:12px;margin:9px 0;background:rgba(255,255,255,.035)}
+details summary{
+  padding:12px 14px;cursor:pointer;font-weight:700;font-size:14px;list-style:none;
+  display:flex;align-items:center;gap:8px;
+}
+details summary::-webkit-details-marker{display:none}
+details summary:after{content:"+";margin-left:auto;color:var(--gold);font:700 17px Georgia,serif}
+details[open] summary:after{content:"–"}
+details .in{padding:0 14px 14px;font-size:13.5px}
+.quote{font-style:italic;color:var(--cream);border-left:2px solid var(--gold);padding-left:11px;margin:9px 0}
+
+.timer{display:flex;align-items:center;gap:12px;margin:10px 0}
+.timer .tv{font:700 30px/1 Georgia,serif;color:var(--gold-l);min-width:88px}
+.chip{display:inline-block;background:rgba(200,168,75,.16);color:var(--gold-l);border-radius:999px;
+  padding:3px 10px;font-size:11px;font-weight:700;margin:0 5px 5px 0}
+.done{color:var(--ok);font-weight:700;font-size:12.5px}
+.namelist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.namelist span{background:rgba(255,255,255,.08);border-radius:8px;padding:5px 9px;font-size:12.5px}
+.namelist span b{color:var(--gold);cursor:pointer;margin-left:6px;font-weight:700}
+.toast{
+  position:fixed;left:50%;bottom:86px;transform:translateX(-50%) translateY(14px);
+  background:var(--gold);color:#14243f;padding:11px 18px;border-radius:999px;
+  font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:60;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.warnbar{background:rgba(224,138,91,.15);border:1px solid rgba(224,138,91,.4);color:#F0C3A6;
+  border-radius:10px;padding:9px 12px;font-size:12.5px;margin:10px 0}
+.q{margin:10px 0}
+.q .opt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:11px 12px;margin:6px 0;
+  font:500 13.5px inherit;cursor:pointer}
+.q .opt.right{border-color:var(--ok);background:rgba(95,190,140,.18)}
+.q .opt.wrong{border-color:var(--warn);background:rgba(224,138,91,.16)}
+/* Beamer + Leitung */
+#beamer,#judge{position:fixed;inset:0;z-index:95;background:var(--navy-dd);overflow:auto;display:none}
+#beamer.on,#judge.on{display:block}
+.bm{max-width:1100px;margin:0 auto;padding:22px}
+.bm h1{font-size:clamp(26px,5vw,46px);margin:2px 0 4px}
+.bm .stats{grid-template-columns:repeat(3,1fr);gap:14px}
+.bm .stat b{font-size:clamp(26px,5vw,44px)}
+.bm .stat span{font-size:11px}
+.bm ol li{padding:10px 12px;font-size:clamp(15px,2.4vw,22px)}
+.bm ol .pos{width:40px;font-size:clamp(17px,2.6vw,26px)}
+.bm ol .nm{font-size:clamp(15px,2.4vw,22px)}
+.bm ol .nm em{font-size:clamp(11px,1.5vw,14px)}
+.bm ol .pt{font-size:clamp(18px,3vw,28px)}
+.closeX{position:fixed;right:14px;top:14px;z-index:96;background:rgba(255,255,255,.1);
+  border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 13px;font:700 13px inherit;cursor:pointer}
+.jrow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
+.jrow .nm{flex:1;min-width:0;font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jrow .nm em{font-style:normal;display:block;font-size:11px;color:var(--muted);font-weight:400}
+.jrow .pt{font:700 17px Georgia,serif;color:var(--gold-l);min-width:40px;text-align:right}
+.jbtns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 4px}
+.jbtns button{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink);
+  border-radius:9px;padding:9px 4px;font:700 11px inherit;cursor:pointer}
+.jbtns button:active{background:rgba(200,168,75,.25)}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
+.fl{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:9px 5px;text-align:center}
+.fl b{display:block;font:700 15px/1.1 Georgia,serif;color:var(--muted)}
+.fl span{font-size:9.5px;line-height:1.25;color:var(--muted);display:block;margin-top:4px}
+.fl.ok{border-color:rgba(95,190,140,.55);background:rgba(95,190,140,.14)}
+.fl.ok b,.fl.ok span{color:var(--ok)}
+.fl.now{border-color:var(--gold);background:rgba(200,168,75,.16)}
+.fl.now b,.fl.now span{color:var(--gold-l)}
+.modes{display:flex;gap:7px;margin:10px 0 2px}
+.modes button{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);
+  border-radius:10px;padding:9px 6px;font:700 11.5px/1.25 inherit;cursor:pointer}
+.modes button.on{background:var(--gold);color:#14243f;border-color:var(--gold)}
+.script{counter-reset:none}
+.sline{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.sline:last-child{border-bottom:0}
+.sline .sn{flex:none;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#14243f;
+  font:700 12px/22px inherit;text-align:center}
+.sline .sw{flex:1;min-width:0}
+.sline .sw b{display:block;font-size:13.5px;color:var(--cream)}
+.sline .sw p{font-size:11.5px;color:var(--muted);margin:2px 0 6px}
+.sline .sw .qt{font-style:italic;color:var(--gold-l);font-size:13px;line-height:1.45;
+  border-left:2px solid var(--gold);padding-left:10px}
+.calc b{color:var(--gold-l);font-family:Georgia,serif;font-size:19px}
+</style>
+</head>
+<body>
+<script>
+/* =====================================================================
+   HIER die Web-App-Adresse aus dem Google-Apps-Script eintragen.
+   Beispiel: var API = "https://script.google.com/macros/s/AKfy.../exec";
+   Leer lassen heisst: jeder sieht nur seine eigenen Punkte.
+   ===================================================================== */
+var API = "";
+
+var LOGO_SRC="data:image/png;base64,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";
+</script>
+<div class="top"><div class="wrap">
+  <button class="backb" id="backBtn" onclick="go('heute')">&lsaquo; Übersicht</button>
+  <img id="logo" alt="Capital Future">
+  <div>
+    <div class="t1">Vertriebsimpuls</div>
+    <div class="t2" id="topSub">19. September · 14–17 Uhr</div>
+  </div>
+  <div class="score"><b id="myPts">0</b><span id="myName">Punkte</span></div>
+</div><div id="teamStripe"></div></div>
+
+<div class="wrap">
+
+<!-- ================= HEUTE ================= -->
+<section class="page on" id="p-heute">
+  <div class="card gold">
+    <div class="kicker">Dein Konto</div>
+    <h2 class="h" id="heuteName">Willkommen</h2>
+    <p class="mut small">Trag jede Aktion sofort ein. Was nicht drinsteht, zählt nicht.</p>
+    <div class="pgrid" id="pointBtns"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn ghost" style="flex:1" onclick="undoLast()">Zurücknehmen</button>
+      <button class="btn ghost" style="flex:1" onclick="go('rang')">Rangliste</button>
+    </div>
+  </div>
+
+  <div class="card" id="jetztCard">
+    <div class="kicker">Jetzt dran</div>
+    <h3 class="h" id="jetztTitel" style="margin-top:5px">—</h3>
+    <p class="mut small" id="jetztSub"></p>
+    <button class="btn wide" style="margin-top:10px" onclick="go('uebung')">Zu den Übungen</button>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Deine Runden</div>
+    <h3 class="h" style="margin-top:5px">Wo du wann bist</h3>
+    <div id="rundenPlan"></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Der Nachmittag</div>
+    <h3 class="h" style="margin-top:5px">Ablauf</h3>
+    <div id="ablauf"></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Spielregeln</div>
+    <h3 class="h" style="margin-top:5px">Fünf Sätze, dann weißt du alles</h3>
+    <div class="step"><div class="z">1</div><div class="w"><b>Jede Aktion zählt</b><p>Auch das Nein. Wer wählt, bekommt Punkte.</p></div></div>
+    <div class="step"><div class="z">2</div><div class="w"><b>Drei Medaillen, ein Klassement</b><p>Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p></div></div>
+    <div class="step"><div class="z">3</div><div class="w"><b>Sechs Wege nach oben</b><p>Punkte gibt es fürs Anrufen, für Termine, für Empfehlungen, für Karrieregespräche, fürs laute Üben und fürs Wissen. Du musst nicht der beste Telefonierer sein, um vorne zu landen. Du musst nur liefern, was du kannst.</p></div></div>
+    <div class="step"><div class="z">4</div><div class="w"><b>Jeder für sich</b><p>Gewertet wird einzeln. Deine Farbe sagt nur, in welchem Raum du wann sitzt.</p></div></div>
+    <div class="step"><div class="z">5</div><div class="w"><b>Ehrlich eintragen</b><p>Termine mit Namen und Uhrzeit auf den Laufzettel. Was heute nicht notiert ist, ist am Montag weg.</p></div></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Einstellungen</div>
+    <p class="small mut" id="meInfo"></p>
+    <button class="btn ghost wide" onclick="openSetup()">Name oder Gruppe ändern</button>
+  </div>
+</section>
+
+<!-- ================= ÜBUNGEN ================= -->
+<section class="page" id="p-uebung">
+  <button class="btn ghost wide" style="margin-bottom:12px" onclick="go('heute')">&lsaquo; Zurück zur Übersicht</button>
+  <div class="kicker" id="semRunde">Runde</div>
+  <h2 class="h" id="semTitle">—</h2>
+  <p class="mut small" id="semZiel"></p>
+  <div class="tabs" id="semSwitch"></div>
+  <div id="exWrap"></div>
+</section>
+
+<!-- ================= TELEFON ================= -->
+<section class="page" id="p-tel">
+  <button class="btn ghost wide" style="margin-bottom:12px" onclick="go('heute')">&lsaquo; Zurück zur Übersicht</button>
+  <div class="kicker">Die Telefonkarte</div>
+  <h2 class="h">Am Telefon machst du Termine</h2>
+  <p class="mut small">Nicht verkaufen, nicht beraten. Nur den Termin holen, alles andere passiert am Tisch. Wähl unten aus, wen du anrufst, dann steht der passende Wortlaut da.</p>
+
+  <div class="card">
+    <div class="pgrid">
+      <button class="pbtn" onclick="addPt('gespraech')"><b>Gespräch geführt</b><i>+2 Punkte</i><span class="n" id="n-gespraech">0</span></button>
+      <button class="pbtn" onclick="addPt('empfehlung')"><b>Empfehlung</b><i>+3 Punkte</i><span class="n" id="n2-empfehlung">0</span></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Wen rufst du an?</div>
+    <div class="modes" id="telModes"></div>
+    <div class="script" id="telSteps" style="margin-top:6px"></div>
+  </div>
+
+  <h3 class="h" style="margin-top:20px">Dein Weil je nach Thema</h3>
+  <p class="mut small">Such dir vor dem Wählen eins aus. Nicht erst, wenn es klingelt.</p>
+  <div id="telWeil"></div>
+
+  <h3 class="h" style="margin-top:20px">Wenn er blockt</h3>
+  <div id="telEinw"></div>
+
+  <h3 class="h" style="margin-top:20px">Wenn A nicht geht</h3>
+  <div id="telPlanB"></div>
+</section>
+
+<!-- ================= RANGLISTE ================= -->
+<section class="page" id="p-rang">
+  <button class="btn ghost wide" style="margin-bottom:12px" onclick="go('heute')">&lsaquo; Zurück zur Übersicht</button>
+  <div class="kicker">Live</div>
+  <h2 class="h">Gesamtrangliste</h2>
+  <p class="mut small" id="rangState">Verbinde …</p>
+
+  <div class="stats">
+    <div class="stat"><b id="sTot">0</b><span>Punkte im Raum</span></div>
+    <div class="stat"><b id="sCalls">0</b><span>Gespräche</span></div>
+    <div class="stat"><b id="sTerm">0</b><span>Termine</span></div>
+  </div>
+
+  <div id="podium"></div>
+  <ol class="rank" id="rankList"></ol>
+  <p class="mut small" style="margin-top:14px">Die Liste läuft live. Die Pfeile zeigen, wer sich seit deinem letzten Blick bewegt hat. Auf dem Treppchen landet nur, wer die vier Schritte durch hat: Liste, laut geübt, Blitz-Check, mindestens ein Gespräch.</p>
+  <div class="warnbar">Du stehst hier nur drin, wenn du mit eigenem Zugang angemeldet bist. Ohne Zugang zählst du trotzdem mit: sag deine Punkte dem Kampfrichter im Raum, er trägt sie ein.</div>
+</section>
+
+<!-- ================= INFO ================= -->
+<section class="page" id="p-info">
+  <button class="btn ghost wide" style="margin-bottom:12px" onclick="go('heute')">&lsaquo; Zurück zur Übersicht</button>
+  <div class="kicker">Nachschlagen</div>
+  <h2 class="h">Leitfäden</h2>
+  <p class="mut small">Drei Seminare, gleicher Bauplan: zehn Minuten Prägung, dann wird gemacht.</p>
+  <div id="leitfaden"></div>
+
+  <h3 class="h" style="margin-top:22px">Punktetafel</h3>
+  <div class="card" id="ptTable"></div>
+
+  <h3 class="h" style="margin-top:22px">Für die Leitung</h3>
+  <div class="card gold">
+    <p class="small">Die Beamer-Ansicht zeigt die Rangliste groß und aktualisiert sich selbst. Der Kampfrichter-Modus ist für die drei Räume: dort trägst du die Punkte für alle ein, die keinen eigenen Zugang haben.</p>
+    <button class="btn wide" style="margin-top:9px" onclick="openBeamer()">Beamer-Ansicht starten</button>
+    <button class="btn ghost wide" style="margin-top:8px" onclick="openJudge()">Kampfrichter-Modus</button>
+  </div>
+
+  <h3 class="h" style="margin-top:22px">Wie gewertet wird</h3>
+  <div class="card">
+    <p class="small"><b>Es gibt genau drei Medaillen.</b> Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p>
+    <p class="small" style="margin-top:8px"><b>Der Haken an der Sache:</b> gewertet wird nur, wer die vier Schritte durch hat. Liste gefüllt, einmal laut geübt, Blitz-Check gemacht und mindestens ein Gespräch geführt. Wer nur Namen aufschreibt, sammelt zwar Punkte, steht aber nicht auf dem Treppchen.</p>
+    <p class="small" style="margin-top:8px"><b>Sechs Wege zu Punkten:</b> Gespräche, Termine, Empfehlungen, Karrieregespräche, Einwand-Arena und Blitz-Check. Wer beim Telefonieren noch unsicher ist, holt sich die Punkte über die Übungen. Vorne landen kann jeder.</p>
+  </div>
+</section>
+
+</div>
+
+<nav>
+  <button class="on" data-p="heute" onclick="go('heute')"><span class="ic">◆</span>Heute</button>
+  <button data-p="uebung" onclick="go('uebung')"><span class="ic">✦</span>Übungen</button>
+  <button data-p="tel" onclick="go('tel')"><span class="ic">☎</span>Telefon</button>
+  <button data-p="rang" onclick="go('rang')"><span class="ic">▲</span>Rang</button>
+  <button data-p="info" onclick="go('info')"><span class="ic">≡</span>Info</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<!-- ================= BEAMER ================= -->
+<div id="beamer">
+  <button class="closeX" onclick="closeBeamer()">Schließen</button>
+  <div class="bm">
+    <div class="kicker">Vertriebsimpuls · 19. September</div>
+    <h1 class="serif">Der Stand im Raum</h1>
+    <div class="stats">
+      <div class="stat"><b id="bmTot">0</b><span>Punkte</span></div>
+      <div class="stat"><b id="bmCalls">0</b><span>Gespräche</span></div>
+      <div class="stat"><b id="bmTerm">0</b><span>Termine</span></div>
+    </div>
+    <div id="bmPodium" style="margin-top:16px"></div>
+    <ol class="rank" id="bmList"></ol>
+  </div>
+</div>
+
+<!-- ================= KAMPFRICHTER ================= -->
+<div id="judge">
+  <button class="closeX" onclick="closeJudge()">Schließen</button>
+  <div class="wrap" style="padding-top:26px;padding-bottom:40px;max-width:620px">
+    <div class="kicker">Kampfrichter</div>
+    <h2 class="h">Punkte für deinen Raum</h2>
+    <p class="mut small">Für alle ohne eigenen Zugang. Was du hier eintippst, steht sofort in der Rangliste und auf dem Beamer.</p>
+    <div class="card">
+      <label>Name</label><input id="jName" placeholder="Vorname Nachname">
+      <label>Gruppe</label><select id="jTeam"></select>
+      <button class="btn wide" style="margin-top:12px" onclick="addRoster()">Teilnehmer aufnehmen</button>
+    </div>
+    <div id="jList"></div>
+  </div>
+</div>
+
+<!-- ================= SETUP ================= -->
+<div id="setup" style="position:fixed;inset:0;z-index:99;background:var(--navy-dd);overflow:auto;display:none">
+  <div class="wrap" style="padding-top:34px;padding-bottom:40px;max-width:520px">
+    <img id="logo2" style="width:76px;display:block;margin:0 auto 18px" alt="">
+    <div class="kicker" style="text-align:center">Vertriebsimpuls 19.09.</div>
+    <h2 class="h" style="text-align:center;font-size:25px">Kurz eintragen, dann geht's los</h2>
+    <p class="mut small" style="text-align:center">Zwei Angaben, mehr braucht es nicht.</p>
+    <label>Dein Name</label>
+    <input id="inName" placeholder="Vorname Nachname" autocomplete="name">
+    <label>Deine Gruppe</label>
+    <select id="inTeam"></select>
+    <p class="mut small" id="setupPlan" style="margin-top:8px"></p>
+    <button class="btn wide" style="margin-top:16px" onclick="saveSetup()">Los geht's</button>
+    <p class="mut small" style="text-align:center;margin-top:12px">Deine Punkte liegen auf diesem Gerät. Die Rangliste sehen alle.</p>
+  </div>
+</div>
+
+<script>
+/* ============ GRUPPEN & ROTATION ============ */
+var TEAMS = ["Rot","Schwarz","Weiß"];
+var TEAMCOL = {"Rot":"#B4121B","Schwarz":"#161616","Weiß":"#EDE7D6"};
+function dot(t){ return '<span class="dot" style="background:'+(TEAMCOL[t]||"#666")+'"></span>'; }
+
+var ROUNDS = [["14:15","15:00"],["15:05","15:50"],["15:55","16:40"]];
+var ROT = { "Rot":["aks","vl","rec"], "Schwarz":["vl","rec","aks"], "Weiß":["rec","aks","vl"] };
+
+var PT = {
+  gespraech:{l:"Gespräch geführt",p:2},
+  empfehlung:{l:"Empfehlung mit Nummer",p:3},
+  terminVl:{l:"Termin Vorsorge / VL",p:5},
+  terminAks:{l:"Termin Arbeitskraft",p:6},
+  karriere:{l:"Karrieregespräch",p:8}
+};
+
+var ABLAUF = [
+  ["14:00","Kaltstart und Impuls","Zahlen, Ziel, warum der Jahreswechsel unser Thema ist."],
+  ["14:15","Runde 1","Drei Räume parallel. Jede Gruppe startet woanders."],
+  ["15:05","Runde 2","Raumwechsel. Erst Prägung, dann Aktion."],
+  ["15:55","Runde 3","Letzter Wechsel. Am Ende war jeder in allen drei Themen."],
+  ["16:40","Impuls von oben","Vertrieb und Struktur: warum es in unserer Branche einfach ist, Geld zu verdienen."],
+  ["16:55","Zwischenstand","Rangliste an die Wand, Zielzahl bis Weihnachten."],
+  ["17:00","Essen","Die Familien kommen dazu. Siegerehrung gegen 18:30."]
+];
+
+/* ============ SEMINARE ============ */
+var SEM = {
+  aks:{
+    name:"Arbeitskraftsicherung", kurz:"Arbeitskraft",
+    ziel:"Zehn Namen ohne Absicherung, einmal laut geübt, drei Anrufe raus.",
+    lernen:[
+      ["Die Arbeitskraft ist sein größtes Vermögen","Rechne es ihm vor, statt es zu behaupten. 2.500 Euro netto mal 35 Jahre sind über eine Million. Alles andere im Konzept steht auf diesem Einkommen."],
+      ["Der Jahreswechsel ist unser Grund für den Anruf","Die Beiträge ziehen zum Jahreswechsel meistens an, und jedes Lebensjahr kostet dauerhaft mit. Wer jetzt berät, spart seinem Klienten Geld."],
+      ["Wenn A nicht geht, geht B","Berufsunfähigkeit, Grundfähigkeit, Erwerbsunfähigkeit oder schwere Krankheiten, mindestens Unfall. Wer kein A bekommt, bekommt D. Nur mit nichts geht er nicht raus."]
+    ],
+    listen:{key:"aks",label:"Klienten ohne Absicherung auf die Arbeitskraft",ziel:10,
+      hint:"Wer fällt dir ein, bei dem nichts oder zu wenig läuft?"},
+    karten:[
+      ["Das ist mir zu teuer.",
+       "Kann ich verstehen. Darf ich kurz fragen: zu teuer im Vergleich wozu?",
+       "Wir schauen uns an, was zu dir passt, nicht was maximal geht. Es gibt auch kleine Lösungen, und die sind immer noch besser als keine.",
+       "Preis ist selten der echte Grund. Die Rückfrage zeigt dir, ob es ums Geld geht oder um etwas anderes."],
+      ["Mir passiert schon nichts.",
+       "Hoffe ich auch. Was glaubst du, ist der häufigste Grund, warum jemand nicht mehr arbeiten kann?",
+       "Die meisten tippen auf Unfall. Es sind Krankheit, Psyche und Rücken. Und darauf hat keiner Einfluss.",
+       "Lass ihn raten. Was er selbst sagt, glaubt er dir sofort. Was du ihm erzählst, muss er dir erst glauben."],
+      ["Hab ich schon über die Firma.",
+       "Gut, dass da was läuft. Weißt du, was davon übrig bleibt, wenn du den Job wechselst?",
+       "Meistens endet das mit dem Arbeitsvertrag. Lass uns einmal nachschauen, was davon wirklich dir gehört.",
+       "Du nimmst ihm nichts weg, du machst ihn neugierig auf seine eigene Lage."],
+      ["Ich überleg es mir.",
+       "Klar, mach das. Was genau willst du dir überlegen, das Thema oder die Zahlen?",
+       "Wenn es die Zahlen sind: die hol ich dir. Danach überlegst du mit etwas in der Hand.",
+       "Das ist die Isolationsfrage. Sie trennt echtes Nachdenken vom höflichen Nein."],
+      ["Ich bin kerngesund.",
+       "Perfekt, genau deshalb rufe ich jetzt an. Was meinst du, was die Versicherung mehr interessiert, dein Alter oder deine Gesundheit?",
+       "Beides. Und beides ist heute besser als in fünf Jahren. Gesundheit ist die Eintrittskarte, und die hat man nicht ewig.",
+       "Gesundheit ist kein Gegenargument, sondern der beste Zeitpunkt. Das muss er aber selbst merken."]
+    ],
+    quiz:[
+      {f:"Der Klient sagt: das ist mir zu teuer. Was machst du zuerst?",
+       o:["Einen günstigeren Tarif anbieten","Fragen, zu teuer im Vergleich wozu","Erklären, wie wichtig BU ist"],r:1,
+       e:"Erst verstehen, dann reden. Oft steckt hinter dem Preis etwas ganz anderes, und das findest du nur mit einer Frage heraus."},
+      {f:"Die BU geht wegen einer Vorerkrankung nicht. Was kommt als Nächstes?",
+       o:["Thema vertagen","Grundfähigkeit prüfen","Direkt zur privaten Rente"],r:1,
+       e:"Die Kaskade lautet BU, Grundfähigkeit, Erwerbsunfähigkeit oder schwere Krankheiten, mindestens Unfall."},
+      {f:"Warum ist der Jahreswechsel ein echtes Argument?",
+       o:["Weil es im Dezember Rabatte gibt","Weil Beiträge meist steigen und ein Lebensjahr dauerhaft kostet","Weil die Gesundheitsprüfung im Januar strenger wird"],r:1,
+       e:"Zwei Effekte zusammen: neue Tarife zum Jahreswechsel und ein Jahr mehr Eintrittsalter, das über die ganze Laufzeit mitläuft."}
+    ]
+  },
+
+  vl:{
+    name:"Vorsorge und VL", kurz:"Vorsorge",
+    ziel:"Acht Angestellte mit Branche auf der Liste, einmal vorgerechnet, drei Anrufe raus.",
+    lernen:[
+      ["VL ist Geld, das einfach liegen bleibt","In vielen Branchen legt der Arbeitgeber jeden Monat was drauf, wenn man es abruft. Wer die Branche kennt, hat den konkretesten Aufhänger, den es gibt."],
+      ["Kein Anspruch heißt nicht Ende","Erst beim Arbeitgeber nachfragen lassen, dann betriebliche Altersversorgung, dann privater Sparplan. Wer nach Stufe eins aufhört, verschenkt das Gespräch."],
+      ["Nicht die Rate entscheidet, sondern die Jahre","Derselbe Betrag, ein Jahr später gestartet, kostet am Ende ein Vielfaches der gesparten Beiträge. Rechne es vor, dann brauchst du kein Argument mehr."]
+    ],
+    listen:{key:"vl",label:"Angestellte Klienten mit Arbeitgeber und Branche",ziel:8,
+      hint:"Name und Branche, zum Beispiel: Sarah K., Chemie"},
+    karten:[
+      ["Später, wenn es besser läuft.",
+       "Verstehe ich. Wann ist denn besser, so ungefähr? Nächstes Jahr, in fünf?",
+       "Genau da liegt der Haken: besser kommt selten von allein, und die Jahre holst du später mit keiner Rate mehr auf.",
+       "Lass ihn das Datum suchen. Wenn er keins findet, merkt er das Problem selbst."],
+      ["Mach ich selbst über meine App.",
+       "Stark, dass du dich damit beschäftigst. Was hast du denn drin? Und wie hast du dich dafür entschieden?",
+       "Ein ETF ist ein gutes Werkzeug, aber noch kein Plan. Eine halbe Stunde, ob dein Werkzeug zu deinem Ziel passt. Zweite Meinung kostet dich nichts.",
+       "Nicht gegen seine App reden. Echtes Interesse zeigen, dann redet er selbst über die Lücken."],
+      ["Ich will mich nicht binden.",
+       "Kann ich nachvollziehen. Was heißt binden für dich, wo fühlt es sich unangenehm an?",
+       "Was wir bauen, kannst du anpassen, aussetzen und erhöhen. Genau das zeig ich dir.",
+       "Binden ist ein Gefühl, kein Fakt. Frag nach, sonst antwortest du auf etwas, das er gar nicht meint."],
+      ["Ich warte auf das Altersvorsorgedepot.",
+       "Interessant, hast du dich da schon eingelesen? Was erwartest du davon?",
+       "Das kommt 2027, und dann schauen wir es uns zusammen an. Bis dahin verlierst du Zeit, und Zeit ist hier der größte Hebel.",
+       "Wer wartet, hat meistens nur die Überschrift gelesen. Deine Frage klärt das in zehn Sekunden."],
+      ["Vierzig Euro merke ich doch gar nicht.",
+       "Genau. Und was glaubst du, was aus vierzig Euro in dreißig Jahren wird?",
+       "Lass ihn schätzen, dann zeig ihm die Zahl. Der Abstand zwischen beidem ist dein bestes Argument.",
+       "Schätzen lassen schlägt vorrechnen. Der Aha-Moment gehört ihm, nicht dir."]
+    ],
+    quiz:[
+      {f:"Der Klient sagt, sein Arbeitgeber zahle keine VL. Was kommt jetzt?",
+       o:["Thema beenden","Nachfragen lassen, dann bAV, dann privater Sparplan","Sofort eine private Rente abschließen"],r:1,
+       e:"Drei Stufen. Viele wissen selbst nicht, was in ihrem Tarifvertrag steht, deshalb ist das Nachfragen der erste Schritt."},
+      {f:"Er sagt: vierzig Euro merke ich nicht. Was ist der stärkste nächste Zug?",
+       o:["Ihm sagen, dass daraus viel wird","Ihn schätzen lassen, was daraus wird","Eine Renditetabelle schicken"],r:1,
+       e:"Wer selbst schätzt, erlebt die Lücke zwischen Gefühl und Zahl. Das überzeugt stärker als jede Behauptung von dir."},
+      {f:"Was ist der beste Einstieg ins VL-Telefonat?",
+       o:["Eine allgemeine Frage zur Altersvorsorge","Der konkrete Betrag, den sein Arbeitgeber zahlt","Ein Hinweis auf die Rentenlücke"],r:1,
+       e:"Konkret schlägt allgemein. Einen Betrag, der ihm zusteht, wischt niemand einfach weg."}
+    ]
+  },
+
+  rec:{
+    name:"Recruiting", kurz:"Recruiting",
+    ziel:"Fünf Namen, ein echter Beobachtungssatz, mindestens eine Ansprache raus.",
+    lernen:[
+      ["Wir suchen keinen, wir wählen aus","Wer sich beworben fühlt, vergleicht. Wer ausgewählt wird, hört zu. Gleiche Person, zwei völlig verschiedene Gespräche."],
+      ["Der Einstieg ist eine Beobachtung","Etwas, das nur auf diesen einen Menschen passt. Er ist der, den alle fragen. Sie kriegt jede Gruppe zusammen. Je konkreter, desto weniger klingt es nach Werbung."],
+      ["Ziel ist ein Kennenlernen","Eine halbe Stunde, ein Bild davon, was wir machen. Alles Weitere entscheidet er danach in Ruhe. Wer im ersten Kontakt gewinnen will, verliert."]
+    ],
+    listen:{key:"rec",label:"Menschen, die zu uns passen könnten",ziel:5,
+      hint:"Name, und dahinter: was fällt dir an dem Menschen auf?"},
+    karten:[
+      ["Interessiert mich eigentlich nicht.",
+       "Mal abgesehen davon, dass dich das Thema gerade wenig interessiert: dich interessiert doch bestimmt, dass das Finanzamt nur so viel bekommt wie nötig und nicht so viel wie möglich. Oder?",
+       "Dass du deine vollen Gehaltsbestandteile bekommst, dass du keinen Bonus liegen lässt und dass der Rest für dich arbeitet. Wir treffen uns, ich zeig dir das, du machst dir ein Bild und entscheidest danach, über welches Thema du sprechen willst.",
+       "Du nimmst sein Nein an und legst daneben etwas, zu dem er schlecht Nein sagen kann. Das „Oder?“ am Ende holt dir das erste Ja."],
+      ["Ich hab doch gar keine Zeit.",
+       "Deshalb frag ich dich und nicht jemanden, der Langeweile hat. Wann hast du denn mal eine halbe Stunde, eher abends oder am Wochenende?",
+       "Eine halbe Stunde, danach weißt du, worüber wir überhaupt reden.",
+       "Das Kompliment nimmt die Spannung raus, die Alternativfrage bringt dich trotzdem zum Termin."],
+      ["Ist das so ein Strukturding?",
+       "Was verbindest du denn damit?",
+       "Wir sind ein Beratungsunternehmen mit Klienten, Verträgen und Verantwortung. Schau es dir an, danach redest du über Fakten statt über Etiketten.",
+       "Wer sofort verteidigt, wirkt ertappt. Erst fragen, dann weißt du, wogegen du überhaupt redest."],
+      ["Das kann ich doch gar nicht.",
+       "Was müsstest du denn können, damit du es dir zutrauen würdest?",
+       "Genau das bringen wir dir bei. Niemand fängt fertig an. Mir fällt bei dir etwas ganz anderes auf, und darum geht es.",
+       "Er nennt dir seine eigene Hürde. Danach musst du nur noch diese eine aus dem Weg räumen."],
+      ["Ich bin zufrieden in meinem Job.",
+       "Freut mich, das ist selten geworden. Was müsste passieren, dass du trotzdem mal reinschaust?",
+       "Genau mit zufriedenen Leuten rede ich am liebsten. Die entscheiden in Ruhe und nicht aus Frust.",
+       "Zufriedenheit ist kein Nein. Die Frage öffnet die Tür einen Spalt, ohne dass du drücken musst."]
+    ],
+    quiz:[
+      {f:"Wie beschreibst du, was du machst?",
+       o:["Ich mach Finanzberatung.","Ich beschäftige mich seit einer Weile intensiv mit dem Thema Finanzen, auch professionell, mit einem Beratungsunternehmen aus dem Bereich.","Ich arbeite im Vertrieb einer Finanzfirma."],r:1,
+       e:"Die zweite Version klingt nach jemandem, der etwas weiß. Die anderen beiden klingen nach jemandem, der etwas verkaufen will."},
+      {f:"Er fragt: ist das so ein Strukturding? Was machst du?",
+       o:["Sofort erklären, dass wir das nicht sind","Zurückfragen, was er damit verbindet","Das Thema überspringen"],r:1,
+       e:"Wer sich sofort verteidigt, wirkt ertappt. Mit der Rückfrage erfährst du, worauf du überhaupt antwortest."},
+      {f:"Was macht den Beobachtungssatz stark?",
+       o:["Dass er kurz ist","Dass er nur auf diesen einen Menschen passt","Dass er Verdienst erwähnt"],r:1,
+       e:"Austauschbare Sätze klingen nach Werbung. Konkrete Beobachtungen klingen nach Wertschätzung."}
+    ]
+  }
+};
+
+/* ============ TELEFON ============ */
+var TEL_MODES = [["bestand","Mein Klient"],["bekannt","Kenn ich privat"],["karriere","Karriere"]];
+
+var TEL_STEPS = [
+ {t:"Name", d:"Nenn ihn beim Namen und sag, wer du bist. Ein Satz Privates darf davor. Einer.",
+  v:{bestand:"Hey Michael, hier ist Ben. Hast du zwei Minuten?",
+     bekannt:"Hey Michael, hier ist Ben. Passt es gerade kurz?",
+     karriere:"Hey Michael, hier ist Ben. Hast du zwei Minuten?"}},
+ {t:"Grund", d:"Sag sofort, warum du anrufst. Wer drumherum redet, macht den anderen misstrauisch.",
+  v:{bestand:"Ich hatte gerade deine Unterlagen auf dem Tisch.",
+     bekannt:"Wir hatten gestern ein Fachmeeting zum Thema Einkommensabsicherung, und dabei bist du mir eingefallen.",
+     karriere:"Wir bauen gerade unser Team aus, und bei der Frage, wen wir ansprechen, bist du mir als Erstes eingefallen."}},
+ {t:"Weil", d:"Der Satz, der zeigt, dass es um ihn geht. Hier entscheidet sich der Termin. Die drei Themen-Varianten stehen direkt unter dem Skript.",
+  v:{bestand:"Mir ist aufgefallen, dass bei dir zur Arbeitskraft noch nichts hinterlegt ist. Genau das wird zum Jahreswechsel meistens teurer. Ich wollte, dass du das weißt, solange es günstig ist.",
+     bekannt:"Es geht um den Schutz deines Einkommens. Zum Jahreswechsel wird das in der Regel teurer, und jedes Jahr zählt beim Beitrag mit. Ich wollte, dass du das auf dem Schirm hast, bevor der Januar kommt.",
+     karriere:"Mir fällt bei dir seit einer Weile was auf: … . Ich hätte dich gern mal am Tisch, damit du ein Bild davon hast, was wir hier eigentlich machen."}},
+ {t:"Eine Frage", d:"Eine kurze Frage, die ihn ins Gespräch holt. Eine. Die Analyse gehört an den Tisch.",
+  v:{bestand:"Hat sich das bei dir zwischendurch über den Arbeitgeber geregelt?",
+     bekannt:"Wie hast du das Thema bei dir eigentlich gelöst?",
+     karriere:"Sag mal, wie läuft es bei dir gerade beruflich?"}},
+ {t:"Termin", d:"Zwei konkrete Vorschläge, dann Klappe halten. Die Stille gehört dazu. Wer nachschiebt, redet sich den Termin kaputt.",
+  v:{bestand:"Dann lass uns eine halbe Stunde draufschauen. Passt dir Donnerstag um 18 Uhr besser oder Samstagvormittag?",
+     bekannt:"Dann lass uns eine halbe Stunde draufschauen. Passt dir Donnerstag um 18 Uhr besser oder Samstagvormittag?",
+     karriere:"Dann lass uns eine halbe Stunde zusammensitzen. Donnerstagabend oder lieber Samstagvormittag?"}}
+];
+
+var WEIL = [
+  ["Arbeitskraft","Mir ist aufgefallen, dass bei dir zur Arbeitskraft noch nichts abgesichert ist. Zum Jahreswechsel wird das meistens teurer, und jedes Jahr zählt beim Beitrag mit. Ich wollte, dass die Entscheidung bei dir liegt, solange sie günstig ist."],
+  ["Vermögenswirksame Leistungen","Du arbeitest doch bei … . In deiner Branche legt der Arbeitgeber jeden Monat was drauf, wenn man es abruft. Die meisten holen es sich nie. Ich wollte, dass du weißt, was dir zusteht."],
+  ["Karriere","Mir fällt bei dir seit einer Weile was auf: … . Wir bauen unser Team gerade aus, und du kamst mir sofort in den Sinn. Lass uns eine halbe Stunde zusammensitzen, dann hast du ein Bild davon. Alles Weitere entscheidest du danach in Ruhe."]
+];
+
+var EINW = [
+  ["„Schick mir was per Mail.“","Mach ich gern. Eine Frage vorher: was müsste drinstehen, damit es dir wirklich was bringt? … Genau das kann ein PDF nicht. Zwanzig Minuten und du weißt, ob dich das überhaupt betrifft. Donnerstag oder Freitag?"],
+  ["„Ich hab keine Zeit.“","Deshalb ruf ich vorher an. Wann ist es bei dir am entspanntesten, abends oder samstags?"],
+  ["„Ich hab schon alles.“","Klingt gut. Wann hast du zuletzt draufgeschaut? … Dann wird es kurz. Ich schau einmal drüber, und wenn alles passt, sag ich dir das auch."],
+  ["„Was kostet das denn?“","Kommt drauf an, was zu dir passt. Was wäre dir denn wichtiger, ein niedriger Beitrag oder dass es im Ernstfall wirklich zahlt? Genau darüber reden wir im Termin."],
+  ["Er fragt inhaltlich nach.","Gute Frage. Die verdient mehr als zwischen Tür und Angel, dafür gehören deine Zahlen auf den Tisch. Genau dafür der Termin."],
+  ["Mailbox oder keiner geht ran.","Kurze Nachricht: dass du angerufen hast, dass nichts Dramatisches ist, worum es geht, und wann du zurückrufen darfst. Keine Beratung per Text."]
+];
+
+var PLANB = [
+  ["Arbeitskraft","A · Berufsunfähigkeit, der Vollschutz.<br>B · Grundfähigkeit, wenn Gesundheit oder Beruf die BU sperren.<br>C · Erwerbsunfähigkeit oder schwere Krankheiten.<br>D · Unfall, das Minimum. Wer kein A bekommt, bekommt wenigstens D."],
+  ["Vorsorge und VL","A · Vermögenswirksame Leistungen, Branche nachschauen und Betrag nennen.<br>B · Arbeitgeber zahlt nichts? Nachfragen lassen, dann bAV per Entgeltumwandlung.<br>C · Nichts davon möglich? Privater Sparplan. Klein anfangen ist auch ein Anfang."]
+];
+
+var WERKZEUG = [
+  ["Die Gegenfrage","Du musst nicht auf alles die perfekte Antwort haben. Oft reicht eine Frage zurück. Wer fragt, der führt, und der andere sortiert sich selbst."],
+  ["Die Isolationsfrage","„Mal angenommen, das wäre geklärt: gibt es dann noch etwas, das dagegen spricht?“ Damit trennst du den echten Einwand vom höflichen Nein."],
+  ["Zurückgeben","„Was genau meinst du damit?“ Zwei Sekunden Arbeit für dich, und du antwortest nicht mehr an seinem Punkt vorbei."]
+];
+
+var LEIT = [
+  ["Arbeitskraftsicherung", SEM.aks.ziel, SEM.aks.lernen],
+  ["Vorsorge und VL", SEM.vl.ziel, SEM.vl.lernen],
+  ["Recruiting", SEM.rec.ziel, SEM.rec.lernen]
+];
+
+/* Die Rangliste hängt an der Variablen API, die ganz oben in dieser Datei steht. */
+
+/* ============ STATE ============ */
+var KEY="cf1909-v2";
+var me = load();
+var rows = [], lastPos = {}, rankMode="einzel", saveTimer=null;
+
+function load(){
+  try{ var r = JSON.parse(localStorage.getItem(KEY)); if(r && r.id) return fix(r); }catch(e){}
+  return fix({id:"p"+Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4)});
+}
+function fix(r){
+  r.name=r.name||""; r.team=r.team||""; r.sem=r.sem||"";
+  r.cnt=r.cnt||{}; r.names=r.names||{}; r.ex=r.ex||{}; r.log=r.log||[];
+  for(var k in PT) if(!r.cnt[k]) r.cnt[k]=0;
+  ["aks","vl","rec"].forEach(function(k){ if(!r.names[k]) r.names[k]=[]; });
+  return r;
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(me)); }catch(e){} syncSoon(); }
+
+function total(){
+  var t=0,k;
+  for(k in PT) t += (me.cnt[k]||0)*PT[k].p;
+  for(k in me.names) t += me.names[k].length;
+  for(k in me.ex) t += me.ex[k];
+  return t;
+}
+function calls(){ return me.cnt.gespraech||0; }
+function qSteps(){
+  var n=0,k;
+  for(k in me.names) if(me.names[k].length>=(SEM[k]?SEM[k].listen.ziel:99)){ n++; break; }
+  for(k in me.ex) if(k.indexOf("arena")===0){ n++; break; }
+  for(k in me.ex) if(k.indexOf("quiz_")===0){ n++; break; }
+  if((me.cnt.gespraech||0)>0) n++;
+  return n;
+}
+function termine(){ return (me.cnt.terminAks||0)+(me.cnt.terminVl||0)+(me.cnt.karriere||0); }
+
+/* ---- Runden ---- */
+function mins(hhmm){ var a=hhmm.split(":"); return (+a[0])*60+(+a[1]); }
+function nowMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
+function currentRound(){
+  var n=nowMin();
+  for(var i=0;i<ROUNDS.length;i++) if(n>=mins(ROUNDS[i][0]) && n<mins(ROUNDS[i][1])) return i;
+  if(n<mins(ROUNDS[0][0])) return 0;
+  return ROUNDS.length-1;
+}
+function semOfRound(i){ var plan=ROT[me.team]||ROT.Rot; return plan[i]||plan[0]; }
+function activeSem(){ return me.sem || semOfRound(currentRound()); }
+
+/* ============ SYNC ============ */
+var SYNC = { push:function(){}, del:function(){} };
+
+function jsonp(params){
+  return new Promise(function(res,rej){
+    if(!API){ rej("no api"); return; }
+    var cb = "cf"+Math.random().toString(36).slice(2,9);
+    var t = setTimeout(function(){ cleanup(); rej("timeout"); }, 12000);
+    function cleanup(){ clearTimeout(t); try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
+      if(sc && sc.parentNode) sc.parentNode.removeChild(sc); }
+    window[cb] = function(d){ cleanup(); res(d); };
+    var q = Object.keys(params).map(function(k){
+      return encodeURIComponent(k)+"="+encodeURIComponent(params[k]); }).join("&");
+    var sc = document.createElement("script");
+    sc.src = API + (API.indexOf("?")>=0?"&":"?") + q + "&cb=" + cb;
+    sc.onerror = function(){ cleanup(); rej("error"); };
+    document.body.appendChild(sc);
+  });
+}
+
+function apiPush(r){
+  jsonp({a:"set", id:r.id, name:r.name, team:r.team||"", pts:r.pts, calls:r.calls,
+         termine:r.termine, q:(r.q===undefined?"":r.q)}).catch(function(){});
+}
+function apiDel(id){ jsonp({a:"del", id:id}).catch(function(){}); }
+
+function apiList(){
+  jsonp({a:"list"}).then(function(d){
+    if(d && d.rows){ rows = d.rows; renderRank();
+      setState("Live über die CF-Tabelle. Zuletzt aktualisiert " + new Date().toLocaleTimeString("de-DE").slice(0,5) + " Uhr."); }
+  }).catch(function(){ setState("Keine Verbindung zur Rangliste. Deine Punkte bleiben gespeichert."); });
+}
+
+(async function(){
+  var db = null;
+  try{ if(window.claude && claude.use) db = await claude.use("db"); }catch(e){ db = null; }
+
+  if(db){
+    SYNC.push = function(r){
+      try{ db.doc("teilnehmer/"+r.id).set({name:r.name,team:r.team,pts:r.pts,calls:r.calls,
+        termine:r.termine,q:r.q,t:Date.now()}); }catch(e){}
+    };
+    SYNC.del = function(id){ try{ db.doc("teilnehmer/"+id).delete(); }catch(e){} };
+    setState("Verbunden. Die Liste läuft live.");
+    try{
+      db.collection("teilnehmer").onSnapshot(function(snap){
+        rows=[];
+        var push=function(d){ rows.push(Object.assign({id:d.id}, d.data())); };
+        if(snap.forEach) snap.forEach(push); else (snap.docs||[]).forEach(push);
+        renderRank();
+      }, function(){ setState("Verbindung weg. Deine Punkte bleiben gespeichert."); });
+    }catch(e){}
+    syncSoon(); pushRoster(); return;
+  }
+
+  if(API){
+    SYNC.push = apiPush; SYNC.del = apiDel;
+    setState("Verbinde mit der CF-Tabelle …");
+    apiList(); setInterval(apiList, 12000);
+    syncSoon(); pushRoster(); return;
+  }
+
+  setState("Rangliste offline. Deine Punkte zählen trotzdem, du siehst hier nur dich selbst.");
+  render();
+})();
+
+function syncSoon(){
+  if(!me.name) return;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(function(){
+    SYNC.push({id:me.id,name:me.name,team:me.team,pts:total(),calls:calls(),
+               termine:termine(),q:qSteps()});
+  },900);
+}
+function setState(s){ var e=document.getElementById("rangState"); if(e) e.textContent=s; }
+
+/* ============ UI ============ */
+function go(p){
+  var ss=document.querySelectorAll("section.page");
+  for(var i=0;i<ss.length;i++) ss[i].classList.remove("on");
+  document.getElementById("p-"+p).classList.add("on");
+  var bs=document.querySelectorAll("nav button");
+  for(var j=0;j<bs.length;j++) bs[j].classList.toggle("on", bs[j].dataset.p===p);
+  document.getElementById("backBtn").classList.toggle("on", p!=="heute");
+  window.scrollTo(0,0);
+  if(p==="rang") renderRank();
+  if(p==="uebung") renderEx();
+}
+function toast(m){
+  var t=document.getElementById("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove("on"); },1400);
+}
+function beep(){
+  try{
+    var C=window.AudioContext||window.webkitAudioContext; if(!C) return;
+    var c=new C(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g); g.connect(c.destination); o.type="sine"; o.frequency.value=880;
+    g.gain.setValueAtTime(.001,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.16,c.currentTime+.02);
+    g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.45);
+    o.start(); o.stop(c.currentTime+.45);
+  }catch(e){}
+}
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+function addPt(k){
+  me.cnt[k]=(me.cnt[k]||0)+1; me.log.push({t:"cnt",k:k});
+  save(); render(); beep(); toast("+"+PT[k].p+" · "+PT[k].l);
+}
+function undoLast(){
+  var l=me.log.pop(); if(!l){ toast("Nichts zum Zurücknehmen"); return; }
+  if(l.t==="cnt" && me.cnt[l.k]>0) me.cnt[l.k]--;
+  if(l.t==="name"){ var a=me.names[l.k], i=a.indexOf(l.v); if(i>=0) a.splice(i,1); }
+  if(l.t==="ex") delete me.ex[l.k];
+  save(); render(); renderEx(); toast("Zurückgenommen");
+}
+function addEx(id,pts,msg){
+  if(me.ex[id]) return;
+  me.ex[id]=pts; me.log.push({t:"ex",k:id});
+  save(); render(); beep(); toast("+"+pts+" · "+(msg||"geschafft"));
+}
+
+function render(){
+  document.getElementById("myPts").textContent=total();
+  document.getElementById("myName").textContent=me.name?me.name.split(" ")[0]:"Punkte";
+  document.getElementById("heuteName").textContent=me.name?("Moin, "+me.name.split(" ")[0]):"Willkommen";
+  document.getElementById("meInfo").textContent=me.name?(me.name+" · Gruppe "+me.team):"Noch nicht eingerichtet.";
+  document.getElementById("topSub").innerHTML = me.team
+    ? ('Gruppe '+me.team+' '+dot(me.team)) : '19. September · 14–17 Uhr';
+  document.getElementById("teamStripe").style.cssText = me.team
+    ? "height:3px;background:"+TEAMCOL[me.team]+";opacity:.85" : "height:0";
+
+  var g=document.getElementById("pointBtns"),h="";
+  for(var k in PT) h+='<button class="pbtn'+(k==="gespraech"?" big":"")+'" onclick="addPt(\''+k+'\')">'+
+    '<b>'+PT[k].l+'</b><i>+'+PT[k].p+' Punkte</i><span class="n">'+(me.cnt[k]||0)+'</span></button>';
+  g.innerHTML=h;
+  var n1=document.getElementById("n-gespraech"); if(n1) n1.textContent=me.cnt.gespraech||0;
+  var n2=document.getElementById("n2-empfehlung"); if(n2) n2.textContent=me.cnt.empfehlung||0;
+
+  renderJetzt();
+  renderRank();
+}
+
+function renderJetzt(){
+  var r=currentRound(), s=SEM[semOfRound(r)];
+  document.getElementById("jetztTitel").textContent = s? s.name : "—";
+  document.getElementById("jetztSub").textContent =
+    "Runde "+(r+1)+" · "+ROUNDS[r][0]+" bis "+ROUNDS[r][1]+" · "+(s?s.ziel:"");
+  var p=document.getElementById("rundenPlan"), h="";
+  for(var i=0;i<ROUNDS.length;i++){
+    var k=semOfRound(i);
+    h+='<div class="step"><div class="z">'+ROUNDS[i][0]+'</div><div class="w"><b>'+SEM[k].name+'</b>'+
+       '<p>'+(i===r?"Läuft gerade.":"Runde "+(i+1))+'</p></div></div>';
+  }
+  p.innerHTML=h;
+}
+
+/* ---- Rangliste ---- */
+function setRank(m){ rankMode="einzel"; renderRank(); }
+function renderRank(){
+  var list=document.getElementById("rankList"); if(!list) return;
+  var all=rows.slice();
+  if(!all.some(function(r){ return r.id===me.id; })){
+    if(me.name) all.push({id:me.id,name:me.name,team:me.team,pts:total(),calls:calls(),termine:termine(),q:qSteps()});
+  } else {
+    all=all.map(function(r){ return r.id===me.id?Object.assign({},r,{pts:total(),calls:calls(),termine:termine(),q:qSteps()}):r; });
+  }
+  document.getElementById("sTot").textContent=all.reduce(function(a,b){ return a+(b.pts||0); },0);
+  document.getElementById("sCalls").textContent=all.reduce(function(a,b){ return a+(b.calls||0); },0);
+  document.getElementById("sTerm").textContent=all.reduce(function(a,b){ return a+(b.termine||0); },0);
+
+  var items=all.map(function(r){ return {k:r.id,n:r.name||"Ohne Namen",c:r.team,
+      s:"Gruppe "+(r.team||"–")+((r.q!==undefined)?((r.q>=4)?" · qualifiziert":" · "+r.q+" von 4 Schritten"):""),
+      q:(r.q===undefined?4:r.q),p:r.pts||0,tm:r.termine||0,ca:r.calls||0,me:r.id===me.id}; });
+  items.sort(function(a,b){
+    if(b.p!==a.p) return b.p-a.p;
+    if((b.tm||0)!==(a.tm||0)) return (b.tm||0)-(a.tm||0);
+    if((b.ca||0)!==(a.ca||0)) return (b.ca||0)-(a.ca||0);
+    return String(a.n).localeCompare(String(b.n));
+  });
+
+  var MED=["🥇","🥈","🥉"], h="";
+  var medalOf={};
+  items.filter(function(x){ return x.q>=4 && x.p>0; }).slice(0,3)
+       .forEach(function(x,j){ medalOf[x.k]=j; });
+  items.forEach(function(it,i){
+    var prev=lastPos[it.k], mv='<span class="mv eq">·</span>';
+    if(prev!==undefined && prev>i) mv='<span class="mv up">▲</span>';
+    else if(prev!==undefined && prev<i) mv='<span class="mv dn">▼</span>';
+    var mi = medalOf[it.k];
+    var med = (mi!==undefined) ? (" m"+(mi+1)) : "";
+    var pos = med ? MED[mi] : (i+1);
+    h+='<li class="'+(it.me?"me":"")+med+'">'+mv+'<span class="pos">'+pos+'</span>'+(it.c?dot(it.c):'')+
+       '<span class="nm">'+esc(it.n)+'<em>'+esc(it.s)+'</em></span><span class="pt">'+it.p+'</span></li>';
+  });
+
+  var pod="";
+  var qual=items.filter(function(x){ return x.q>=4 && x.p>0; });
+  if(qual.length>=3){
+    var ord=[1,0,2], cls=["p2","p1","p3"];
+    pod='<div class="podium">'+ord.map(function(x,j){
+      var it=qual[x];
+      return '<div class="pod '+cls[j]+'"><div class="md">'+MED[x]+'</div>'+
+        '<div class="pn">'+esc(it.n)+'</div><div class="pp">'+it.p+'</div>'+
+        '<div class="pg">Gruppe '+esc(it.c||"–")+'</div></div>';
+    }).join("")+'</div>';
+  }
+  var pw=document.getElementById("podium"); if(pw) pw.innerHTML=pod;
+  var pb=document.getElementById("bmPodium"); if(pb) pb.innerHTML=pod;
+  list.innerHTML=h||'<li class="mut">Noch niemand eingetragen.</li>';
+
+  var bl=document.getElementById("bmList");
+  if(bl && document.getElementById("beamer").classList.contains("on")){
+    bl.innerHTML=h||'<li class="mut">Noch niemand eingetragen.</li>';
+    document.getElementById("bmTot").textContent=document.getElementById("sTot").textContent;
+    document.getElementById("bmCalls").textContent=document.getElementById("sCalls").textContent;
+    document.getElementById("bmTerm").textContent=document.getElementById("sTerm").textContent;
+  }
+  setTimeout(function(){ items.forEach(function(it,i){ lastPos[it.k]=i; }); },6000);
+}
+
+/* ---- Übungen ---- */
+function renderEx(){
+  var key=activeSem(), s=SEM[key], r=currentRound();
+  document.getElementById("semRunde").textContent="Runde "+(r+1)+" · "+ROUNDS[r][0]+" bis "+ROUNDS[r][1];
+  document.getElementById("semTitle").textContent=s.name;
+  document.getElementById("semZiel").textContent="Dein Ziel: "+s.ziel;
+  var sw=document.getElementById("semSwitch"),h="";
+  for(var k in SEM) h+='<button class="'+(k===key?"on":"")+'" onclick="switchSem(\''+k+'\')">'+SEM[k].kurz+'</button>';
+  sw.innerHTML=h;
+
+  var w=document.getElementById("exWrap"),o="";
+
+  var L0=s.listen, nDone=me.names[L0.key].length>=L0.ziel;
+  var aDone=false; for(var kk in me.ex) if(kk.indexOf("arena")===0) aDone=true;
+  var tDone=(me.cnt.gespraech||0)>0;
+  var stepState=[true, nDone, aDone, tDone];
+  var firstOpen=stepState.indexOf(false);
+  var labels=[["1","Kernsätze<br>lesen"],["2","Liste<br>füllen"],["3","Arena<br>laut üben"],["4","Anrufen"]];
+  o+='<div class="card gold"><div class="kicker">So läuft deine Runde</div>'+
+     '<h3 class="h" style="margin-top:5px">Erst vorbereiten, dann los</h3>'+
+     '<p class="mut small">Der vierte Schritt ist der, für den wir hier sind. Die ersten drei sorgen dafür, dass er leicht wird.</p>'+
+     '<div class="flow">'+labels.map(function(l,i){
+       var cls = stepState[i] ? "ok" : (i===firstOpen ? "now" : "");
+       return '<div class="fl '+cls+'"><b>'+(stepState[i]?"✓":l[0])+'</b><span>'+l[1]+'</span></div>';
+     }).join("")+'</div></div>';
+
+  o+='<div class="card"><div class="kicker">Schritt 1 · 3 Minuten</div><h3 class="h" style="margin-top:5px">Die drei Kernsätze</h3>';
+  s.lernen.forEach(function(l,i){ o+='<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+l[0]+'</b><p>'+l[1]+'</p></div></div>'; });
+  o+='</div>';
+
+  var L=s.listen;
+  o+='<div class="card"><div class="kicker">Schritt 2 · still · 1 Punkt je Name</div>'+
+     '<h3 class="h" style="margin-top:5px">'+L.label+'</h3>'+
+     '<p class="mut small">'+L.hint+' Ziel: '+L.ziel+' Namen.</p>'+
+     '<input id="nameIn" placeholder="Name eintippen" onkeydown="if(event.key===\'Enter\')addName()">'+
+     '<button class="btn wide" onclick="addName()">Hinzufügen</button>'+
+     '<div class="namelist" id="nameList"></div>'+
+     '<p class="small" style="margin-top:9px" id="nameProg"></p></div>';
+
+  o+='<div class="card"><div class="kicker">Vorher kurz lesen</div>'+
+     '<h3 class="h" style="margin-top:5px">Du brauchst nicht auf alles eine Antwort</h3>'+
+     '<p class="mut small">Wer fragt, der führt. Drei Werkzeuge reichen für fast jeden Einwand.</p>';
+  WERKZEUG.forEach(function(x,i){ o+='<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+x[0]+'</b><p>'+x[1]+'</p></div></div>'; });
+  o+='</div>';
+
+  o+='<div class="card"><div class="kicker">Schritt 3 · laut · 3 Punkte je Runde</div>'+
+     '<h3 class="h" style="margin-top:5px">Einwand-Arena</h3>'+
+     '<p class="mut small">Karte ziehen, 30 Sekunden, dein Tandempartner spielt den Klienten. Erst danach aufdecken.</p>'+
+     '<div id="karte"></div>'+
+     '<div class="timer"><div class="tv" id="tv">0:30</div>'+
+     '<button class="btn ghost" onclick="startTimer(30)">Timer</button>'+
+     '<button class="btn" onclick="drawCard()">Karte ziehen</button></div>'+
+     '<p class="small" id="arenaCount"></p></div>';
+
+  o+='<div class="card"><div class="kicker">Extra · Wissen · 4 Punkte</div>'+
+     '<h3 class="h" style="margin-top:5px">Blitz-Check</h3>'+
+     '<p class="mut small">Drei Fragen. Alle drei richtig, dann gibt es die Punkte.</p>'+
+     '<div id="quiz"></div></div>';
+
+  if(key==="vl"){
+    o+='<div class="card"><div class="kicker">Werkzeug · 3 Punkte</div>'+
+       '<h3 class="h" style="margin-top:5px">Was ein Jahr Warten kostet</h3>'+
+       '<p class="mut small">Erst schätzen lassen, dann zeigen. Rechne es einem Tandempartner an seinem eigenen Beispiel vor, dann hol dir die Punkte.</p>'+
+       '<label>Rate pro Monat in Euro</label><input id="cRate" type="number" value="40" oninput="calc()">'+
+       '<label>Jahre bis zur Rente</label><input id="cJahre" type="number" value="30" oninput="calc()">'+
+       '<label>Rendite in Prozent</label><input id="cZins" type="number" value="6" step="0.5" oninput="calc()">'+
+       '<div class="calc" id="calcOut" style="margin-top:12px"></div>'+
+       '<button class="btn wide ghost" style="margin-top:10px" onclick="addEx(\'calc\',3,\'Vorgerechnet\')">Hab ich vorgerechnet</button></div>';
+  }
+  if(key==="rec"){
+    o+='<div class="card"><div class="kicker">Werkzeug · 4 Punkte je Satz</div>'+
+       '<h3 class="h" style="margin-top:5px">Dein Beobachtungssatz</h3>'+
+       '<p class="mut small">Was fällt dir an dem Menschen auf? Etwas, das nur auf ihn passt. Halbe Sätze zählen nicht.</p>'+
+       '<textarea id="satzIn" rows="3" placeholder="Mir fällt bei dir auf, dass …"></textarea>'+
+       '<button class="btn wide" onclick="saveSatz()">Satz fertig</button>'+
+       '<p class="small" id="satzOut" style="margin-top:8px"></p></div>';
+  }
+
+  o+='<div class="card gold"><div class="kicker">Schritt 4 · jetzt wird es ernst</div>'+
+     '<h3 class="h" style="margin-top:5px">Anrufen</h3>'+
+     '<p class="small">Die Übung war die Vorbereitung. Jetzt rufst du die Namen an, die du gerade aufgeschrieben hast. Das Skript läuft mit, du musst nichts auswendig können: oben wählst du aus, ob du deinen Klienten anrufst, jemanden aus deinem Umfeld oder wegen der Karriere.</p>'+
+     '<button class="btn wide" style="margin-top:10px" onclick="go(\'tel\')">Skript öffnen und loslegen</button></div>';
+
+  w.innerHTML=o;
+  renderNames(); renderQuiz(); renderArena();
+  if(key==="vl") calc();
+  if(key==="rec") renderSatz();
+}
+function switchSem(k){ me.sem=k; save(); renderEx(); window.scrollTo(0,0); }
+
+function addName(){
+  var i=document.getElementById("nameIn"), v=(i.value||"").trim();
+  if(v.length<2){ toast("Bitte einen Namen eintippen"); return; }
+  var k=SEM[activeSem()].listen.key;
+  if(me.names[k].indexOf(v)>=0){ toast("Steht schon drauf"); i.value=""; return; }
+  me.names[k].push(v); me.log.push({t:"name",k:k,v:v});
+  i.value=""; save(); renderNames(); render(); toast("+1 Punkt");
+}
+function delName(k,v){
+  var a=me.names[k], i=a.indexOf(v); if(i>=0) a.splice(i,1);
+  save(); renderNames(); render();
+}
+function renderNames(){
+  var k=SEM[activeSem()].listen.key, a=me.names[k], el=document.getElementById("nameList");
+  if(!el) return;
+  el.innerHTML=a.map(function(v){ return '<span>'+esc(v)+'<b onclick="delName(\''+k+'\',\''+esc(v).replace(/'/g,"")+'\')">×</b></span>'; }).join("");
+  var p=document.getElementById("nameProg"), z=SEM[activeSem()].listen.ziel;
+  p.innerHTML=a.length>=z?'<span class="done">Ziel erreicht: '+a.length+' Namen. Jetzt anrufen.</span>'
+                         :'<span class="mut">'+a.length+' von '+z+'. Noch '+(z-a.length)+'.</span>';
+}
+
+var arenaN=0, tInt=null;
+function renderArena(){
+  var e=document.getElementById("arenaCount"); if(!e) return;
+  var done=0; for(var k in me.ex) if(k.indexOf("arena")===0) done++;
+  arenaN=done;
+  e.innerHTML=done?'<span class="done">'+done+' Runden gespielt, '+(done*3)+' Punkte.</span>'
+                  :'<span class="mut">Noch keine Runde gespielt.</span>';
+}
+function drawCard(){
+  var ks=SEM[activeSem()].karten, c=ks[Math.floor(Math.random()*ks.length)];
+  document.getElementById("karte").innerHTML=
+    '<div class="card gold" style="margin:8px 0"><div class="kicker">Er sagt</div>'+
+    '<p class="serif" style="font-size:17px;margin:6px 0 10px">„'+esc(c[0])+'“</p>'+
+    '<details><summary>Deine Gegenfrage</summary><div class="in"><div class="quote">'+esc(c[1])+'</div></div></details>'+
+    '<details><summary>Und danach</summary><div class="in"><div class="quote">'+esc(c[2])+'</div></div></details>'+
+    '<details><summary>Warum das zieht</summary><div class="in"><p class="mut">'+esc(c[3])+'</p></div></details>'+
+    '<button class="btn wide" style="margin-top:10px" onclick="arenaDone()">Runde geschafft · +3</button></div>';
+}
+function arenaDone(){
+  var id="arena"+(arenaN+1);
+  if(me.ex[id]) return;
+  me.ex[id]=3; me.log.push({t:"ex",k:id});
+  save(); render(); beep(); toast("+3 · Runde geschafft"); renderArena();
+}
+function startTimer(sec){
+  clearInterval(tInt); var end=Date.now()+sec*1000;
+  tInt=setInterval(function(){
+    var r=Math.max(0,Math.round((end-Date.now())/1000));
+    var tv=document.getElementById("tv"); if(!tv){ clearInterval(tInt); return; }
+    tv.textContent=Math.floor(r/60)+":"+("0"+(r%60)).slice(-2);
+    if(r<=0){ clearInterval(tInt); beep(); }
+  },250);
+}
+
+var qState={};
+function renderQuiz(){
+  var key=activeSem(), q=SEM[key].quiz, el=document.getElementById("quiz"); if(!el) return;
+  var id="quiz_"+key;
+  if(me.ex[id]){ el.innerHTML='<p class="done">Bestanden. 4 Punkte sind drauf.</p>'; return; }
+  el.innerHTML=q.map(function(x,i){
+    return '<div class="q" data-i="'+i+'"><b class="small">'+(i+1)+' · '+esc(x.f)+'</b>'+
+      x.o.map(function(o,j){ return '<button class="opt" onclick="answer('+i+','+j+',this)">'+esc(o)+'</button>'; }).join("")+
+      '<p class="small mut exp" style="display:none">'+esc(x.e)+'</p></div>';
+  }).join("");
+}
+function answer(i,j,btn){
+  var key=activeSem(), q=SEM[key].quiz[i], box=btn.parentNode;
+  if(box.dataset.done) return;
+  box.dataset.done="1";
+  var opts=box.querySelectorAll(".opt");
+  for(var n=0;n<opts.length;n++) if(n===q.r) opts[n].classList.add("right");
+  if(j!==q.r) btn.classList.add("wrong");
+  box.querySelector(".exp").style.display="block";
+  qState[key]=qState[key]||{}; qState[key][i]=(j===q.r);
+  var all=SEM[key].quiz.length, ok=0, done=0;
+  for(var k in qState[key]){ done++; if(qState[key][k]) ok++; }
+  if(done===all){
+    if(ok===all) addEx("quiz_"+key,4,"Blitz-Check bestanden");
+    else toast(ok+" von "+all+". Lies nach und probier es gleich am Telefon.");
+  }
+}
+
+function calc(){
+  var r=+document.getElementById("cRate").value||0,
+      j=+document.getElementById("cJahre").value||0,
+      z=(+document.getElementById("cZins").value||0)/100;
+  var i=z/12, n=j*12;
+  function fv(m){ return i? r*((Math.pow(1+i,m)-1)/i) : r*m; }
+  var a=fv(n), b=fv(Math.max(0,n-12)), d=a-b;
+  document.getElementById("calcOut").innerHTML=
+    'Start heute: <b>'+eur(a)+'</b><br>Start in einem Jahr: <b>'+eur(b)+'</b><br>'+
+    '<span style="color:var(--gold)">Ein Jahr Warten kostet <b>'+eur(d)+'</b></span><br>'+
+    '<span class="mut small">Eingezahlt hätte er in dem Jahr '+eur(r*12)+'. Am Ende fehlt das '+
+    (r*12?(d/(r*12)).toFixed(1):"0")+'-fache davon.</span>';
+}
+function eur(x){ return Math.round(x).toLocaleString("de-DE")+" €"; }
+
+function saveSatz(){
+  var t=(document.getElementById("satzIn").value||"").trim();
+  if(t.length<25){ toast("Zu kurz. Was fällt dir konkret auf?"); return; }
+  me.saetze=(me.saetze||[]); me.saetze.push(t);
+  var id="satz"+me.saetze.length; me.ex[id]=4; me.log.push({t:"ex",k:id});
+  document.getElementById("satzIn").value=""; save(); render(); beep(); toast("+4 · Satz gespeichert");
+  renderSatz();
+}
+function renderSatz(){
+  var el=document.getElementById("satzOut"); if(!el) return;
+  var s=me.saetze||[];
+  el.innerHTML=s.length?'<span class="done">'+s.length+' Sätze fertig.</span><br>'+s.map(function(x){ return '<span class="mut">„'+esc(x)+'“</span>'; }).join("<br>")
+                       :'<span class="mut">Noch kein Satz.</span>';
+}
+
+function setTelMode(m){ me.telMode=m; save(); renderTel(); }
+function renderTel(){
+  var m = me.telMode || "bestand";
+  var mm=document.getElementById("telModes");
+  if(mm) mm.innerHTML = TEL_MODES.map(function(x){
+    return '<button class="'+(x[0]===m?"on":"")+'" onclick="setTelMode(\''+x[0]+'\')">'+x[1]+'</button>'; }).join("");
+  var el=document.getElementById("telSteps"); if(!el) return;
+  el.innerHTML = TEL_STEPS.map(function(st,i){
+    return '<div class="sline"><div class="sn">'+(i+1)+'</div><div class="sw">'+
+           '<b>'+st.t+'</b><p>'+st.d+'</p><div class="qt">'+esc(st.v[m])+'</div></div></div>';
+  }).join("");
+}
+
+/* ---- Beamer ---- */
+function openBeamer(){
+  document.getElementById("beamer").classList.add("on");
+  try{ document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); }catch(e){}
+  renderRank();
+}
+function closeBeamer(){
+  document.getElementById("beamer").classList.remove("on");
+  try{ document.fullscreenElement && document.exitFullscreen(); }catch(e){}
+}
+
+/* ---- Kampfrichter ---- */
+function openJudge(){
+  document.getElementById("jTeam").innerHTML=TEAMS.map(function(x){ return '<option>'+x+'</option>'; }).join("");
+  document.getElementById("judge").classList.add("on");
+  renderJudge();
+}
+function closeJudge(){ document.getElementById("judge").classList.remove("on"); }
+function addRoster(){
+  var n=(document.getElementById("jName").value||"").trim();
+  if(n.length<2){ toast("Bitte einen Namen eintragen"); return; }
+  me.roster=me.roster||[];
+  me.roster.push({id:"k"+Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-3),
+    name:n, team:document.getElementById("jTeam").value, cnt:{}});
+  document.getElementById("jName").value="";
+  save(); pushRoster(); renderJudge(); toast("Aufgenommen");
+}
+function rPts(r){ var t=0; for(var k in PT) t+=(r.cnt[k]||0)*PT[k].p; return t+(r.extra||0); }
+function jAdd(i,k){
+  var r=me.roster[i]; r.cnt[k]=(r.cnt[k]||0)+1;
+  save(); pushRoster(); renderJudge(); beep(); toast(r.name.split(" ")[0]+" +"+PT[k].p);
+}
+function jManual(i){
+  var v=prompt("Punkte gutschreiben (negativ zum Abziehen)","3"); if(v===null) return;
+  var n=parseInt(v,10); if(isNaN(n)) return;
+  me.roster[i].extra=(me.roster[i].extra||0)+n; save(); pushRoster(); renderJudge();
+}
+function jDel(i){
+  if(!confirm("Teilnehmer entfernen?")) return;
+  var r=me.roster[i];
+  SYNC.del(r.id);
+  me.roster.splice(i,1); save(); renderJudge();
+}
+function pushRoster(){
+  if(!me.roster) return;
+  me.roster.forEach(function(r){
+    SYNC.push({id:r.id,name:r.name,team:r.team,pts:rPts(r),calls:(r.cnt.gespraech||0),
+      termine:(r.cnt.terminAks||0)+(r.cnt.terminVl||0)+(r.cnt.karriere||0),q:4});
+  });
+}
+function renderJudge(){
+  var el=document.getElementById("jList"); if(!el) return;
+  var rs=me.roster||[];
+  if(!rs.length){ el.innerHTML='<p class="mut small" style="margin-top:14px">Noch niemand aufgenommen.</p>'; return; }
+  el.innerHTML='<div class="card">'+rs.map(function(r,i){
+    return '<div class="jrow">'+dot(r.team)+'<span class="nm">'+esc(r.name)+'<em>Gruppe '+esc(r.team)+'</em></span>'+
+      '<span class="pt">'+rPts(r)+'</span>'+
+      '<button class="btn ghost" style="padding:6px 9px;font-size:11px" onclick="jDel('+i+')">×</button></div>'+
+      '<div class="jbtns">'+
+      '<button onclick="jAdd('+i+',\'gespraech\')">Gespräch<br>+2</button>'+
+      '<button onclick="jAdd('+i+',\'empfehlung\')">Empfehlung<br>+3</button>'+
+      '<button onclick="jAdd('+i+',\'terminAks\')">Termin AKS<br>+6</button>'+
+      '<button onclick="jAdd('+i+',\'karriere\')">Karriere<br>+8</button>'+
+      '<button onclick="jAdd('+i+',\'terminVl\')">Termin VL<br>+5</button>'+
+      '<button onclick="jManual('+i+')" style="grid-column:span 3">Übungspunkte eintragen</button>'+
+      '</div>';
+  }).join("")+'</div>';
+}
+
+/* ---- Setup ---- */
+function openSetup(){
+  document.getElementById("inName").value=me.name||"";
+  var t=document.getElementById("inTeam");
+  t.innerHTML=TEAMS.map(function(x){ return '<option'+(x===me.team?" selected":"")+'>'+x+'</option>'; }).join("");
+  t.onchange=setupPlan; setupPlan();
+  document.getElementById("setup").style.display="block";
+}
+function setupPlan(){
+  var t=document.getElementById("inTeam").value, plan=ROT[t]||ROT.Rot;
+  document.getElementById("setupPlan").innerHTML="Deine Runden: "+plan.map(function(k,i){
+    return ROUNDS[i][0]+" "+SEM[k].kurz; }).join(" · ");
+}
+function saveSetup(){
+  var n=(document.getElementById("inName").value||"").trim();
+  if(n.length<2){ toast("Bitte deinen Namen eintragen"); return; }
+  me.name=n; me.team=document.getElementById("inTeam").value; me.sem="";
+  save(); document.getElementById("setup").style.display="none";
+  render(); renderEx();
+}
+
+/* ---- Start ---- */
+document.getElementById("logo").src=LOGO_SRC;
+document.getElementById("logo2").src=LOGO_SRC;
+document.getElementById("ablauf").innerHTML=ABLAUF.map(function(a){
+  return '<div class="step"><div class="z">'+a[0]+'</div><div class="w"><b>'+a[1]+'</b><p>'+a[2]+'</p></div></div>'; }).join("");
+renderTel();
+document.getElementById("telWeil").innerHTML=WEIL.map(function(s){
+  return '<details><summary>'+s[0]+'</summary><div class="in"><div class="quote">'+esc(s[1])+'</div></div></details>'; }).join("");
+document.getElementById("telEinw").innerHTML=EINW.map(function(s){
+  return '<details><summary>'+esc(s[0])+'</summary><div class="in"><div class="quote">'+esc(s[1])+'</div></div></details>'; }).join("");
+document.getElementById("telPlanB").innerHTML=PLANB.map(function(s){
+  return '<details><summary>'+s[0]+'</summary><div class="in"><p>'+s[1]+'</p></div></details>'; }).join("");
+document.getElementById("leitfaden").innerHTML=LEIT.map(function(l){
+  return '<details><summary>'+l[0]+'</summary><div class="in"><p class="mut small"><b>Ziel:</b> '+l[1]+'</p>'+
+    l[2].map(function(x,i){ return '<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+x[0]+'</b><p>'+x[1]+'</p></div></div>'; }).join("")+
+    '<hr class="hr"><p class="small"><b>Ablauf:</b> 0–3 Kaltstart · 3–13 Prägung · 13–20 Liste · 20–28 Einwand-Arena im Tandem · 28–38 Telefon · 38–40 Punkte eintragen. Ab Minute 13 redet der Referent nicht mehr.</p></div></details>'; }).join("");
+(function(){ var h=""; for(var k in PT) h+='<div class="step"><div class="z">+'+PT[k].p+'</div><div class="w"><b>'+PT[k].l+'</b></div></div>';
+  h+='<div class="step"><div class="z">+1</div><div class="w"><b>Name auf der Liste</b></div></div>';
+  h+='<div class="step"><div class="z">+3</div><div class="w"><b>Runde in der Einwand-Arena</b></div></div>';
+  h+='<div class="step"><div class="z">+4</div><div class="w"><b>Blitz-Check, Beobachtungssatz</b></div></div>';
+  document.getElementById("ptTable").innerHTML=h; })();
+
+render(); renderEx();
+if(!me.name) openSetup();
+setInterval(function(){
+  renderJetzt();
+  if(document.getElementById("p-rang").classList.contains("on")) renderRank();
+},15000);
+</script>
+
+</body>
+</html>

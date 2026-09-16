@@ -203,10 +203,11 @@ details .in{padding:0 14px 14px;font-size:13.5px}
 .jbtns button{background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink);
   border-radius:9px;padding:9px 4px;font:700 11px inherit;cursor:pointer}
 .jbtns button:active{background:rgba(200,168,75,.25)}
-.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
-.fl{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:9px 5px;text-align:center}
-.fl b{display:block;font:700 15px/1.1 Georgia,serif;color:var(--muted)}
-.fl span{font-size:9.5px;line-height:1.25;color:var(--muted);display:block;margin-top:4px}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:10px 0 2px}
+.fl{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:8px 2px;
+  text-align:center;cursor:pointer}
+.fl b{display:block;font:700 14px/1.1 Georgia,serif;color:var(--muted)}
+.fl span{font-size:8.5px;line-height:1.2;color:var(--muted);display:block;margin-top:3px}
 .fl.ok{border-color:rgba(95,190,140,.55);background:rgba(95,190,140,.14)}
 .fl.ok b,.fl.ok span{color:var(--ok)}
 .fl.now{border-color:var(--gold);background:rgba(200,168,75,.16)}
@@ -225,6 +226,24 @@ details .in{padding:0 14px 14px;font-size:13.5px}
 .sline .sw p{font-size:11.5px;color:var(--muted);margin:2px 0 6px}
 .sline .sw .qt{font-style:italic;color:var(--gold-l);font-size:13px;line-height:1.45;
   border-left:2px solid var(--gold);padding-left:10px}
+.pulse{display:flex;gap:6px;margin-top:10px}
+.pu{flex:1;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;
+  padding:8px 4px;text-align:center}
+.pu b{display:block;font:700 16px/1.1 Georgia,serif;color:var(--gold-l)}
+.pu span{font-size:8.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.bar{height:7px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:7px}
+.bar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .4s}
+.big2{font:700 27px/1 Georgia,serif;color:var(--gold-l)}
+.mini{font-size:11.5px;color:var(--muted)}
+.countdown{display:inline-block;background:rgba(200,168,75,.16);color:var(--gold-l);
+  border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:700;margin-top:8px}
+.todo{display:inline-block;background:rgba(224,138,91,.16);color:#F0C3A6;border-radius:999px;
+  padding:3px 10px;font-size:11px;font-weight:700;margin:4px 5px 0 0}
+.todo.ok{background:rgba(95,190,140,.18);color:var(--ok)}
+.wizhead{display:flex;align-items:baseline;gap:8px;margin:14px 0 2px}
+.wizhead .n{font:700 11px inherit;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase}
+.wiznav{display:flex;gap:9px;margin:14px 0 4px}
+.wiznav .btn{flex:1}
 .calc b{color:var(--gold-l);font-family:Georgia,serif;font-size:19px}
 </style>
 </head>
@@ -249,28 +268,35 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
 
 <!-- ================= HEUTE ================= -->
 <section class="page on" id="p-heute">
-  <div class="card gold">
-    <div class="kicker">Dein Konto</div>
-    <h2 class="h" id="heuteName">Willkommen</h2>
-    <p class="mut small">Trag jede Aktion sofort ein. Was nicht drinsteht, zählt nicht.</p>
+  <div class="card gold" id="jetztCard">
+    <div class="kicker" id="heuteName">Willkommen</div>
+    <h3 class="h" id="jetztTitel" style="margin-top:5px">—</h3>
+    <p class="mut small" id="jetztSub"></p>
+    <button class="btn wide" style="margin-top:10px" onclick="go('uebung')">Los geht's</button>
+    <div id="jetztCount"></div>
+    <p class="mut small" style="margin-top:9px">Ablauf: Kernsätze lesen, Liste füllen, laut üben, Wissen checken, anrufen. Die Punkte trägst du danach ein.</p>
+  </div>
+
+  <div class="card" id="standCard">
+    <div class="kicker">Dein Stand</div>
+    <div id="standBody"></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Deine Runden</div>
+    <h3 class="h" style="margin-top:5px">Deine Reihenfolge</h3>
+    <div id="rundenPlan"></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Geschafft? Dann eintragen</div>
+    <h3 class="h" style="margin-top:5px">Deine Punkte</h3>
+    <p class="mut small">Das kommt ans Ende jeder Aktion, nicht an den Anfang. Erst machen, dann tippen.</p>
     <div class="pgrid" id="pointBtns"></div>
     <div style="margin-top:10px;display:flex;gap:8px">
       <button class="btn ghost" style="flex:1" onclick="undoLast()">Zurücknehmen</button>
       <button class="btn ghost" style="flex:1" onclick="go('rang')">Rangliste</button>
     </div>
-  </div>
-
-  <div class="card" id="jetztCard">
-    <div class="kicker">Jetzt dran</div>
-    <h3 class="h" id="jetztTitel" style="margin-top:5px">—</h3>
-    <p class="mut small" id="jetztSub"></p>
-    <button class="btn wide" style="margin-top:10px" onclick="go('uebung')">Zu den Übungen</button>
-  </div>
-
-  <div class="card">
-    <div class="kicker">Deine Runden</div>
-    <h3 class="h" style="margin-top:5px">Wo du wann bist</h3>
-    <div id="rundenPlan"></div>
   </div>
 
   <div class="card">
@@ -280,19 +306,10 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
   </div>
 
   <div class="card">
-    <div class="kicker">Spielregeln</div>
-    <h3 class="h" style="margin-top:5px">Fünf Sätze, dann weißt du alles</h3>
-    <div class="step"><div class="z">1</div><div class="w"><b>Jede Aktion zählt</b><p>Auch das Nein. Wer wählt, bekommt Punkte.</p></div></div>
-    <div class="step"><div class="z">2</div><div class="w"><b>Drei Medaillen, ein Klassement</b><p>Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p></div></div>
-    <div class="step"><div class="z">3</div><div class="w"><b>Sechs Wege nach oben</b><p>Punkte gibt es fürs Anrufen, für Termine, für Empfehlungen, für Karrieregespräche, fürs laute Üben und fürs Wissen. Du musst nicht der beste Telefonierer sein, um vorne zu landen. Du musst nur liefern, was du kannst.</p></div></div>
-    <div class="step"><div class="z">4</div><div class="w"><b>Jeder für sich</b><p>Gewertet wird einzeln. Deine Farbe sagt nur, in welchem Raum du wann sitzt.</p></div></div>
-    <div class="step"><div class="z">5</div><div class="w"><b>Ehrlich eintragen</b><p>Termine mit Namen und Uhrzeit auf den Laufzettel. Was heute nicht notiert ist, ist am Montag weg.</p></div></div>
-  </div>
-
-  <div class="card">
     <div class="kicker">Einstellungen</div>
     <p class="small mut" id="meInfo"></p>
-    <button class="btn ghost wide" onclick="openSetup()">Name oder Gruppe ändern</button>
+    <button class="btn ghost wide" onclick="openRules()">Spielregeln noch einmal ansehen</button>
+    <button class="btn ghost wide" style="margin-top:8px" onclick="openSetup()">Name oder Gruppe ändern</button>
     <button class="btn ghost wide" style="margin-top:8px;border-color:rgba(224,138,91,.5);color:#E08A5B"
             onclick="resetMe()">Meine Punkte auf null setzen</button>
   </div>
@@ -376,6 +393,17 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
     <button class="btn ghost wide" style="margin-top:8px" onclick="openJudge()">Kampfrichter-Modus</button>
   </div>
 
+  <h3 class="h" style="margin-top:22px">Spielregeln</h3>
+  <div class="card">
+    <div class="kicker">Spielregeln</div>
+    <h3 class="h" style="margin-top:5px">Fünf Sätze, dann weißt du alles</h3>
+    <div class="step"><div class="z">1</div><div class="w"><b>Jede Aktion zählt</b><p>Auch das Nein. Wer wählt, bekommt Punkte.</p></div></div>
+    <div class="step"><div class="z">2</div><div class="w"><b>Drei Medaillen, ein Klassement</b><p>Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p></div></div>
+    <div class="step"><div class="z">3</div><div class="w"><b>Sechs Wege nach oben</b><p>Punkte gibt es fürs Anrufen, für Termine, für Empfehlungen, für Karrieregespräche, fürs laute Üben und fürs Wissen. Du musst nicht der beste Telefonierer sein, um vorne zu landen. Du musst nur liefern, was du kannst.</p></div></div>
+    <div class="step"><div class="z">4</div><div class="w"><b>Jeder für sich</b><p>Gewertet wird einzeln. Deine Gruppenfarbe sagt nur, in welcher Reihenfolge du die drei Räume durchläufst.</p></div></div>
+    <div class="step"><div class="z">5</div><div class="w"><b>Ehrlich eintragen</b><p>Termine mit Namen und Uhrzeit auf den Laufzettel. Was heute nicht notiert ist, ist am Montag weg.</p></div></div>
+  </div>
+
   <h3 class="h" style="margin-top:22px">Wie gewertet wird</h3>
   <div class="card">
     <p class="small"><b>Es gibt genau drei Medaillen.</b> Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p>
@@ -428,18 +456,40 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
   </div>
 </div>
 
+<!-- ================= REGELN ================= -->
+<div id="rules" style="position:fixed;inset:0;z-index:98;background:var(--navy-dd);overflow:auto;display:none">
+  <div class="wrap" style="padding-top:26px;padding-bottom:36px;max-width:560px">
+    <div class="kicker">Einmal lesen, dann loslegen</div>
+    <h2 class="h" style="font-size:24px;margin-top:4px">So läuft der Tag</h2>
+    <div class="card" id="rulesBody"></div>
+    <div class="card gold">
+      <div class="kicker">In jeder Runde</div>
+      <p class="small" style="margin-top:4px">Kernsätze lesen, Liste füllen, laut üben, Wissen checken, anrufen. Das Portal führt dich Schritt für Schritt durch, du musst nichts suchen.</p>
+    </div>
+    <button class="btn wide" style="margin-top:6px" onclick="closeRules()">Alles klar, los geht's</button>
+  </div>
+</div>
+
 <!-- ================= SETUP ================= -->
 <div id="setup" style="position:fixed;inset:0;z-index:99;background:var(--navy-dd);overflow:auto;display:none">
   <div class="wrap" style="padding-top:34px;padding-bottom:40px;max-width:520px">
     <img id="logo2" style="width:76px;display:block;margin:0 auto 18px" alt="">
     <div class="kicker" style="text-align:center">Vertriebsimpuls 19.09.</div>
     <h2 class="h" style="text-align:center;font-size:25px">Kurz eintragen, dann geht's los</h2>
-    <p class="mut small" style="text-align:center">Zwei Angaben, mehr braucht es nicht.</p>
+    <p class="mut small" style="text-align:center">Zwei Angaben, mehr braucht es nicht. Deine Gruppe bekommst du vor Ort gesagt. Sie legt fest, in welcher Reihenfolge du die drei Räume durchläufst.</p>
     <label>Dein Name</label>
     <input id="inName" placeholder="Vorname Nachname" autocomplete="name">
     <label>Deine Gruppe</label>
     <select id="inTeam"></select>
     <p class="mut small" id="setupPlan" style="margin-top:8px"></p>
+    <p class="mut small" id="setupCount" style="margin-top:4px"></p>
+    <label>Was nimmst du dir für heute vor?</label>
+    <select id="inGoal">
+      <option value="2">2 Termine</option>
+      <option value="3" selected>3 Termine</option>
+      <option value="5">5 Termine</option>
+      <option value="8">8 Termine</option>
+    </select>
     <button class="btn wide" style="margin-top:16px" onclick="saveSetup()">Los geht's</button>
     <p class="mut small" style="text-align:center;margin-top:12px">Deine Punkte liegen auf diesem Gerät. Die Rangliste sehen alle.</p>
   </div>
@@ -825,7 +875,13 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){ retu
 
 function addPt(k){
   me.cnt[k]=(me.cnt[k]||0)+1; me.log.push({t:"cnt",k:k});
-  save(); render(); beep(); toast("+"+PT[k].p+" · "+PT[k].l);
+  save(); render(); renderCallBtns(); beep();
+  var msg="+"+PT[k].p+" · "+PT[k].l;
+  if(k==="gespraech" && me.cnt.gespraech===1) msg="Erstes Gespräch steht. Weiter.";
+  if((k==="terminAks"||k==="terminVl") && termine()===1) msg="Erster Termin! Der Nachmittag hat sich gelohnt.";
+  if(termine()===(me.goal||3)) msg="Tagesziel erreicht. Jetzt kommt die Kür.";
+  if(k==="karriere") msg="Karrieregespräch! Das sind 8 Punkte.";
+  toast(msg);
 }
 function undoLast(){
   var l=me.log.pop(); if(!l){ toast("Nichts zum Zurücknehmen"); return; }
@@ -843,10 +899,10 @@ function addEx(id,pts,msg){
 function render(){
   document.getElementById("myPts").textContent=total();
   document.getElementById("myName").textContent=me.name?me.name.split(" ")[0]:"Punkte";
-  document.getElementById("heuteName").textContent=me.name?("Moin, "+me.name.split(" ")[0]):"Willkommen";
+  document.getElementById("heuteName").textContent=me.name?("Moin "+me.name.split(" ")[0]+" · jetzt dran"):"Willkommen";
   document.getElementById("meInfo").textContent=me.name?(me.name+" · Gruppe "+me.team):"Noch nicht eingerichtet.";
   document.getElementById("topSub").innerHTML = me.team
-    ? ('Gruppe '+me.team+' '+dot(me.team)) : '19. September · 14–17 Uhr';
+    ? (dot(me.team)+' Gruppe '+me.team) : '19. September · 14–17 Uhr';
   document.getElementById("teamStripe").style.cssText = me.team
     ? "height:3px;background:"+TEAMCOL[me.team]+";opacity:.85" : "height:0";
 
@@ -859,6 +915,70 @@ function render(){
 
   renderJetzt();
   renderRank();
+  if(document.getElementById("p-uebung").classList.contains("on")) renderEx();
+}
+
+function minsLeft(){
+  var n=nowMin();
+  for(var i=0;i<ROUNDS.length;i++){
+    if(n>=mins(ROUNDS[i][0]) && n<mins(ROUNDS[i][1])) return {in:true, m:mins(ROUNDS[i][1])-n};
+    if(n<mins(ROUNDS[i][0])) return {in:false, m:mins(ROUNDS[i][0])-n, i:i};
+  }
+  return {in:false, m:0, done:true};
+}
+
+function myList(){
+  var all=rows.slice();
+  if(!all.some(function(r){ return r.id===me.id; })){
+    if(me.name) all.push({id:me.id,name:me.name,team:me.team,pts:total(),calls:calls(),termine:termine(),q:qSteps()});
+  } else {
+    all=all.map(function(r){ return r.id===me.id?Object.assign({},r,{pts:total(),calls:calls(),termine:termine(),q:qSteps()}):r; });
+  }
+  all.sort(function(a,b){
+    var qa=(a.q>=4)?1:0, qb=(b.q>=4)?1:0;
+    if(qa!==qb) return qb-qa;
+    if((b.pts||0)!==(a.pts||0)) return (b.pts||0)-(a.pts||0);
+    if((b.termine||0)!==(a.termine||0)) return (b.termine||0)-(a.termine||0);
+    return (b.calls||0)-(a.calls||0);
+  });
+  return all;
+}
+
+function renderStand(){
+  var el=document.getElementById("standBody"); if(!el) return;
+  var all=myList(), pos=0, ahead=null;
+  for(var i=0;i<all.length;i++){ if(all[i].id===me.id){ pos=i+1; ahead=all[i-1]||null; } }
+  var t=total(), goal=me.goal||3, tm=termine();
+
+  var o='<div style="display:flex;align-items:baseline;gap:10px;margin-top:4px">'+
+        '<span class="big2">'+t+'</span><span class="mini">Punkte</span>'+
+        '<span style="margin-left:auto" class="big2">'+(pos||"–")+'</span>'+
+        '<span class="mini">von '+all.length+'</span></div>';
+
+  if(ahead && qSteps()>=4) o+='<p class="mini" style="margin-top:6px">Noch '+Math.max(1,(ahead.pts||0)-t+1)+' Punkte bis Platz '+(pos-1)+'. Das ist ein Termin.</p>';
+  else if(pos===1 && t>0) o+='<p class="mini" style="margin-top:6px">Du führst. Jetzt nicht stehen bleiben.</p>';
+  else if(qSteps()<4) o+='<p class="mini" style="margin-top:6px">Für das Treppchen fehlen dir noch ein paar Schritte.</p>';
+
+  var lab=["Liste","Laut geübt","Blitz-Check","Gespräch"], st=[];
+  var key=activeSem(), L=SEM[key].listen;
+  st.push(me.names[L.key].length>=L.ziel);
+  var a=false; for(var k in me.ex) if(k.indexOf("arena")===0) a=true; st.push(a);
+  var q=false; for(var k2 in me.ex) if(k2.indexOf("quiz_")===0) q=true; st.push(q);
+  st.push((me.cnt.gespraech||0)>0);
+  o+='<div style="margin-top:9px">'+lab.map(function(x,j){
+    return '<span class="todo'+(st[j]?" ok":"")+'">'+(st[j]?"✓ ":"")+x+'</span>'; }).join("")+'</div>';
+
+  var pct=Math.min(100, Math.round(tm/goal*100));
+  o+='<p class="mini" style="margin-top:11px">Dein Tagesziel: '+tm+' von '+goal+' Terminen</p>'+
+     '<div class="bar"><i style="width:'+pct+'%"></i></div>';
+
+  var sp=0,sc=0,st2=0;
+  all.forEach(function(r){ sp+=(r.pts||0); sc+=(r.calls||0); st2+=(r.termine||0); });
+  o+='<div class="pulse"><div class="pu"><b>'+sp+'</b><span>Punkte im Raum</span></div>'+
+     '<div class="pu"><b>'+sc+'</b><span>Gespräche</span></div>'+
+     '<div class="pu"><b>'+st2+'</b><span>Termine</span></div></div>';
+
+  el.innerHTML=o;
 }
 
 function renderJetzt(){
@@ -870,9 +990,17 @@ function renderJetzt(){
   for(var i=0;i<ROUNDS.length;i++){
     var k=semOfRound(i);
     h+='<div class="step"><div class="z">'+ROUNDS[i][0]+'</div><div class="w"><b>'+SEM[k].name+'</b>'+
-       '<p>'+(i===r?"Läuft gerade.":"Runde "+(i+1))+'</p></div></div>';
+       '<p>'+(i===r?"Läuft gerade":"Runde "+(i+1))+'</p></div></div>';
   }
   p.innerHTML=h;
+
+  var c=document.getElementById("jetztCount"), m=minsLeft();
+  if(c){
+    if(m.done) c.innerHTML='<span class="countdown">Die Runden sind durch. Weitertelefonieren zählt trotzdem.</span>';
+    else if(m.in) c.innerHTML='<span class="countdown">Noch '+m.m+' Minuten in dieser Runde</span>';
+    else c.innerHTML='<span class="countdown">Runde '+((m.i||0)+1)+' startet in '+m.m+' Minuten</span>';
+  }
+  renderStand();
 }
 
 /* ---- Rangliste ---- */
@@ -939,94 +1067,138 @@ function renderRank(){
   setTimeout(function(){ items.forEach(function(it,i){ lastPos[it.k]=i; }); },6000);
 }
 
-/* ---- Übungen ---- */
+/* ---- Übungen: ein Schritt nach dem anderen ---- */
+var STEPS = [
+  {k:"lesen",  t:"Die drei Kernsätze", n:"Schritt 1 · 3 Minuten"},
+  {k:"liste",  t:"Deine Namen",        n:"Schritt 2 · still"},
+  {k:"ueben",  t:"Laut üben",          n:"Schritt 3 · im Tandem"},
+  {k:"wissen", t:"Blitz-Check",        n:"Schritt 4 · 2 Minuten"},
+  {k:"call",   t:"Anrufen",            n:"Schritt 5 · darum geht es"}
+];
+var LABELS = [["Lesen"],["Liste"],["Üben"],["Wissen"],["Anrufen"]];
+
+function stepDone(i){
+  var key=activeSem(), L=SEM[key].listen;
+  if(i===0) return !!me.read;
+  if(i===1) return me.names[L.key].length>=L.ziel;
+  if(i===2){ for(var k in me.ex) if(k.indexOf("arena")===0) return true; return false; }
+  if(i===3) return !!me.ex["quiz_"+key];
+  if(i===4) return (me.cnt.gespraech||0)>0;
+  return false;
+}
+function setStep(i){
+  if(i>=STEPS.length){ go("heute"); return; }
+  if(i<0) i=0;
+  if(me.exStep===0) me.read=true;
+  me.exStep=i; save(); renderEx(); window.scrollTo(0,0);
+}
+
 function renderEx(){
   var key=activeSem(), s=SEM[key], r=currentRound();
+  if(me.exStep===undefined||me.exStep===null) me.exStep=0;
+  var i=Math.min(me.exStep, STEPS.length-1);
+
   document.getElementById("semRunde").textContent="Runde "+(r+1)+" · "+ROUNDS[r][0]+" bis "+ROUNDS[r][1];
   document.getElementById("semTitle").textContent=s.name;
-  document.getElementById("semZiel").textContent="Dein Ziel: "+s.ziel;
+  document.getElementById("semZiel").textContent="Ziel dieser Runde: "+s.ziel;
   var sw=document.getElementById("semSwitch"),h="";
   for(var k in SEM) h+='<button class="'+(k===key?"on":"")+'" onclick="switchSem(\''+k+'\')">'+SEM[k].kurz+'</button>';
   sw.innerHTML=h;
 
-  var w=document.getElementById("exWrap"),o="";
+  var o='<div class="flow">'+LABELS.map(function(l,j){
+    var cls = stepDone(j) ? "ok" : (j===i ? "now" : "");
+    return '<div class="fl '+cls+'" onclick="setStep('+j+')"><b>'+(stepDone(j)?"✓":(j+1))+'</b><span>'+l[0]+'</span></div>';
+  }).join("")+'</div>';
 
-  var L0=s.listen, nDone=me.names[L0.key].length>=L0.ziel;
-  var aDone=false; for(var kk in me.ex) if(kk.indexOf("arena")===0) aDone=true;
-  var tDone=(me.cnt.gespraech||0)>0;
-  var stepState=[true, nDone, aDone, tDone];
-  var firstOpen=stepState.indexOf(false);
-  var labels=[["1","Kernsätze<br>lesen"],["2","Liste<br>füllen"],["3","Arena<br>laut üben"],["4","Anrufen"]];
-  o+='<div class="card gold"><div class="kicker">So läuft deine Runde</div>'+
-     '<h3 class="h" style="margin-top:5px">Erst vorbereiten, dann los</h3>'+
-     '<p class="mut small">Der vierte Schritt ist der, für den wir hier sind. Die ersten drei sorgen dafür, dass er leicht wird.</p>'+
-     '<div class="flow">'+labels.map(function(l,i){
-       var cls = stepState[i] ? "ok" : (i===firstOpen ? "now" : "");
-       return '<div class="fl '+cls+'"><b>'+(stepState[i]?"✓":l[0])+'</b><span>'+l[1]+'</span></div>';
-     }).join("")+'</div></div>';
+  o+='<div class="wizhead"><span class="n">'+STEPS[i].n+'</span></div>';
+  o+=stepBody(i, key, s);
 
-  o+='<div class="card"><div class="kicker">Schritt 1 · 3 Minuten</div><h3 class="h" style="margin-top:5px">Die drei Kernsätze</h3>';
-  s.lernen.forEach(function(l,i){ o+='<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+l[0]+'</b><p>'+l[1]+'</p></div></div>'; });
-  o+='</div>';
+  o+='<div class="wiznav">';
+  if(i>0) o+='<button class="btn ghost" onclick="setStep('+(i-1)+')">Zurück</button>';
+  o+='<button class="btn" onclick="setStep('+(i+1)+')">'+(i===STEPS.length-1?"Fertig":"Weiter")+'</button></div>';
 
-  var L=s.listen;
-  o+='<div class="card"><div class="kicker">Schritt 2 · still · 1 Punkt je Name</div>'+
-     '<h3 class="h" style="margin-top:5px">'+L.label+'</h3>'+
-     '<p class="mut small">'+L.hint+' Ziel: '+L.ziel+' Namen.</p>'+
-     '<input id="nameIn" placeholder="Name eintippen" onkeydown="if(event.key===\'Enter\')addName()">'+
-     '<button class="btn wide" onclick="addName()">Hinzufügen</button>'+
-     '<div class="namelist" id="nameList"></div>'+
-     '<p class="small" style="margin-top:9px" id="nameProg"></p></div>';
+  document.getElementById("exWrap").innerHTML=o;
 
-  o+='<div class="card"><div class="kicker">Vorher kurz lesen</div>'+
-     '<h3 class="h" style="margin-top:5px">Du brauchst nicht auf alles eine Antwort</h3>'+
-     '<p class="mut small">Wer fragt, der führt. Drei Werkzeuge reichen für fast jeden Einwand.</p>';
-  WERKZEUG.forEach(function(x,i){ o+='<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+x[0]+'</b><p>'+x[1]+'</p></div></div>'; });
-  o+='</div>';
-
-  o+='<div class="card"><div class="kicker">Schritt 3 · laut · 3 Punkte je Runde</div>'+
-     '<h3 class="h" style="margin-top:5px">Einwand-Arena</h3>'+
-     '<p class="mut small">Karte ziehen, 30 Sekunden, dein Tandempartner spielt den Klienten. Erst danach aufdecken.</p>'+
-     '<div id="karte"></div>'+
-     '<div class="timer"><div class="tv" id="tv">0:30</div>'+
-     '<button class="btn ghost" onclick="startTimer(30)">Timer</button>'+
-     '<button class="btn" onclick="drawCard()">Karte ziehen</button></div>'+
-     '<p class="small" id="arenaCount"></p></div>';
-
-  o+='<div class="card"><div class="kicker">Extra · Wissen · 4 Punkte</div>'+
-     '<h3 class="h" style="margin-top:5px">Blitz-Check</h3>'+
-     '<p class="mut small">Drei Fragen. Alle drei richtig, dann gibt es die Punkte.</p>'+
-     '<div id="quiz"></div></div>';
-
-  if(key==="vl"){
-    o+='<div class="card"><div class="kicker">Werkzeug · 3 Punkte</div>'+
-       '<h3 class="h" style="margin-top:5px">Was ein Jahr Warten kostet</h3>'+
-       '<p class="mut small">Erst schätzen lassen, dann zeigen. Rechne es einem Tandempartner an seinem eigenen Beispiel vor, dann hol dir die Punkte.</p>'+
-       '<label>Rate pro Monat in Euro</label><input id="cRate" type="number" value="40" oninput="calc()">'+
-       '<label>Jahre bis zur Rente</label><input id="cJahre" type="number" value="30" oninput="calc()">'+
-       '<label>Rendite in Prozent</label><input id="cZins" type="number" value="6" step="0.5" oninput="calc()">'+
-       '<div class="calc" id="calcOut" style="margin-top:12px"></div>'+
-       '<button class="btn wide ghost" style="margin-top:10px" onclick="addEx(\'calc\',3,\'Vorgerechnet\')">Hab ich vorgerechnet</button></div>';
-  }
-  if(key==="rec"){
-    o+='<div class="card"><div class="kicker">Werkzeug · 4 Punkte je Satz</div>'+
-       '<h3 class="h" style="margin-top:5px">Dein Beobachtungssatz</h3>'+
-       '<p class="mut small">Was fällt dir an dem Menschen auf? Etwas, das nur auf ihn passt. Halbe Sätze zählen nicht.</p>'+
-       '<textarea id="satzIn" rows="3" placeholder="Mir fällt bei dir auf, dass …"></textarea>'+
-       '<button class="btn wide" onclick="saveSatz()">Satz fertig</button>'+
-       '<p class="small" id="satzOut" style="margin-top:8px"></p></div>';
-  }
-
-  o+='<div class="card gold"><div class="kicker">Schritt 4 · jetzt wird es ernst</div>'+
-     '<h3 class="h" style="margin-top:5px">Anrufen</h3>'+
-     '<p class="small">Die Übung war die Vorbereitung. Jetzt rufst du die Namen an, die du gerade aufgeschrieben hast. Das Skript läuft mit, du musst nichts auswendig können: oben wählst du aus, ob du deinen Klienten anrufst, jemanden aus deinem Umfeld oder wegen der Karriere.</p>'+
-     '<button class="btn wide" style="margin-top:10px" onclick="go(\'tel\')">Skript öffnen und loslegen</button></div>';
-
-  w.innerHTML=o;
-  renderNames(); renderQuiz(); renderArena();
-  if(key==="vl") calc();
-  if(key==="rec") renderSatz();
+  if(i===1) renderNames();
+  if(i===2){ renderArena(); if(key==="vl") calc(); if(key==="rec") renderSatz(); }
+  if(i===3) renderQuiz();
+  if(i===4) renderCallBtns();
 }
+
+function stepBody(i, key, s){
+  var o="";
+  if(i===0){
+    o+='<div class="card"><h3 class="h" style="margin-top:0">'+s.name+'</h3>';
+    s.lernen.forEach(function(l,j){ o+='<div class="step"><div class="z">'+(j+1)+'</div><div class="w"><b>'+l[0]+'</b><p>'+l[1]+'</p></div></div>'; });
+    o+='<p class="mut small" style="margin-top:10px">Drei Sätze, mehr brauchst du nicht. Wenn du sie einmal gelesen hast, geht es weiter.</p></div>';
+    return o;
+  }
+  if(i===1){
+    var L=s.listen;
+    o+='<div class="card"><h3 class="h" style="margin-top:0">'+L.label+'</h3>'+
+       '<p class="mut small">'+L.hint+' Ziel: '+L.ziel+' Namen. Jeder Name zählt einen Punkt.</p>'+
+       '<input id="nameIn" placeholder="Name eintippen" onkeydown="if(event.key===\'Enter\')addName()">'+
+       '<button class="btn wide" onclick="addName()">Hinzufügen</button>'+
+       '<div class="namelist" id="nameList"></div>'+
+       '<p class="small" style="margin-top:9px" id="nameProg"></p>'+
+       '<p class="mut small" style="margin-top:8px">Schreib sie zusätzlich auf deine Telefonkarte. Beim Anrufen ist dein Handy besetzt.</p></div>';
+    return o;
+  }
+  if(i===2){
+    o+='<div class="card"><h3 class="h" style="margin-top:0">Du brauchst nicht auf alles eine Antwort</h3>'+
+       '<p class="mut small">Wer fragt, der führt. Drei Werkzeuge reichen für fast jeden Einwand.</p>';
+    WERKZEUG.forEach(function(x,j){ o+='<div class="step"><div class="z">'+(j+1)+'</div><div class="w"><b>'+x[0]+'</b><p>'+x[1]+'</p></div></div>'; });
+    o+='</div>';
+    o+='<div class="card"><div class="kicker">3 Punkte je Runde</div><h3 class="h" style="margin-top:5px">Einwand-Arena</h3>'+
+       '<p class="mut small">Karte ziehen, 30 Sekunden, dein Tandempartner spielt den Klienten. Erst danach aufdecken.</p>'+
+       '<div id="karte"></div>'+
+       '<div class="timer"><div class="tv" id="tv">0:30</div>'+
+       '<button class="btn ghost" onclick="startTimer(30)">Timer</button>'+
+       '<button class="btn" onclick="drawCard()">Karte ziehen</button></div>'+
+       '<p class="small" id="arenaCount"></p></div>';
+    if(key==="vl"){
+      o+='<div class="card"><div class="kicker">Werkzeug · 3 Punkte</div>'+
+         '<h3 class="h" style="margin-top:5px">Was ein Jahr Warten kostet</h3>'+
+         '<p class="mut small">Erst schätzen lassen, dann zeigen. Rechne es einem Tandempartner an seinem Beispiel vor.</p>'+
+         '<label>Rate pro Monat in Euro</label><input id="cRate" type="number" value="40" oninput="calc()">'+
+         '<label>Jahre bis zur Rente</label><input id="cJahre" type="number" value="30" oninput="calc()">'+
+         '<label>Rendite in Prozent</label><input id="cZins" type="number" value="6" step="0.5" oninput="calc()">'+
+         '<div class="calc" id="calcOut" style="margin-top:12px"></div>'+
+         '<button class="btn wide ghost" style="margin-top:10px" onclick="addEx(\'calc\',3,\'Vorgerechnet\')">Hab ich vorgerechnet</button></div>';
+    }
+    if(key==="rec"){
+      o+='<div class="card"><div class="kicker">Werkzeug · 4 Punkte je Satz</div>'+
+         '<h3 class="h" style="margin-top:5px">Dein Beobachtungssatz</h3>'+
+         '<p class="mut small">Was fällt dir an dem Menschen auf? Etwas, das nur auf ihn passt.</p>'+
+         '<textarea id="satzIn" rows="3" placeholder="Mir fällt bei dir auf, dass …"></textarea>'+
+         '<button class="btn wide" onclick="saveSatz()">Satz fertig</button>'+
+         '<p class="small" id="satzOut" style="margin-top:8px"></p></div>';
+    }
+    return o;
+  }
+  if(i===3){
+    o+='<div class="card"><h3 class="h" style="margin-top:0">Blitz-Check</h3>'+
+       '<p class="mut small">Drei Fragen. Alle drei richtig, dann gibt es vier Punkte. Nach jeder Antwort steht da, warum sie stimmt.</p>'+
+       '<div id="quiz"></div></div>';
+    return o;
+  }
+  o+='<div class="card gold"><h3 class="h" style="margin-top:0">Jetzt wird telefoniert</h3>'+
+     '<p class="small">Nimm deine Telefonkarte und ruf die Namen an, die du aufgeschrieben hast. Ziel ist der Termin, nichts anderes. Das Skript hast du auf Papier, damit dein Handy frei bleibt.</p>'+
+     '<button class="btn wide" style="margin-top:10px" onclick="go(\'tel\')">Skript im Portal öffnen</button></div>'+
+     '<div class="card"><div class="kicker">Nach jedem Anruf</div><h3 class="h" style="margin-top:5px">Eintragen</h3>'+
+     '<div class="pgrid" id="callBtns"></div>'+
+     '<button class="btn ghost wide" style="margin-top:10px" onclick="undoLast()">Zurücknehmen</button></div>';
+  return o;
+}
+
+function renderCallBtns(){
+  var el=document.getElementById("callBtns"); if(!el) return;
+  var h="";
+  for(var k in PT) h+='<button class="pbtn'+(k==="gespraech"?" big":"")+'" onclick="addPt(\''+k+'\')">'+
+    '<b>'+PT[k].l+'</b><i>+'+PT[k].p+' Punkte</i><span class="n">'+(me.cnt[k]||0)+'</span></button>';
+  el.innerHTML=h;
+}
+
 function switchSem(k){ me.sem=k; save(); renderEx(); window.scrollTo(0,0); }
 
 function addName(){
@@ -1224,25 +1396,51 @@ function renderJudge(){
   }).join("")+'</div>';
 }
 
+/* ---- Regeln ---- */
+var REGELN = [
+  ["Jede Aktion zählt","Auch das Nein. Wer wählt, bekommt Punkte."],
+  ["Drei Medaillen, ein Klassement","Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche."],
+  ["Aufs Treppchen kommt nur, wer durch ist","Liste gefüllt, laut geübt, Blitz-Check gemacht, mindestens ein Gespräch geführt."],
+  ["Sechs Wege nach oben","Gespräche, Termine, Empfehlungen, Karrieregespräche, Einwand-Arena, Blitz-Check. Du musst nicht der beste Telefonierer sein."],
+  ["Jeder für sich","Gewertet wird einzeln. Deine Gruppenfarbe sagt nur, in welcher Reihenfolge du die drei Räume durchläufst."],
+  ["Ehrlich eintragen","Termine mit Namen und Uhrzeit auf die Telefonkarte. Was heute nicht notiert ist, ist am Montag weg."]
+];
+function openRules(){
+  document.getElementById("rulesBody").innerHTML = REGELN.map(function(x,i){
+    return '<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+x[0]+'</b><p>'+x[1]+'</p></div></div>'; }).join("");
+  document.getElementById("rules").style.display="block";
+}
+function closeRules(){
+  document.getElementById("rules").style.display="none";
+  me.seenRules=true; save();
+}
+
 /* ---- Setup ---- */
 function openSetup(){
   document.getElementById("inName").value=me.name||"";
   var t=document.getElementById("inTeam");
   t.innerHTML=TEAMS.map(function(x){ return '<option'+(x===me.team?" selected":"")+'>'+x+'</option>'; }).join("");
   t.onchange=setupPlan; setupPlan();
+  document.getElementById("inGoal").value=String(me.goal||3);
   document.getElementById("setup").style.display="block";
 }
 function setupPlan(){
   var t=document.getElementById("inTeam").value, plan=ROT[t]||ROT.Rot;
-  document.getElementById("setupPlan").innerHTML="Deine Runden: "+plan.map(function(k,i){
+  document.getElementById("setupPlan").innerHTML="Deine Reihenfolge: "+plan.map(function(k,i){
     return ROUNDS[i][0]+" "+SEM[k].kurz; }).join(" · ");
+  var by={}; TEAMS.forEach(function(x){ by[x]=0; });
+  rows.forEach(function(r){ if(by[r.team]!==undefined && r.id!==me.id) by[r.team]++; });
+  document.getElementById("setupCount").innerHTML = "Schon eingetragen: "+
+    TEAMS.map(function(x){ return dot(x)+" "+x+" "+by[x]; }).join(" &nbsp; ");
 }
 function saveSetup(){
   var n=(document.getElementById("inName").value||"").trim();
   if(n.length<2){ toast("Bitte deinen Namen eintragen"); return; }
   me.name=n; me.team=document.getElementById("inTeam").value; me.sem="";
+  me.goal=Number(document.getElementById("inGoal").value)||3;
   save(); document.getElementById("setup").style.display="none";
-  render(); renderEx();
+  render();
+  if(!me.seenRules) openRules();
 }
 
 function resetMe(){
@@ -1274,8 +1472,8 @@ document.getElementById("leitfaden").innerHTML=LEIT.map(function(l){
   h+='<div class="step"><div class="z">+4</div><div class="w"><b>Blitz-Check, Beobachtungssatz</b></div></div>';
   document.getElementById("ptTable").innerHTML=h; })();
 
-render(); renderEx();
-if(!me.name) openSetup();
+render();
+if(!me.name) openSetup(); else if(!me.seenRules) openRules();
 setInterval(function(){
   renderJetzt();
   if(document.getElementById("p-rang").classList.contains("on")) renderRank();

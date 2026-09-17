@@ -501,7 +501,12 @@ var TEAMS = ["Rot","Schwarz","Weiß"];
 var TEAMCOL = {"Rot":"#B4121B","Schwarz":"#161616","Weiß":"#EDE7D6"};
 function dot(t){ return '<span class="dot" style="background:'+(TEAMCOL[t]||"#666")+'"></span>'; }
 
+var EVENT = "2026-09-19";   // Tag des Vertriebsimpulses
 var ROUNDS = [["14:15","15:00"],["15:05","15:50"],["15:55","16:40"]];
+function isEventDay(){
+  var d=new Date(), m=("0"+(d.getMonth()+1)).slice(-2), t=("0"+d.getDate()).slice(-2);
+  return (d.getFullYear()+"-"+m+"-"+t)===EVENT;
+}
 var ROT = { "Rot":["aks","vl","rec"], "Schwarz":["vl","rec","aks"], "Weiß":["rec","aks","vl"] };
 
 var PT = {
@@ -760,6 +765,7 @@ function termine(){ return (me.cnt.terminAks||0)+(me.cnt.terminVl||0)+(me.cnt.ka
 function mins(hhmm){ var a=hhmm.split(":"); return (+a[0])*60+(+a[1]); }
 function nowMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
 function currentRound(){
+  if(!isEventDay()) return 0;
   var n=nowMin();
   for(var i=0;i<ROUNDS.length;i++) if(n>=mins(ROUNDS[i][0]) && n<mins(ROUNDS[i][1])) return i;
   if(n<mins(ROUNDS[0][0])) return 0;
@@ -899,7 +905,8 @@ function addEx(id,pts,msg){
 function render(){
   document.getElementById("myPts").textContent=total();
   document.getElementById("myName").textContent=me.name?me.name.split(" ")[0]:"Punkte";
-  document.getElementById("heuteName").textContent=me.name?("Moin "+me.name.split(" ")[0]+" · jetzt dran"):"Willkommen";
+  document.getElementById("heuteName").textContent=me.name
+    ?("Moin "+me.name.split(" ")[0]+(isEventDay()?" · jetzt dran":" · so geht es los")):"Willkommen";
   document.getElementById("meInfo").textContent=me.name?(me.name+" · Gruppe "+me.team):"Noch nicht eingerichtet.";
   document.getElementById("topSub").innerHTML = me.team
     ? (dot(me.team)+' Gruppe '+me.team) : '19. September · 14–17 Uhr';
@@ -985,20 +992,26 @@ function renderJetzt(){
   var r=currentRound(), s=SEM[semOfRound(r)];
   document.getElementById("jetztTitel").textContent = s? s.name : "—";
   document.getElementById("jetztSub").textContent =
+    (isEventDay()?"":"Deine erste Runde: ")+
     "Runde "+(r+1)+" · "+ROUNDS[r][0]+" bis "+ROUNDS[r][1]+" · "+(s?s.ziel:"");
   var p=document.getElementById("rundenPlan"), h="";
   for(var i=0;i<ROUNDS.length;i++){
     var k=semOfRound(i);
     h+='<div class="step"><div class="z">'+ROUNDS[i][0]+'</div><div class="w"><b>'+SEM[k].name+'</b>'+
-       '<p>'+(i===r?"Läuft gerade":"Runde "+(i+1))+'</p></div></div>';
+       '<p>'+((i===r&&isEventDay())?"Läuft gerade":"Runde "+(i+1))+'</p></div></div>';
   }
   p.innerHTML=h;
 
-  var c=document.getElementById("jetztCount"), m=minsLeft();
+  var c=document.getElementById("jetztCount");
   if(c){
-    if(m.done) c.innerHTML='<span class="countdown">Die Runden sind durch. Weitertelefonieren zählt trotzdem.</span>';
-    else if(m.in) c.innerHTML='<span class="countdown">Noch '+m.m+' Minuten in dieser Runde</span>';
-    else c.innerHTML='<span class="countdown">Runde '+((m.i||0)+1)+' startet in '+m.m+' Minuten</span>';
+    if(!isEventDay()){
+      c.innerHTML='<span class="countdown">Vorschau. Am 19. September läuft die Uhr automatisch mit.</span>';
+    } else {
+      var m=minsLeft();
+      if(m.done) c.innerHTML='<span class="countdown">Die Runden sind durch. Weitertelefonieren zählt trotzdem.</span>';
+      else if(m.in) c.innerHTML='<span class="countdown">Noch '+m.m+' Minuten in Runde '+(r+1)+' · '+s.kurz+'</span>';
+      else c.innerHTML='<span class="countdown">Runde '+((m.i||0)+1)+' startet in '+m.m+' Minuten</span>';
+    }
   }
   renderStand();
 }

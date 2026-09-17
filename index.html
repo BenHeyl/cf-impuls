@@ -335,7 +335,7 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
   <div class="card">
     <div class="pgrid">
       <button class="pbtn" onclick="addPt('gespraech')"><b>Gespräch geführt</b><i>+2 Punkte</i><span class="n" id="n-gespraech">0</span></button>
-      <button class="pbtn" onclick="addPt('empfehlung')"><b>Empfehlung</b><i>+3 Punkte</i><span class="n" id="n2-empfehlung">0</span></button>
+      <button class="pbtn" onclick="addPt('wv')"><b>Wiedervorlage</b><i>+3 Punkte</i><span class="n" id="n2-wv">0</span></button>
     </div>
   </div>
 
@@ -400,7 +400,7 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
   <div class="card">
     <p class="small"><b>Es gibt genau drei Medaillen.</b> Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p>
     <p class="small" style="margin-top:8px"><b>Der Haken an der Sache:</b> gewertet wird nur, wer die vier Schritte durch hat. Liste gefüllt, einmal laut geübt, Blitz-Check gemacht und mindestens ein Gespräch geführt. Wer nur Namen aufschreibt, sammelt zwar Punkte, steht aber nicht auf dem Treppchen.</p>
-    <p class="small" style="margin-top:8px"><b>Sechs Wege zu Punkten:</b> Gespräche, Termine, Empfehlungen, Karrieregespräche, Einwand-Arena und Blitz-Check. Wer beim Telefonieren noch unsicher ist, holt sich die Punkte über die Übungen. Vorne landen kann jeder.</p>
+    <p class="small" style="margin-top:8px"><b>Sechs Wege zu Punkten:</b> Gespräche, Wiedervorlagen, Termine, Karrieregespräche, Einwand-Arena und Blitz-Check. Wer beim Telefonieren noch unsicher ist, holt sich die Punkte über die Übungen. Vorne landen kann jeder.</p>
   </div>
 </section>
 
@@ -504,7 +504,7 @@ var ROT = { "Rot":["aks","vl","rec"], "Schwarz":["vl","rec","aks"], "Weiß":["re
 
 var PT = {
   gespraech:{l:"Gespräch geführt",p:2},
-  empfehlung:{l:"Empfehlung mit Nummer",p:3},
+  wv:{l:"Wiedervorlage mit Datum",p:3},
   terminVl:{l:"Termin Vorsorge / VL",p:5},
   terminAks:{l:"Termin Arbeitskraft",p:6},
   karriere:{l:"Karrieregespräch",p:8}
@@ -632,7 +632,7 @@ var SEM = {
     name:"Recruiting", kurz:"Recruiting",
     ziel:"Fünf Namen, ein echter Beobachtungssatz, mindestens eine Ansprache raus.",
     lernen:[
-      ["Wir suchen keinen, wir wählen aus","Wer sich beworben fühlt, vergleicht. Wer ausgewählt wird, hört zu. Gleiche Person, zwei völlig verschiedene Gespräche."],
+      ["Wir suchen nicht, wir scouten","Ein Trainer schreibt keine Stelle aus, er schaut sich Spieler an und spricht die an, die er haben will. Wer sich beworben fühlt, vergleicht. Wer gescoutet wird, hört zu."],
       ["Der Einstieg ist eine Beobachtung","Etwas, das nur auf diesen einen Menschen passt. Er ist der, den alle fragen. Sie kriegt jede Gruppe zusammen. Je konkreter, desto weniger klingt es nach Werbung."],
       ["Ziel ist ein Kennenlernen","Eine halbe Stunde, ein Bild davon, was wir machen. Alles Weitere entscheidet er danach in Ruhe. Wer im ersten Kontakt gewinnen will, verliert."]
     ],
@@ -693,11 +693,11 @@ var TEL_STEPS = [
  {t:"Grund", d:"Jetzt löst du ein, was du gerade angekündigt hast. Ein Satz, keine Vorrede.",
   v:{bestand:"Ich hab dir ja versprochen, dass ich mich melde, wenn es etwas Relevantes gibt, das dich betrifft. Und das ist jetzt genau der Fall.",
      bekannt:"Wir hatten gestern ein Fachmeeting zum Thema Einkommensabsicherung, und dabei bist du mir eingefallen. Deshalb melde ich mich.",
-     karriere:"Wir bauen gerade unser Team aus, und bei der Frage, wen wir ansprechen, bist du mir als Erster eingefallen."}},
+     karriere:"Wir scouten gerade nach Leuten, die gut ins Team passen. So wie ein Trainer, der sich seine Mannschaft zusammenstellt. Und dabei bist du mir aufgefallen."}},
  {t:"Weil", d:"Der Satz, der zeigt, dass es um ihn geht. Hier entscheidet sich der Termin. Die drei Themen-Varianten stehen direkt unter dem Skript.",
   v:{bestand:"Mir ist aufgefallen, dass bei dir zur Arbeitskraft noch nichts hinterlegt ist. Genau das wird zum Jahreswechsel meistens teurer. Ich wollte, dass du das weißt, solange es günstig ist.",
      bekannt:"Es geht um den Schutz deines Einkommens. Zum Jahreswechsel wird das in der Regel teurer, und jedes Jahr zählt beim Beitrag mit. Ich wollte, dass du das auf dem Schirm hast, bevor der Januar kommt.",
-     karriere:"Mir fällt bei dir seit einer Weile was auf: … . Ich hätte dich gern mal am Tisch, damit du ein Bild davon hast, was wir hier eigentlich machen."}},
+     karriere:"Und zwar weil … . Ich hätte dich gern mal am Tisch, damit du ein Bild davon hast, was wir hier eigentlich machen. Alles Weitere entscheidest du danach in Ruhe."}},
  {t:"Eine Frage", d:"Eine kurze Frage, die ihn ins Gespräch holt. Eine. Die Analyse gehört an den Tisch.",
   v:{bestand:"Hat sich das bei dir zwischendurch über den Arbeitgeber geregelt?",
      bekannt:"Wie hast du das Thema bei dir bisher gelöst?",
@@ -712,7 +712,7 @@ var WEIL = [
   ["Arbeitskraft","Mir ist aufgefallen, dass bei dir zur Arbeitskraft noch nichts abgesichert ist. Zum Jahreswechsel wird das meistens teurer, und jedes Jahr zählt beim Beitrag mit. Ich wollte, dass die Entscheidung bei dir liegt, solange sie günstig ist."],
   ["Vorsorge über die VL","Du arbeitest doch bei … . In deiner Branche legt der Arbeitgeber jeden Monat was drauf, wenn man es abruft. Die meisten holen es sich nie. Ich wollte, dass du weißt, was dir zusteht."],
   ["Vorsorge ohne VL","Ich hab gerade für jemanden durchgerechnet, was ein Jahr Warten beim Sparen am Ende kostet. Die Zahl hat mich selbst überrascht. Dabei ist mir eingefallen, dass wir zwei über das Thema noch nie gesprochen haben."],
-  ["Karriere","Mir fällt bei dir seit einer Weile was auf: … . Wir bauen unser Team gerade aus, und du bist mir als Erster eingefallen. Lass uns eine halbe Stunde zusammensitzen, dann hast du ein Bild davon. Alles Weitere entscheidest du danach in Ruhe."]
+  ["Karriere","Wir scouten gerade nach Leuten, die gut ins Team passen. So wie ein Trainer, der sich seine Mannschaft zusammenstellt. Und dabei bist du mir aufgefallen, und zwar weil … . Lass uns eine halbe Stunde zusammensitzen, dann hast du ein Bild davon. Alles Weitere entscheidest du danach in Ruhe."]
 ];
 
 var EINW = [
@@ -936,7 +936,7 @@ function render(){
     '<b>'+PT[k].l+'</b><i>+'+PT[k].p+' Punkte</i><span class="n">'+(me.cnt[k]||0)+'</span></button>';
   g.innerHTML=h;
   var n1=document.getElementById("n-gespraech"); if(n1) n1.textContent=me.cnt.gespraech||0;
-  var n2=document.getElementById("n2-empfehlung"); if(n2) n2.textContent=me.cnt.empfehlung||0;
+  var n2=document.getElementById("n2-wv"); if(n2) n2.textContent=me.cnt.wv||0;
 
   renderJetzt();
   renderRank();
@@ -1426,7 +1426,7 @@ function renderJudge(){
       '<button class="btn ghost" style="padding:6px 9px;font-size:11px" onclick="jDel('+i+')">×</button></div>'+
       '<div class="jbtns">'+
       '<button onclick="jAdd('+i+',\'gespraech\')">Gespräch<br>+2</button>'+
-      '<button onclick="jAdd('+i+',\'empfehlung\')">Empfehlung<br>+3</button>'+
+      '<button onclick="jAdd('+i+',\'wv\')">Wiedervorlage<br>+3</button>'+
       '<button onclick="jAdd('+i+',\'terminAks\')">Termin AKS<br>+6</button>'+
       '<button onclick="jAdd('+i+',\'karriere\')">Karriere<br>+8</button>'+
       '<button onclick="jAdd('+i+',\'terminVl\')">Termin VL<br>+5</button>'+
@@ -1440,7 +1440,7 @@ var REGELN = [
   ["Du gehst heute mit Terminen nach Hause","Kein Vortragsnachmittag. Am Ende hast du Namen auf dem Zettel, ein paar Sätze im Kopf und echte Termine im Kalender."],
   ["Drei Themen, drei Räume","Arbeitskraft, Vorsorge, Karriere. Deine Gruppenfarbe sagt, in welcher Reihenfolge du sie durchläufst. Erst kurz Input, dann wird gearbeitet."],
   ["Das Portal führt dich durch","Fünf Schritte pro Runde, immer nur eine Aufgabe auf dem Bildschirm. Du musst nichts suchen und nichts auswendig können."],
-  ["Punkte gibt es für jeden Schritt","Für deine Liste, fürs laute Üben, fürs Wissen. Und natürlich für Gespräche, Termine und Empfehlungen. Auch ein Nein zählt, weil es dich näher an das Ja bringt."],
+  ["Punkte gibt es für jeden Schritt","Für deine Liste, fürs laute Üben, fürs Wissen. Und natürlich für Gespräche, Wiedervorlagen und Termine. Auch ein Nein zählt, weil es dich näher an das Ja bringt."],
   ["Gold, Silber und Bronze","Für die ersten drei der Gesamtwertung, einzeln gewertet. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche. Auf dem Treppchen landet, wer seine vier Schritte durch hat."],
   ["Ehrlich eintragen","Termine mit Namen und Uhrzeit auf die Telefonkarte. Was heute nicht notiert ist, ist am Montag weg."]
 ];

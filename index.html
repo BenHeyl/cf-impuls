@@ -686,13 +686,13 @@ var SEM = {
 var TEL_MODES = [["bestand","Mein Klient"],["bekannt","Kenn ich privat"],["karriere","Karriere"]];
 
 var TEL_STEPS = [
- {t:"Name", d:"Nenn ihn beim Namen und sag, wer du bist. Ein Satz Privates darf davor. Einer.",
-  v:{bestand:"Hey Michael, Ben hier. Passt es kurz?",
-     bekannt:"Hey Michael, Ben hier. Passt es kurz?",
-     karriere:"Hey Michael, Ben hier. Hast du zwei Minuten für was Gutes?"}},
- {t:"Grund", d:"Sag sofort, warum du anrufst. Wer drumherum redet, macht den anderen misstrauisch.",
-  v:{bestand:"Ich hab gerade deine Unterlagen vor mir.",
-     bekannt:"Wir hatten gestern ein Fachmeeting zum Thema Einkommensabsicherung, und dabei bist du mir eingefallen.",
+ {t:"Einstieg", d:"Keine Frage, die er mit Nein beantworten kann. Ein warmer Satz, dann die Ankündigung, dass es einen Grund gibt. Damit ist er neugierig, bevor du inhaltlich wirst.",
+  v:{bestand:"Hey Michael, ich hoffe, dir geht's gut. Du, ich ruf aus einem besonderen Grund an.",
+     bekannt:"Hey Michael, ich hoffe, dir geht's gut. Du, ich ruf aus einem besonderen Grund an.",
+     karriere:"Hey Michael, ich hoffe, dir geht's gut. Du, ich ruf aus einem besonderen Grund an."}},
+ {t:"Grund", d:"Jetzt löst du ein, was du gerade angekündigt hast. Ein Satz, keine Vorrede.",
+  v:{bestand:"Ich hab dir ja versprochen, dass ich mich melde, wenn es etwas Relevantes gibt, das dich betrifft. Und das ist jetzt genau der Fall.",
+     bekannt:"Wir hatten gestern ein Fachmeeting zum Thema Einkommensabsicherung, und dabei bist du mir eingefallen. Deshalb melde ich mich.",
      karriere:"Wir bauen gerade unser Team aus, und bei der Frage, wen wir ansprechen, bist du mir als Erster eingefallen."}},
  {t:"Weil", d:"Der Satz, der zeigt, dass es um ihn geht. Hier entscheidet sich der Termin. Die drei Themen-Varianten stehen direkt unter dem Skript.",
   v:{bestand:"Mir ist aufgefallen, dass bei dir zur Arbeitskraft noch nichts hinterlegt ist. Genau das wird zum Jahreswechsel meistens teurer. Ich wollte, dass du das weißt, solange es günstig ist.",

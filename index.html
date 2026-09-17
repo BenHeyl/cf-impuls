@@ -394,15 +394,7 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
   </div>
 
   <h3 class="h" style="margin-top:22px">Spielregeln</h3>
-  <div class="card">
-    <div class="kicker">Spielregeln</div>
-    <h3 class="h" style="margin-top:5px">Fünf Sätze, dann weißt du alles</h3>
-    <div class="step"><div class="z">1</div><div class="w"><b>Jede Aktion zählt</b><p>Auch das Nein. Wer wählt, bekommt Punkte.</p></div></div>
-    <div class="step"><div class="z">2</div><div class="w"><b>Drei Medaillen, ein Klassement</b><p>Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p></div></div>
-    <div class="step"><div class="z">3</div><div class="w"><b>Sechs Wege nach oben</b><p>Punkte gibt es fürs Anrufen, für Termine, für Empfehlungen, für Karrieregespräche, fürs laute Üben und fürs Wissen. Du musst nicht der beste Telefonierer sein, um vorne zu landen. Du musst nur liefern, was du kannst.</p></div></div>
-    <div class="step"><div class="z">4</div><div class="w"><b>Jeder für sich</b><p>Gewertet wird einzeln. Deine Gruppenfarbe sagt nur, in welcher Reihenfolge du die drei Räume durchläufst.</p></div></div>
-    <div class="step"><div class="z">5</div><div class="w"><b>Ehrlich eintragen</b><p>Termine mit Namen und Uhrzeit auf den Laufzettel. Was heute nicht notiert ist, ist am Montag weg.</p></div></div>
-  </div>
+  <div class="card" id="regelnInfo"></div>
 
   <h3 class="h" style="margin-top:22px">Wie gewertet wird</h3>
   <div class="card">
@@ -460,11 +452,12 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
 <div id="rules" style="position:fixed;inset:0;z-index:98;background:var(--navy-dd);overflow:auto;display:none">
   <div class="wrap" style="padding-top:26px;padding-bottom:36px;max-width:560px">
     <div class="kicker">Einmal lesen, dann loslegen</div>
-    <h2 class="h" style="font-size:24px;margin-top:4px">So läuft der Tag</h2>
+    <h2 class="h" style="font-size:25px;margin-top:4px">Heute entsteht etwas, das bleibt</h2>
+    <p class="mut small">In drei Stunden kann der Termin entstehen, für den sonst nie Zeit ist. Heute nimmst du dir die Zeit, und du bist damit nicht allein im Raum.</p>
     <div class="card" id="rulesBody"></div>
     <div class="card gold">
       <div class="kicker">In jeder Runde</div>
-      <p class="small" style="margin-top:4px">Kernsätze lesen, Liste füllen, laut üben, Wissen checken, anrufen. Das Portal führt dich Schritt für Schritt durch, du musst nichts suchen.</p>
+      <p class="small" style="margin-top:4px">Kernsätze lesen, Liste füllen, laut üben, Wissen checken, anrufen. Fünf Schritte, und nach jedem wird es leichter.</p>
     </div>
     <button class="btn wide" style="margin-top:6px" onclick="closeRules()">Alles klar, los geht's</button>
   </div>
@@ -541,25 +534,33 @@ var SEM = {
       hint:"Drei Sorten: gar nichts abgesichert, zu wenig abgesichert, oder unter 25 und noch nichts entschieden."},
     karten:[
       ["Das ist mir zu teuer.",
-       "Kann ich verstehen. Darf ich kurz fragen: zu teuer im Vergleich wozu?",
-       "Wir schauen uns an, was zu dir passt, nicht was maximal geht. Es gibt auch kleine Lösungen, und die sind immer noch besser als keine.",
+       "Verstehe ich. Zu teuer im Vergleich zu was?",
+       "Wir schauen, was zu dir passt, nicht was maximal geht. Eine kleine Lösung ist immer noch besser als gar keine.",
        "Preis ist selten der echte Grund. Die Rückfrage zeigt dir, ob es ums Geld geht oder um etwas anderes."],
       ["Mir passiert schon nichts.",
        "Hoffe ich auch. Was glaubst du, ist der häufigste Grund, warum jemand nicht mehr arbeiten kann?",
        "Die meisten tippen auf Unfall. Es sind Krankheit, Psyche und Rücken. Und darauf hat keiner Einfluss.",
-       "Lass ihn raten. Was er selbst sagt, glaubt er dir sofort. Was du ihm erzählst, muss er dir erst glauben."],
+       "Lass ihn raten. Was er selbst sagt, glaubt er dir sofort."],
       ["Hab ich schon über die Firma.",
        "Gut, dass da was läuft. Weißt du, was davon übrig bleibt, wenn du den Job wechselst?",
-       "Meistens endet das mit dem Arbeitsvertrag. Lass uns einmal nachschauen, was davon wirklich dir gehört.",
+       "Meistens endet das mit dem Arbeitsvertrag. Lass uns nachschauen, was davon wirklich dir gehört.",
        "Du nimmst ihm nichts weg, du machst ihn neugierig auf seine eigene Lage."],
       ["Ich überleg es mir.",
-       "Klar, mach das. Was genau willst du dir überlegen, das Thema oder die Zahlen?",
+       "Klar. Was genau willst du überlegen, das Thema oder die Zahlen?",
        "Wenn es die Zahlen sind: die hol ich dir. Danach überlegst du mit etwas in der Hand.",
        "Das ist die Isolationsfrage. Sie trennt echtes Nachdenken vom höflichen Nein."],
       ["Ich bin kerngesund.",
-       "Perfekt, genau deshalb rufe ich jetzt an. Was meinst du, was die Versicherung mehr interessiert, dein Alter oder deine Gesundheit?",
+       "Perfekt, deshalb rufe ich jetzt an. Was zählt für die Versicherung mehr, dein Alter oder deine Gesundheit?",
        "Beides. Und beides ist heute besser als in fünf Jahren. Gesundheit ist die Eintrittskarte, und die hat man nicht ewig.",
-       "Gesundheit ist kein Gegenargument, sondern der beste Zeitpunkt. Das muss er aber selbst merken."]
+       "Gesundheit ist kein Gegenargument, sondern der beste Zeitpunkt. Das muss er selbst merken."],
+      ["Die zahlen doch eh nicht, wenn es drauf ankommt.",
+       "Woher hast du das? Kennst du jemanden, bei dem es so gelaufen ist?",
+       "Die Quoten sind heute öffentlich, und wenn abgelehnt wird, liegt es fast immer an Angaben im Antrag. Genau deshalb machen wir das zusammen und nicht du allein im Online-Formular.",
+       "Der Einwand ist fast immer Hörensagen. Wer nach der Quelle fragt, nimmt ihm die Luft."],
+      ["Ich rede erst mal mit meiner Frau.",
+       "Genau richtig, das ist eine Entscheidung für zwei. Wann sitzt ihr denn beide? Dann komme ich dazu.",
+       "Dann müsst ihr nicht aus zweiter Hand diskutieren, sondern habt die Zahlen direkt vor euch.",
+       "Aus der Vertagung wird ein Termin, und du hast beide Entscheider am Tisch statt einen Boten."]
     ],
     quiz:[
       {f:"Der Klient sagt: das ist mir zu teuer. Was machst du zuerst?",
@@ -576,27 +577,27 @@ var SEM = {
 
   vl:{
     name:"Vorsorge und VL", kurz:"Vorsorge",
-    ziel:"Acht Angestellte mit Branche auf der Liste, einmal vorgerechnet, drei Anrufe raus.",
+    ziel:"Acht Namen auf der Liste, einmal vorgerechnet, drei Anrufe raus.",
     lernen:[
-      ["VL ist Geld, das einfach liegen bleibt","In vielen Branchen legt der Arbeitgeber jeden Monat was drauf, wenn man es abruft. Wer die Branche kennt, hat den konkretesten Aufhänger, den es gibt."],
-      ["Kein Anspruch heißt nicht Ende","Erst beim Arbeitgeber nachfragen lassen, dann betriebliche Altersversorgung, dann privater Sparplan. Wer nach Stufe eins aufhört, verschenkt das Gespräch."],
-      ["Nicht die Rate entscheidet, sondern die Jahre","Derselbe Betrag, ein Jahr später gestartet, kostet am Ende ein Vielfaches der gesparten Beiträge. Rechne es vor, dann brauchst du kein Argument mehr."]
+      ["VL ist der Türöffner, nicht das Thema","In vielen Branchen legt der Arbeitgeber jeden Monat was drauf, wenn man es abruft. Das ist der konkreteste Einstieg, den es gibt: ein Betrag, der ihm zusteht. Worüber du danach redest, ist die Vorsorge selbst."],
+      ["Nicht die Rate entscheidet, sondern die Jahre","Derselbe Betrag, ein Jahr später gestartet, kostet am Ende ein Vielfaches der gesparten Beiträge. Rechne es vor, dann brauchst du kein Argument mehr."],
+      ["Die Hülle entscheidet mit","Bei einer Nettopolice gehen keine Abschlusskosten aus dem Beitrag ab, das Honorar läuft separat. Über die Laufzeit kommt deutlich mehr beim Klienten an. Das ist unser Unterschied zur Bank und zur App."]
     ],
-    listen:{key:"vl",label:"Angestellte Klienten mit Arbeitgeber und Branche",ziel:8,
-      hint:"Name und Branche, zum Beispiel: Sarah K., Chemie"},
+    listen:{key:"vl",label:"Wer spart zu wenig oder zu teuer?",ziel:8,
+      hint:"Drei Sorten: Angestellte mit VL-Anspruch, Klienten mit einem alten teuren Vertrag, und Klienten ohne jede Vorsorge."},
     karten:[
       ["Später, wenn es besser läuft.",
        "Verstehe ich. Wann ist denn besser, so ungefähr? Nächstes Jahr, in fünf?",
        "Genau da liegt der Haken: besser kommt selten von allein, und die Jahre holst du später mit keiner Rate mehr auf.",
        "Lass ihn das Datum suchen. Wenn er keins findet, merkt er das Problem selbst."],
-      ["Mach ich selbst über meine App.",
+      ["Ich hab schon was laufen.",
+       "Gut. Weißt du, was bei deinem Vertrag an Kosten abgeht, bevor überhaupt etwas angelegt wird?",
+       "Das wissen die meisten nicht, und genau da liegt oft der größte Hebel. Ich schau einmal drauf, und wenn alles passt, sage ich dir das auch.",
+       "Du greifst seinen Vertrag nicht an, du machst ihn neugierig auf seine eigenen Kosten."],
+      ["Das mach ich selbst über meine App.",
        "Stark, dass du dich damit beschäftigst. Was hast du denn drin? Und wie hast du dich dafür entschieden?",
        "Ein ETF ist ein gutes Werkzeug, aber noch kein Plan. Eine halbe Stunde, ob dein Werkzeug zu deinem Ziel passt. Zweite Meinung kostet dich nichts.",
        "Nicht gegen seine App reden. Echtes Interesse zeigen, dann redet er selbst über die Lücken."],
-      ["Ich will mich nicht binden.",
-       "Kann ich nachvollziehen. Was heißt binden für dich, wo fühlt es sich unangenehm an?",
-       "Was wir bauen, kannst du anpassen, aussetzen und erhöhen. Genau das zeig ich dir.",
-       "Binden ist ein Gefühl, kein Fakt. Frag nach, sonst antwortest du auf etwas, das er gar nicht meint."],
       ["Ich warte auf das Altersvorsorgedepot.",
        "Interessant, hast du dich da schon eingelesen? Was erwartest du davon?",
        "Das kommt 2027, und dann schauen wir es uns zusammen an. Bis dahin verlierst du Zeit, und Zeit ist hier der größte Hebel.",
@@ -604,18 +605,26 @@ var SEM = {
       ["Vierzig Euro merke ich doch gar nicht.",
        "Genau. Und was glaubst du, was aus vierzig Euro in dreißig Jahren wird?",
        "Lass ihn schätzen, dann zeig ihm die Zahl. Der Abstand zwischen beidem ist dein bestes Argument.",
-       "Schätzen lassen schlägt vorrechnen. Der Aha-Moment gehört ihm, nicht dir."]
+       "Schätzen lassen schlägt vorrechnen. Der Aha-Moment gehört ihm, nicht dir."],
+      ["Ich hab gerade andere Baustellen.",
+       "Glaub ich dir. Was ist grad das Größte bei dir?",
+       "Dann nehmen wir das mit dazu, wenn es passt. Zwanzig Minuten, und du weißt, ob dich das Thema überhaupt betrifft.",
+       "Erst zuhören, dann terminieren. Wer sofort gegen die Baustelle redet, wird zur nächsten."],
+      ["Das macht mein Bankberater.",
+       "Alles gut. Was hat er dir denn vorgeschlagen?",
+       "Vergleichen kostet dich nichts. Ich zeig dir, wo bei so einem Vertrag die Kosten abgehen, und danach entscheidest du.",
+       "Nicht gegen die Bank reden. Die Frage nach dem Vorschlag bringt fast immer eine Lücke zum Vorschein."]
     ],
     quiz:[
-      {f:"Der Klient sagt, sein Arbeitgeber zahle keine VL. Was kommt jetzt?",
-       o:["Thema beenden","Nachfragen lassen, dann bAV, dann privater Sparplan","Sofort eine private Rente abschließen"],r:1,
-       e:"Drei Stufen. Viele wissen selbst nicht, was in ihrem Tarifvertrag steht, deshalb ist das Nachfragen der erste Schritt."},
+      {f:"Wofür ist das Thema VL im Gespräch gut?",
+       o:["Es ist das eigentliche Beratungsthema","Es ist der konkreteste Türöffner, weil es um einen Betrag geht, der ihm zusteht","Es ersetzt die private Vorsorge"],r:1,
+       e:"VL bringt dich ins Gespräch. Beraten wird danach über Zeit, Höhe und die passende Hülle."},
+      {f:"Was ist der Unterschied einer Nettopolice?",
+       o:["Sie ist immer die günstigste Lösung","Aus dem Beitrag gehen keine Abschlusskosten ab, das Honorar läuft separat","Sie hat keine Kosten"],r:1,
+       e:"Deshalb kommt über die Laufzeit mehr beim Klienten an. Ohne Kosten ist keine Lösung, aber die Verteilung ist eine andere."},
       {f:"Er sagt: vierzig Euro merke ich nicht. Was ist der stärkste nächste Zug?",
        o:["Ihm sagen, dass daraus viel wird","Ihn schätzen lassen, was daraus wird","Eine Renditetabelle schicken"],r:1,
-       e:"Wer selbst schätzt, erlebt die Lücke zwischen Gefühl und Zahl. Das überzeugt stärker als jede Behauptung von dir."},
-      {f:"Was ist der beste Einstieg ins VL-Telefonat?",
-       o:["Eine allgemeine Frage zur Altersvorsorge","Der konkrete Betrag, den sein Arbeitgeber zahlt","Ein Hinweis auf die Rentenlücke"],r:1,
-       e:"Konkret schlägt allgemein. Einen Betrag, der ihm zusteht, wischt niemand einfach weg."}
+       e:"Wer selbst schätzt, erlebt die Lücke zwischen Gefühl und Zahl. Das überzeugt stärker als jede Behauptung von dir."}
     ]
   },
 
@@ -649,7 +658,15 @@ var SEM = {
       ["Ich bin zufrieden in meinem Job.",
        "Freut mich, das ist selten geworden. Was müsste passieren, dass du trotzdem mal reinschaust?",
        "Genau mit zufriedenen Leuten rede ich am liebsten. Die entscheiden in Ruhe und nicht aus Frust.",
-       "Zufriedenheit ist kein Nein. Die Frage öffnet die Tür einen Spalt, ohne dass du drücken musst."]
+       "Zufriedenheit ist kein Nein. Die Frage öffnet die Tür einen Spalt, ohne dass du drücken musst."],
+      ["Und was verdient man da so?",
+       "Gute Frage, und die beantworte ich dir mit Zahlen. Was müsstest du verdienen, damit sich das für dich lohnt?",
+       "Dann rechnen wir genau das zusammen durch. Unser Karriereplan liegt offen auf dem Tisch, da muss niemand raten.",
+       "Wer nach dem Geld fragt, ist interessiert. Lass ihn seine Zahl nennen, dann redest du über seine und nicht über deine."],
+      ["Da müsste ich mich ja selbstständig machen.",
+       "Was wäre für dich das Größte daran, wenn du es dir vorstellst?",
+       "Du fängst nicht bei null an und nicht allein. Schau dir an, wie der Start bei uns aussieht, danach weißt du mehr als jede Vermutung.",
+       "Die Frage dreht das Gefühl von Risiko in eine Vorstellung. Und seine Antwort verrät dir sein Motiv."]
     ],
     quiz:[
       {f:"Wie beschreibst du, was du machst?",
@@ -670,45 +687,46 @@ var TEL_MODES = [["bestand","Mein Klient"],["bekannt","Kenn ich privat"],["karri
 
 var TEL_STEPS = [
  {t:"Name", d:"Nenn ihn beim Namen und sag, wer du bist. Ein Satz Privates darf davor. Einer.",
-  v:{bestand:"Hey Michael, hier ist Ben. Hast du zwei Minuten?",
-     bekannt:"Hey Michael, hier ist Ben. Passt es gerade kurz?",
-     karriere:"Hey Michael, hier ist Ben. Hast du zwei Minuten?"}},
+  v:{bestand:"Hey Michael, Ben hier. Passt es kurz?",
+     bekannt:"Hey Michael, Ben hier. Passt es kurz?",
+     karriere:"Hey Michael, Ben hier. Hast du zwei Minuten für was Gutes?"}},
  {t:"Grund", d:"Sag sofort, warum du anrufst. Wer drumherum redet, macht den anderen misstrauisch.",
-  v:{bestand:"Ich hatte gerade deine Unterlagen auf dem Tisch.",
+  v:{bestand:"Ich hab gerade deine Unterlagen vor mir.",
      bekannt:"Wir hatten gestern ein Fachmeeting zum Thema Einkommensabsicherung, und dabei bist du mir eingefallen.",
-     karriere:"Wir bauen gerade unser Team aus, und bei der Frage, wen wir ansprechen, bist du mir als Erstes eingefallen."}},
+     karriere:"Wir bauen gerade unser Team aus, und bei der Frage, wen wir ansprechen, bist du mir als Erster eingefallen."}},
  {t:"Weil", d:"Der Satz, der zeigt, dass es um ihn geht. Hier entscheidet sich der Termin. Die drei Themen-Varianten stehen direkt unter dem Skript.",
   v:{bestand:"Mir ist aufgefallen, dass bei dir zur Arbeitskraft noch nichts hinterlegt ist. Genau das wird zum Jahreswechsel meistens teurer. Ich wollte, dass du das weißt, solange es günstig ist.",
      bekannt:"Es geht um den Schutz deines Einkommens. Zum Jahreswechsel wird das in der Regel teurer, und jedes Jahr zählt beim Beitrag mit. Ich wollte, dass du das auf dem Schirm hast, bevor der Januar kommt.",
      karriere:"Mir fällt bei dir seit einer Weile was auf: … . Ich hätte dich gern mal am Tisch, damit du ein Bild davon hast, was wir hier eigentlich machen."}},
  {t:"Eine Frage", d:"Eine kurze Frage, die ihn ins Gespräch holt. Eine. Die Analyse gehört an den Tisch.",
   v:{bestand:"Hat sich das bei dir zwischendurch über den Arbeitgeber geregelt?",
-     bekannt:"Wie hast du das Thema bei dir eigentlich gelöst?",
+     bekannt:"Wie hast du das Thema bei dir bisher gelöst?",
      karriere:"Sag mal, wie läuft es bei dir gerade beruflich?"}},
  {t:"Termin", d:"Zwei konkrete Vorschläge, dann Klappe halten. Die Stille gehört dazu. Wer nachschiebt, redet sich den Termin kaputt.",
-  v:{bestand:"Dann lass uns eine halbe Stunde draufschauen. Passt dir Donnerstag um 18 Uhr besser oder Samstagvormittag?",
-     bekannt:"Dann lass uns eine halbe Stunde draufschauen. Passt dir Donnerstag um 18 Uhr besser oder Samstagvormittag?",
-     karriere:"Dann lass uns eine halbe Stunde zusammensitzen. Donnerstagabend oder lieber Samstagvormittag?"}}
+  v:{bestand:"Dann setzen wir uns eine halbe Stunde zusammen. Donnerstag um 18 Uhr oder lieber Samstagvormittag?",
+     bekannt:"Dann setzen wir uns eine halbe Stunde zusammen. Donnerstag um 18 Uhr oder lieber Samstagvormittag?",
+     karriere:"Dann setzen wir uns eine halbe Stunde zusammen. Donnerstagabend oder Samstagvormittag?"}}
 ];
 
 var WEIL = [
   ["Arbeitskraft","Mir ist aufgefallen, dass bei dir zur Arbeitskraft noch nichts abgesichert ist. Zum Jahreswechsel wird das meistens teurer, und jedes Jahr zählt beim Beitrag mit. Ich wollte, dass die Entscheidung bei dir liegt, solange sie günstig ist."],
-  ["Vermögenswirksame Leistungen","Du arbeitest doch bei … . In deiner Branche legt der Arbeitgeber jeden Monat was drauf, wenn man es abruft. Die meisten holen es sich nie. Ich wollte, dass du weißt, was dir zusteht."],
-  ["Karriere","Mir fällt bei dir seit einer Weile was auf: … . Wir bauen unser Team gerade aus, und du kamst mir sofort in den Sinn. Lass uns eine halbe Stunde zusammensitzen, dann hast du ein Bild davon. Alles Weitere entscheidest du danach in Ruhe."]
+  ["Vorsorge über die VL","Du arbeitest doch bei … . In deiner Branche legt der Arbeitgeber jeden Monat was drauf, wenn man es abruft. Die meisten holen es sich nie. Ich wollte, dass du weißt, was dir zusteht."],
+  ["Vorsorge ohne VL","Ich hab gerade für jemanden durchgerechnet, was ein Jahr Warten beim Sparen am Ende kostet. Die Zahl hat mich selbst überrascht. Dabei ist mir eingefallen, dass wir zwei über das Thema noch nie gesprochen haben."],
+  ["Karriere","Mir fällt bei dir seit einer Weile was auf: … . Wir bauen unser Team gerade aus, und du bist mir als Erster eingefallen. Lass uns eine halbe Stunde zusammensitzen, dann hast du ein Bild davon. Alles Weitere entscheidest du danach in Ruhe."]
 ];
 
 var EINW = [
   ["„Schick mir was per Mail.“","Mach ich gern. Eine Frage vorher: was müsste drinstehen, damit es dir wirklich was bringt? … Genau das kann ein PDF nicht. Zwanzig Minuten und du weißt, ob dich das überhaupt betrifft. Donnerstag oder Freitag?"],
-  ["„Ich hab keine Zeit.“","Deshalb ruf ich vorher an. Wann ist es bei dir am entspanntesten, abends oder samstags?"],
+  ["„Ich hab keine Zeit.“","Deshalb ruf ich vorher an und stehe nicht plötzlich vor der Tür. Wann ist es bei dir am entspanntesten, abends oder samstags?"],
   ["„Ich hab schon alles.“","Klingt gut. Wann hast du zuletzt draufgeschaut? … Dann wird es kurz. Ich schau einmal drüber, und wenn alles passt, sag ich dir das auch."],
-  ["„Was kostet das denn?“","Kommt drauf an, was zu dir passt. Was wäre dir denn wichtiger, ein niedriger Beitrag oder dass es im Ernstfall wirklich zahlt? Genau darüber reden wir im Termin."],
+  ["„Was kostet das denn?“","Kommt drauf an, was zu dir passt. Sag mir kurz, was dir wichtiger ist: ein kleiner Beitrag oder dass im Ernstfall wirklich etwas kommt? Genau darüber reden wir im Termin."],
   ["Er fragt inhaltlich nach.","Gute Frage. Die verdient mehr als zwischen Tür und Angel, dafür gehören deine Zahlen auf den Tisch. Genau dafür der Termin."],
   ["Mailbox oder keiner geht ran.","Kurze Nachricht: dass du angerufen hast, dass nichts Dramatisches ist, worum es geht, und wann du zurückrufen darfst. Keine Beratung per Text."]
 ];
 
 var PLANB = [
   ["Arbeitskraft","A · Berufsunfähigkeit, der Vollschutz.<br>B · Grundfähigkeit, wenn Gesundheit oder Beruf die BU sperren.<br>C · Schwere Krankheiten, wenn auch das nicht trägt.<br>Dazu immer: Unfallschutz in Kombination mit A, B oder C. Nie als Ersatz.<br>Unter 25: Option beantragen, dann Wechsel in die BU ab 30.<br>BU schon vorhanden: aufstocken oder mit kleiner Grundfähigkeit ergänzen."],
-  ["Vorsorge und VL","A · Vermögenswirksame Leistungen, Branche nachschauen und Betrag nennen.<br>B · Arbeitgeber zahlt nichts? Nachfragen lassen, dann bAV per Entgeltumwandlung.<br>C · Nichts davon möglich? Privater Sparplan. Klein anfangen ist auch ein Anfang."]
+  ["Vorsorge und VL","A · Vermögenswirksame Leistungen, Branche nachschauen und Betrag nennen.<br>B · Arbeitgeber zahlt nichts? Nachfragen lassen, dann bAV per Entgeltumwandlung.<br>C · Nichts davon möglich? Privater Sparplan. Klein anfangen ist auch ein Anfang.<br>Und in jedem Fall: die Hülle prüfen. Nettopolice statt teurem Altvertrag."]
 ];
 
 var WERKZEUG = [
@@ -1269,14 +1287,21 @@ function startTimer(sec){
   },250);
 }
 
-var qState={};
+var qState={}, qOrder={};
+function shuffled(n){
+  var a=[]; for(var i=0;i<n;i++) a.push(i);
+  for(var k=a.length-1;k>0;k--){ var r=Math.floor(Math.random()*(k+1)), t=a[k]; a[k]=a[r]; a[r]=t; }
+  return a;
+}
 function renderQuiz(){
   var key=activeSem(), q=SEM[key].quiz, el=document.getElementById("quiz"); if(!el) return;
   var id="quiz_"+key;
   if(me.ex[id]){ el.innerHTML='<p class="done">Bestanden. 4 Punkte sind drauf.</p>'; return; }
+  qOrder[key]=q.map(function(x){ return shuffled(x.o.length); });
   el.innerHTML=q.map(function(x,i){
+    var ord=qOrder[key][i];
     return '<div class="q" data-i="'+i+'"><b class="small">'+(i+1)+' · '+esc(x.f)+'</b>'+
-      x.o.map(function(o,j){ return '<button class="opt" onclick="answer('+i+','+j+',this)">'+esc(o)+'</button>'; }).join("")+
+      ord.map(function(orig,j){ return '<button class="opt" onclick="answer('+i+','+j+',this)">'+esc(x.o[orig])+'</button>'; }).join("")+
       '<p class="small mut exp" style="display:none">'+esc(x.e)+'</p></div>';
   }).join("");
 }
@@ -1284,11 +1309,12 @@ function answer(i,j,btn){
   var key=activeSem(), q=SEM[key].quiz[i], box=btn.parentNode;
   if(box.dataset.done) return;
   box.dataset.done="1";
-  var opts=box.querySelectorAll(".opt");
-  for(var n=0;n<opts.length;n++) if(n===q.r) opts[n].classList.add("right");
-  if(j!==q.r) btn.classList.add("wrong");
+  var ord=(qOrder[key]||[])[i]||[], opts=box.querySelectorAll(".opt");
+  for(var n=0;n<opts.length;n++) if(ord[n]===q.r) opts[n].classList.add("right");
+  var ok=(ord[j]===q.r);
+  if(!ok) btn.classList.add("wrong");
   box.querySelector(".exp").style.display="block";
-  qState[key]=qState[key]||{}; qState[key][i]=(j===q.r);
+  qState[key]=qState[key]||{}; qState[key][i]=ok;
   var all=SEM[key].quiz.length, ok=0, done=0;
   for(var k in qState[key]){ done++; if(qState[key][k]) ok++; }
   if(done===all){
@@ -1411,16 +1437,19 @@ function renderJudge(){
 
 /* ---- Regeln ---- */
 var REGELN = [
-  ["Jede Aktion zählt","Auch das Nein. Wer wählt, bekommt Punkte."],
-  ["Drei Medaillen, ein Klassement","Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche."],
-  ["Aufs Treppchen kommt nur, wer durch ist","Liste gefüllt, laut geübt, Blitz-Check gemacht, mindestens ein Gespräch geführt."],
-  ["Sechs Wege nach oben","Gespräche, Termine, Empfehlungen, Karrieregespräche, Einwand-Arena, Blitz-Check. Du musst nicht der beste Telefonierer sein."],
-  ["Jeder für sich","Gewertet wird einzeln. Deine Gruppenfarbe sagt nur, in welcher Reihenfolge du die drei Räume durchläufst."],
+  ["Du gehst heute mit Terminen nach Hause","Kein Vortragsnachmittag. Am Ende hast du Namen auf dem Zettel, ein paar Sätze im Kopf und echte Termine im Kalender."],
+  ["Drei Themen, drei Räume","Arbeitskraft, Vorsorge, Karriere. Deine Gruppenfarbe sagt, in welcher Reihenfolge du sie durchläufst. Erst kurz Input, dann wird gearbeitet."],
+  ["Das Portal führt dich durch","Fünf Schritte pro Runde, immer nur eine Aufgabe auf dem Bildschirm. Du musst nichts suchen und nichts auswendig können."],
+  ["Punkte gibt es für jeden Schritt","Für deine Liste, fürs laute Üben, fürs Wissen. Und natürlich für Gespräche, Termine und Empfehlungen. Auch ein Nein zählt, weil es dich näher an das Ja bringt."],
+  ["Gold, Silber und Bronze","Für die ersten drei der Gesamtwertung, einzeln gewertet. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche. Auf dem Treppchen landet, wer seine vier Schritte durch hat."],
   ["Ehrlich eintragen","Termine mit Namen und Uhrzeit auf die Telefonkarte. Was heute nicht notiert ist, ist am Montag weg."]
 ];
-function openRules(){
-  document.getElementById("rulesBody").innerHTML = REGELN.map(function(x,i){
+function regelnHTML(){
+  return REGELN.map(function(x,i){
     return '<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+x[0]+'</b><p>'+x[1]+'</p></div></div>'; }).join("");
+}
+function openRules(){
+  document.getElementById("rulesBody").innerHTML = regelnHTML();
   document.getElementById("rules").style.display="block";
 }
 function closeRules(){
@@ -1484,6 +1513,7 @@ document.getElementById("leitfaden").innerHTML=LEIT.map(function(l){
   h+='<div class="step"><div class="z">+3</div><div class="w"><b>Runde in der Einwand-Arena</b></div></div>';
   h+='<div class="step"><div class="z">+4</div><div class="w"><b>Blitz-Check, Beobachtungssatz</b></div></div>';
   document.getElementById("ptTable").innerHTML=h; })();
+document.getElementById("regelnInfo").innerHTML = regelnHTML();
 
 render();
 if(!me.name) openSetup(); else if(!me.seenRules) openRules();

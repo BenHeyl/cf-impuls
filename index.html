@@ -300,12 +300,6 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
   </div>
 
   <div class="card">
-    <div class="kicker">Der Nachmittag</div>
-    <h3 class="h" style="margin-top:5px">Ablauf</h3>
-    <div id="ablauf"></div>
-  </div>
-
-  <div class="card">
     <div class="kicker">Einstellungen</div>
     <p class="small mut" id="meInfo"></p>
     <button class="btn ghost wide" onclick="openRules()">Spielregeln noch einmal ansehen</button>
@@ -379,12 +373,31 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
 <section class="page" id="p-info">
   <button class="btn ghost wide" style="margin-bottom:12px" onclick="go('heute')">&lsaquo; Zurück zur Übersicht</button>
   <div class="kicker">Nachschlagen</div>
-  <h2 class="h">Leitfäden</h2>
-  <p class="mut small">Drei Seminare, gleicher Bauplan: zehn Minuten Prägung, dann wird gemacht.</p>
-  <div id="leitfaden"></div>
+  <h2 class="h">Alles Wichtige</h2>
+  <p class="mut small">Regeln, Punkte, Ablauf und die Leitfäden der drei Räume.</p>
+
+<h3 class="h" style="margin-top:18px">Spielregeln</h3>
+  <div class="card" id="regelnInfo"></div>
 
   <h3 class="h" style="margin-top:22px">Punktetafel</h3>
   <div class="card" id="ptTable"></div>
+
+  <h3 class="h" style="margin-top:22px">Wie gewertet wird</h3>
+  <div class="card">
+    <p class="small"><b>Es gibt genau drei Medaillen.</b> Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p>
+    <p class="small" style="margin-top:8px"><b>Der Haken an der Sache:</b> gewertet wird nur, wer die vier Schritte durch hat. Liste gefüllt, einmal laut geübt, Blitz-Check gemacht und mindestens ein Gespräch geführt. Wer nur Namen aufschreibt, sammelt zwar Punkte, steht aber nicht auf dem Treppchen.</p>
+    <p class="small" style="margin-top:8px"><b>Sechs Wege zu Punkten:</b> Gespräche, Wiedervorlagen, Termine, Karrieregespräche, Einwand-Arena und Blitz-Check. Wer beim Telefonieren noch unsicher ist, holt sich die Punkte über die Übungen. Vorne landen kann jeder.</p>
+  </div>
+<h3 class="h" style="margin-top:22px">Der Nachmittag</h3>
+  <div class="card">
+    
+    <div id="ablauf"></div>
+  </div>
+
+
+  <h3 class="h" style="margin-top:22px">Leitfäden der drei Räume</h3>
+  <p class="mut small">Drei Seminare, gleicher Bauplan: zehn Minuten Prägung, dann wird gemacht.</p>
+  <div id="leitfaden"></div>
 
   <h3 class="h" style="margin-top:22px">Für die Leitung</h3>
   <div class="card gold">
@@ -393,18 +406,10 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
     <button class="btn ghost wide" style="margin-top:8px" onclick="openJudge()">Kampfrichter-Modus</button>
   </div>
 
-  <h3 class="h" style="margin-top:22px">Spielregeln</h3>
-  <div class="card" id="regelnInfo"></div>
-
-  <h3 class="h" style="margin-top:22px">Wie gewertet wird</h3>
-  <div class="card">
-    <p class="small"><b>Es gibt genau drei Medaillen.</b> Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p>
-    <p class="small" style="margin-top:8px"><b>Der Haken an der Sache:</b> gewertet wird nur, wer die vier Schritte durch hat. Liste gefüllt, einmal laut geübt, Blitz-Check gemacht und mindestens ein Gespräch geführt. Wer nur Namen aufschreibt, sammelt zwar Punkte, steht aber nicht auf dem Treppchen.</p>
-    <p class="small" style="margin-top:8px"><b>Sechs Wege zu Punkten:</b> Gespräche, Wiedervorlagen, Termine, Karrieregespräche, Einwand-Arena und Blitz-Check. Wer beim Telefonieren noch unsicher ist, holt sich die Punkte über die Übungen. Vorne landen kann jeder.</p>
-  </div>
-</section>
+  
 
 </div>
+</section>
 
 <nav>
   <button class="on" data-p="heute" onclick="go('heute')"><span class="ic">◆</span>Heute</button>
@@ -478,10 +483,10 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
     <p class="mut small" id="setupCount" style="margin-top:4px"></p>
     <label>Was nimmst du dir für heute vor?</label>
     <select id="inGoal">
-      <option value="2">2 Termine</option>
-      <option value="3" selected>3 Termine</option>
+      <option value="1">1 Termin</option>
+      <option value="2" selected>2 Termine</option>
+      <option value="3">3 Termine</option>
       <option value="5">5 Termine</option>
-      <option value="8">8 Termine</option>
     </select>
     <button class="btn wide" style="margin-top:16px" onclick="saveSetup()">Los geht's</button>
     <p class="mut small" style="text-align:center;margin-top:12px">Deine Punkte liegen auf diesem Gerät. Die Rangliste sehen alle.</p>
@@ -517,7 +522,8 @@ var ABLAUF = [
   ["15:55","Runde 3","Letzter Wechsel. Am Ende war jeder in allen drei Themen."],
   ["16:40","Impuls von oben","Vertrieb und Struktur: warum es in unserer Branche einfach ist, Geld zu verdienen."],
   ["16:55","Zwischenstand","Rangliste an die Wand, Zielzahl bis Weihnachten."],
-  ["17:00","Essen","Die Familien kommen dazu. Siegerehrung gegen 18:30."]
+  ["17:00","Essen","Die Familien kommen dazu."],
+  ["17:30","Siegerehrung","Kurze Pause beim Essen, dann Gold, Silber, Bronze."]
 ];
 
 /* ============ SEMINARE ============ */
@@ -903,7 +909,7 @@ function addPt(k){
   var msg="+"+PT[k].p+" · "+PT[k].l;
   if(k==="gespraech" && me.cnt.gespraech===1) msg="Erstes Gespräch steht. Weiter.";
   if((k==="terminAks"||k==="terminVl") && termine()===1) msg="Erster Termin! Der Nachmittag hat sich gelohnt.";
-  if(termine()===(me.goal||3)) msg="Tagesziel erreicht. Jetzt kommt die Kür.";
+  if(termine()===(me.goal||2)) msg="Tagesziel erreicht. Jetzt kommt die Kür.";
   if(k==="karriere") msg="Karrieregespräch! Das sind 8 Punkte.";
   toast(msg);
 }
@@ -977,12 +983,13 @@ function renderStand(){
 
   var o='<div style="display:flex;align-items:baseline;gap:10px;margin-top:4px">'+
         '<span class="big2">'+t+'</span><span class="mini">Punkte</span>'+
-        '<span style="margin-left:auto" class="big2">'+(pos||"–")+'</span>'+
-        '<span class="mini">von '+all.length+'</span></div>';
+        (all.length>=3 ? '<span style="margin-left:auto" class="big2">'+(pos||"–")+'</span>'+
+                         '<span class="mini">von '+all.length+'</span>' : '')+'</div>';
 
-  if(ahead && qSteps()>=4) o+='<p class="mini" style="margin-top:6px">Noch '+Math.max(1,(ahead.pts||0)-t+1)+' Punkte bis Platz '+(pos-1)+'. Das ist ein Termin.</p>';
-  else if(pos===1 && t>0) o+='<p class="mini" style="margin-top:6px">Du führst. Jetzt nicht stehen bleiben.</p>';
-  else if(qSteps()<4) o+='<p class="mini" style="margin-top:6px">Für das Treppchen fehlen dir noch ein paar Schritte.</p>';
+  if(t===0) o+='<p class="mini" style="margin-top:6px">Noch nichts eingetragen. Der erste Name auf deiner Liste zählt schon.</p>';
+  else if(ahead && qSteps()>=4 && all.length>=3) o+='<p class="mini" style="margin-top:6px">Noch '+Math.max(1,(ahead.pts||0)-t+1)+' Punkte bis Platz '+(pos-1)+'. Das ist ein Termin.</p>';
+  else if(pos===1 && all.length>=3) o+='<p class="mini" style="margin-top:6px">Du führst. Jetzt nicht stehen bleiben.</p>';
+  else if(qSteps()<4) o+='<p class="mini" style="margin-top:6px">Noch '+(4-qSteps())+' Schritte, dann bist du fürs Treppchen wertbar.</p>';
 
   var lab=["Liste","Laut geübt","Blitz-Check","Gespräch"], st=[];
   var key=activeSem(), L=SEM[key].listen;
@@ -1104,7 +1111,7 @@ var STEPS = [
   {k:"liste",  t:"Deine Namen",        n:"Schritt 2 · still"},
   {k:"ueben",  t:"Laut üben",          n:"Schritt 3 · im Tandem"},
   {k:"wissen", t:"Blitz-Check",        n:"Schritt 4 · 2 Minuten"},
-  {k:"call",   t:"Anrufen",            n:"Schritt 5 · darum geht es"}
+  {k:"call",   t:"Anrufen",            n:"Schritt 5 · 10 Minuten"}
 ];
 var LABELS = [["Lesen"],["Liste"],["Üben"],["Wissen"],["Anrufen"]];
 
@@ -1216,6 +1223,11 @@ function stepBody(i, key, s){
   o+='<div class="card gold"><h3 class="h" style="margin-top:0">Jetzt wird telefoniert</h3>'+
      '<p class="small">Nimm deine Telefonkarte und ruf die Namen an, die du aufgeschrieben hast. Ziel ist der Termin, nichts anderes. Das Skript hast du auf Papier, damit dein Handy frei bleibt.</p>'+
      '<button class="btn wide" style="margin-top:10px" onclick="go(\'tel\')">Skript im Portal öffnen</button></div>'+
+     '<div class="card"><div class="kicker">Zum ersten Mal am Telefon?</div>'+
+     '<h3 class="h" style="margin-top:5px">So fängst du an</h3>'+
+     '<div class="step"><div class="z">1</div><div class="w"><b>Hör zweimal zu</b><p>Setz dich zu jemandem, der telefoniert, und hör einfach mit. Danach weißt du, wie es klingt.</p></div></div>'+
+     '<div class="step"><div class="z">2</div><div class="w"><b>Dann wählst du selbst</b><p>Mit deinem Tandempartner daneben. Er hört mit und übernimmt, wenn du steckenbleibst.</p></div></div>'+
+     '<div class="step"><div class="z">3</div><div class="w"><b>Lies ruhig ab</b><p>Das Skript liegt vor dir. Am Telefon sieht das keiner, und beim dritten Anruf brauchst du es nicht mehr.</p></div></div></div>'+
      '<div class="card"><div class="kicker">Nach jedem Anruf</div><h3 class="h" style="margin-top:5px">Eintragen</h3>'+
      '<div class="pgrid" id="callBtns"></div>'+
      '<button class="btn ghost wide" style="margin-top:10px" onclick="undoLast()">Zurücknehmen</button></div>';
@@ -1437,7 +1449,8 @@ function renderJudge(){
 
 /* ---- Regeln ---- */
 var REGELN = [
-  ["Du gehst heute mit Terminen nach Hause","Kein Vortragsnachmittag. Am Ende hast du Namen auf dem Zettel, ein paar Sätze im Kopf und echte Termine im Kalender."],
+  ["Du nimmst heute etwas mit","Kein Vortragsnachmittag. Am Ende hast du Namen auf dem Zettel, ein paar Sätze im Kopf und dein erstes oder dein nächstes Telefonat hinter dir."],
+  ["Zum ersten Mal dabei?","Perfekt, dann fängst du heute an. Jeder Satz steht dir vor der Nase, neben dir sitzt jemand, der es kann, und Punkte gibt es fürs Machen und nicht fürs Gelingen."],
   ["Drei Themen, drei Räume","Arbeitskraft, Vorsorge, Karriere. Deine Gruppenfarbe sagt, in welcher Reihenfolge du sie durchläufst. Erst kurz Input, dann wird gearbeitet."],
   ["Das Portal führt dich durch","Fünf Schritte pro Runde, immer nur eine Aufgabe auf dem Bildschirm. Du musst nichts suchen und nichts auswendig können."],
   ["Punkte gibt es für jeden Schritt","Für deine Liste, fürs laute Üben, fürs Wissen. Und natürlich für Gespräche, Wiedervorlagen und Termine. Auch ein Nein zählt, weil es dich näher an das Ja bringt."],
@@ -1479,7 +1492,7 @@ function saveSetup(){
   var n=(document.getElementById("inName").value||"").trim();
   if(n.length<2){ toast("Bitte deinen Namen eintragen"); return; }
   me.name=n; me.team=document.getElementById("inTeam").value; me.sem="";
-  me.goal=Number(document.getElementById("inGoal").value)||3;
+  me.goal=Number(document.getElementById("inGoal").value)||2;
   save(); document.getElementById("setup").style.display="none";
   render();
   if(!me.seenRules) openRules();

@@ -274,6 +274,7 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
     <p class="mut small" id="jetztSub"></p>
     <button class="btn wide" style="margin-top:10px" onclick="go('uebung')">Los geht's</button>
     <div id="jetztCount"></div>
+    <div id="rundenWahl" style="margin-top:9px"></div>
     <p class="mut small" style="margin-top:9px">Ablauf: Kernsätze lesen, Liste füllen, laut üben, Wissen checken, anrufen. Die Punkte trägst du danach ein.</p>
   </div>
 
@@ -789,12 +790,19 @@ function termine(){ return (me.cnt.terminAks||0)+(me.cnt.terminVl||0)+(me.cnt.ka
 
 /* ---- Runden ---- */
 function mins(hhmm){ var a=hhmm.split(":"); return (+a[0])*60+(+a[1]); }
+function hhmm(m){ m=((m%1440)+1440)%1440; return ("0"+Math.floor(m/60)).slice(-2)+":"+("0"+(m%60)).slice(-2); }
+function shift(){ return Number(me.shift)||0; }
+function rStart(i){ return mins(ROUNDS[i][0])+shift(); }
+function rEnd(i){ return mins(ROUNDS[i][1])+shift(); }
+function rZeit(i){ return hhmm(rStart(i))+" bis "+hhmm(rEnd(i)); }
 function nowMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
 function currentRound(){
+  if(me.round!==undefined && me.round!==null) return me.round;
   if(!isEventDay()) return 0;
   var n=nowMin();
-  for(var i=0;i<ROUNDS.length;i++) if(n>=mins(ROUNDS[i][0]) && n<mins(ROUNDS[i][1])) return i;
-  if(n<mins(ROUNDS[0][0])) return 0;
+  for(var i=0;i<ROUNDS.length;i++) if(n>=rStart(i) && n<rEnd(i)) return i;
+  if(n<rStart(0)) return 0;
+  for(var j=0;j<ROUNDS.length-1;j++) if(n>=rEnd(j) && n<rStart(j+1)) return j+1;
   return ROUNDS.length-1;
 }
 function semOfRound(i){ var plan=ROT[me.team]||ROT.Rot; return plan[i]||plan[0]; }
@@ -955,8 +963,8 @@ function render(){
 function minsLeft(){
   var n=nowMin();
   for(var i=0;i<ROUNDS.length;i++){
-    if(n>=mins(ROUNDS[i][0]) && n<mins(ROUNDS[i][1])) return {in:true, m:mins(ROUNDS[i][1])-n};
-    if(n<mins(ROUNDS[i][0])) return {in:false, m:mins(ROUNDS[i][0])-n, i:i};
+    if(n>=rStart(i) && n<rEnd(i)) return {in:true, m:rEnd(i)-n};
+    if(n<rStart(i)) return {in:false, m:rStart(i)-n, i:i};
   }
   return {in:false, m:0, done:true};
 }
@@ -1021,11 +1029,11 @@ function renderJetzt(){
   document.getElementById("jetztTitel").textContent = s? s.name : "—";
   document.getElementById("jetztSub").textContent =
     (isEventDay()?"":"Deine erste Runde: ")+
-    "Runde "+(r+1)+" · "+ROUNDS[r][0]+" bis "+ROUNDS[r][1]+" · "+(s?s.ziel:"");
+    "Runde "+(r+1)+" · "+rZeit(r)+" · "+(s?s.ziel:"");
   var p=document.getElementById("rundenPlan"), h="";
   for(var i=0;i<ROUNDS.length;i++){
     var k=semOfRound(i);
-    h+='<div class="step"><div class="z">'+ROUNDS[i][0]+'</div><div class="w"><b>'+SEM[k].name+'</b>'+
+    h+='<div class="step"><div class="z">'+hhmm(rStart(i))+'</div><div class="w"><b>'+SEM[k].name+'</b>'+
        '<p>'+((i===r&&isEventDay())?"Läuft gerade":"Runde "+(i+1))+'</p></div></div>';
   }
   p.innerHTML=h;
@@ -1041,7 +1049,22 @@ function renderJetzt(){
       else c.innerHTML='<span class="countdown">Runde '+((m.i||0)+1)+' startet in '+m.m+' Minuten</span>';
     }
   }
+  var rw=document.getElementById("rundenWahl");
+  if(rw){
+    var man=(me.round!==undefined && me.round!==null);
+    rw.innerHTML='<span class="mini">Falsche Runde? </span>'+
+      [0,1,2].map(function(j){
+        return '<button class="todo'+((man&&me.round===j)?" ok":"")+'" style="border:0;cursor:pointer" '+
+               'onclick="setRunde('+j+')">Runde '+(j+1)+'</button>'; }).join("")+
+      '<button class="todo'+(man?"":" ok")+'" style="border:0;cursor:pointer" onclick="setRunde(null)">automatisch</button>';
+  }
   renderStand();
+}
+
+function setRunde(j){
+  if(j===null) delete me.round; else me.round=j;
+  me.sem=""; save(); render(); renderEx();
+  toast(j===null?"Wieder automatisch":"Runde "+(j+1)+" gesetzt");
 }
 
 /* ---- Rangliste ---- */
@@ -1139,7 +1162,7 @@ function renderEx(){
   if(me.exStep===undefined||me.exStep===null) me.exStep=0;
   var i=Math.min(me.exStep, STEPS.length-1);
 
-  document.getElementById("semRunde").textContent="Runde "+(r+1)+" · "+ROUNDS[r][0]+" bis "+ROUNDS[r][1];
+  document.getElementById("semRunde").textContent="Runde "+(r+1)+" · "+rZeit(r)+(me.round!==undefined&&me.round!==null?" · von Hand gesetzt":"");
   document.getElementById("semTitle").textContent=s.name;
   document.getElementById("semZiel").textContent="Ziel dieser Runde: "+s.ziel;
   var sw=document.getElementById("semSwitch"),h="";
@@ -1486,7 +1509,7 @@ function openSetup(){
 function setupPlan(){
   var t=document.getElementById("inTeam").value, plan=ROT[t]||ROT.Rot;
   document.getElementById("setupPlan").innerHTML="Deine Reihenfolge: "+plan.map(function(k,i){
-    return ROUNDS[i][0]+" "+SEM[k].kurz; }).join(" · ");
+    return hhmm(rStart(i))+" "+SEM[k].kurz; }).join(" · ");
   var by={}; TEAMS.forEach(function(x){ by[x]=0; });
   rows.forEach(function(r){ if(by[r.team]!==undefined && r.id!==me.id) by[r.team]++; });
   document.getElementById("setupCount").innerHTML = "Schon eingetragen: "+
@@ -1508,6 +1531,12 @@ function resetMe(){
   try{ localStorage.removeItem(KEY); }catch(e){}
   setTimeout(function(){ location.reload(); }, 400);
 }
+
+/* ---- Verspätung per Adresse: ?verspaetung=25 ---- */
+(function(){
+  var m=(location.search+location.hash).match(/versp[a-z]*=(-?\d+)/i);
+  if(m){ me.shift=Number(m[1])||0; delete me.round; try{ localStorage.setItem(KEY, JSON.stringify(me)); }catch(e){} }
+})();
 
 /* ---- Beamer per Adresse: ?beamer ---- */
 var BEAMER_URL = (location.search + location.hash).toLowerCase().indexOf("beamer") >= 0;

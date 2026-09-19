@@ -487,6 +487,8 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
       <option value="2" selected>2 Termine</option>
       <option value="3">3 Termine</option>
       <option value="5">5 Termine</option>
+      <option value="7">7 Termine</option>
+      <option value="10">10 Termine</option>
     </select>
     <button class="btn wide" style="margin-top:16px" onclick="saveSetup()">Los geht's</button>
     <p class="mut small" style="text-align:center;margin-top:12px">Deine Punkte liegen auf diesem Gerät. Die Rangliste sehen alle.</p>
@@ -980,7 +982,7 @@ function renderStand(){
   var el=document.getElementById("standBody"); if(!el) return;
   var all=myList(), pos=0, ahead=null;
   for(var i=0;i<all.length;i++){ if(all[i].id===me.id){ pos=i+1; ahead=all[i-1]||null; } }
-  var t=total(), goal=me.goal||3, tm=termine();
+  var t=total(), goal=me.goal||2, tm=termine();
 
   var o='<div style="display:flex;align-items:baseline;gap:10px;margin-top:4px">'+
         '<span class="big2">'+t+'</span><span class="mini">Punkte</span>'+
@@ -1478,7 +1480,7 @@ function openSetup(){
   var t=document.getElementById("inTeam");
   t.innerHTML=TEAMS.map(function(x){ return '<option'+(x===me.team?" selected":"")+'>'+x+'</option>'; }).join("");
   t.onchange=setupPlan; setupPlan();
-  document.getElementById("inGoal").value=String(me.goal||3);
+  document.getElementById("inGoal").value=String(me.goal||2);
   document.getElementById("setup").style.display="block";
 }
 function setupPlan(){

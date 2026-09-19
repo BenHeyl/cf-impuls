@@ -510,6 +510,8 @@ function isEventDay(){
 }
 var ROT = { "Rot":["aks","vl","rec"], "Schwarz":["vl","rec","aks"], "Weiß":["rec","aks","vl"] };
 
+var NAME_CAP = 10;   // so viele Namen je Thema bringen Punkte
+
 var PT = {
   gespraech:{l:"Gespräch geführt",p:2},
   wv:{l:"Wiedervorlage mit Datum",p:3},
@@ -773,7 +775,7 @@ function save(){ try{ localStorage.setItem(KEY, JSON.stringify(me)); }catch(e){}
 function total(){
   var t=0,k;
   for(k in PT) t += (me.cnt[k]||0)*PT[k].p;
-  for(k in me.names) t += me.names[k].length;
+  for(k in me.names) t += Math.min(NAME_CAP, me.names[k].length);
   for(k in me.ex) t += me.ex[k];
   return t;
 }
@@ -1200,7 +1202,7 @@ function stepBody(i, key, s){
   if(i===1){
     var L=s.listen;
     o+='<div class="card"><h3 class="h" style="margin-top:0">'+L.label+'</h3>'+
-       '<p class="mut small">'+L.hint+' Ziel: '+L.ziel+' Namen. Jeder Name zählt einen Punkt.</p>'+
+       '<p class="mut small">'+L.hint+' Ziel: '+L.ziel+' Namen. Jeder Name zählt einen Punkt, maximal zehn je Thema.</p>'+
        '<input id="nameIn" placeholder="Name eintippen" onkeydown="if(event.key===\'Enter\')addName()">'+
        '<button class="btn wide" onclick="addName()">Hinzufügen</button>'+
        '<div class="namelist" id="nameList"></div>'+
@@ -1276,7 +1278,9 @@ function addName(){
   var k=SEM[activeSem()].listen.key;
   if(me.names[k].indexOf(v)>=0){ toast("Steht schon drauf"); i.value=""; return; }
   me.names[k].push(v); me.log.push({t:"name",k:k,v:v});
-  i.value=""; save(); renderNames(); render(); toast("+1 Punkt");
+  i.value=""; save(); renderNames(); render();
+  toast(me.names[k].length<=NAME_CAP ? "+1 Punkt"
+        : "Steht auf der Liste. Punkte gibt es für die ersten "+NAME_CAP+".");
 }
 function delName(k,v){
   var a=me.names[k], i=a.indexOf(v); if(i>=0) a.splice(i,1);
@@ -1287,8 +1291,14 @@ function renderNames(){
   if(!el) return;
   el.innerHTML=a.map(function(v){ return '<span>'+esc(v)+'<b onclick="delName(\''+k+'\',\''+esc(v).replace(/'/g,"")+'\')">×</b></span>'; }).join("");
   var p=document.getElementById("nameProg"), z=SEM[activeSem()].listen.ziel;
-  p.innerHTML=a.length>=z?'<span class="done">Ziel erreicht: '+a.length+' Namen. Jetzt anrufen.</span>'
-                         :'<span class="mut">'+a.length+' von '+z+'. Noch '+(z-a.length)+'.</span>';
+  if(a.length>NAME_CAP){
+    p.innerHTML='<span class="done">'+a.length+' Namen, '+NAME_CAP+' davon zählen Punkte.</span>'+
+                '<br><span class="mut">Schreib ruhig weiter auf, wen du anrufen willst. Punkte kommen jetzt über Gespräche und Termine.</span>';
+  } else if(a.length>=z){
+    p.innerHTML='<span class="done">Ziel erreicht: '+a.length+' Namen. Jetzt anrufen.</span>';
+  } else {
+    p.innerHTML='<span class="mut">'+a.length+' von '+z+'. Noch '+(z-a.length)+'.</span>';
+  }
 }
 
 var arenaN=0, tInt=null;
@@ -1480,7 +1490,7 @@ var REGELN = [
   ["Zum ersten Mal dabei?","Perfekt, dann fängst du heute an. Jeder Satz steht dir vor der Nase, neben dir sitzt jemand, der es kann, und Punkte gibt es fürs Machen und nicht fürs Gelingen."],
   ["Drei Themen, drei Räume","Arbeitskraft, Vorsorge, Karriere. Deine Gruppenfarbe sagt, in welcher Reihenfolge du sie durchläufst. Erst kurz Input, dann wird gearbeitet."],
   ["Das Portal führt dich durch","Fünf Schritte pro Runde, immer nur eine Aufgabe auf dem Bildschirm. Du musst nichts suchen und nichts auswendig können."],
-  ["Punkte gibt es für jeden Schritt","Für deine Liste, fürs laute Üben, fürs Wissen. Und natürlich für Gespräche, Wiedervorlagen und Termine. Auch ein Nein zählt, weil es dich näher an das Ja bringt."],
+  ["Punkte gibt es für jeden Schritt","Für deine Liste, fürs laute Üben, fürs Wissen. Und natürlich für Gespräche, Wiedervorlagen und Termine. Auch ein Nein zählt, weil es dich näher an das Ja bringt. Namen zählen bis zu zehn je Thema, danach entscheidet, wen du anrufst."],
   ["Gold, Silber und Bronze","Für die ersten drei der Gesamtwertung, einzeln gewertet. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche. Auf dem Treppchen landet, wer seine vier Schritte durch hat."],
   ["Ehrlich eintragen","Termine mit Namen und Uhrzeit auf die Telefonkarte. Was heute nicht notiert ist, ist am Montag weg."]
 ];
@@ -1558,13 +1568,14 @@ document.getElementById("leitfaden").innerHTML=LEIT.map(function(l){
     l[2].map(function(x,i){ return '<div class="step"><div class="z">'+(i+1)+'</div><div class="w"><b>'+x[0]+'</b><p>'+x[1]+'</p></div></div>'; }).join("")+
     '<hr class="hr"><p class="small"><b>Ablauf:</b> 0–3 Kaltstart · 3–13 Prägung · 13–20 Liste · 20–28 Einwand-Arena im Tandem · 28–38 Telefon · 38–40 Punkte eintragen. Ab Minute 13 redet der Referent nicht mehr.</p></div></details>'; }).join("");
 (function(){ var h=""; for(var k in PT) h+='<div class="step"><div class="z">+'+PT[k].p+'</div><div class="w"><b>'+PT[k].l+'</b></div></div>';
-  h+='<div class="step"><div class="z">+1</div><div class="w"><b>Name auf der Liste</b></div></div>';
+  h+='<div class="step"><div class="z">+1</div><div class="w"><b>Name auf der Liste</b><p>Bis zu zehn je Thema.</p></div></div>';
   h+='<div class="step"><div class="z">+3</div><div class="w"><b>Runde in der Einwand-Arena</b></div></div>';
   h+='<div class="step"><div class="z">+4</div><div class="w"><b>Blitz-Check, Beobachtungssatz</b></div></div>';
   document.getElementById("ptTable").innerHTML=h; })();
 document.getElementById("regelnInfo").innerHTML = regelnHTML();
 
 render();
+if(!BEAMER_URL && me.name) syncSoon();
 if(BEAMER_URL){
   document.getElementById("beamer").classList.add("on");
   renderRank();

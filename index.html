@@ -780,6 +780,10 @@ function total(){
   return t;
 }
 function calls(){ return me.cnt.gespraech||0; }
+function namenRoh(){ var n=0; for(var k in me.names) n+=me.names[k].length; return n; }
+function pNamen(){ var n=0; for(var k in me.names) n+=Math.min(NAME_CAP, me.names[k].length); return n; }
+function pUeben(){ var n=0; for(var k in me.ex) n+=me.ex[k]; return n; }
+function pAktion(){ var n=0; for(var k in PT) n+=(me.cnt[k]||0)*PT[k].p; return n; }
 function qSteps(){
   var n=0,k;
   for(k in me.names) if(me.names[k].length>=(SEM[k]?SEM[k].listen.ziel:99)){ n++; break; }
@@ -832,7 +836,9 @@ function jsonp(params){
 
 function apiPush(r){
   jsonp({a:"set", id:r.id, name:r.name, team:r.team||"", pts:r.pts, calls:r.calls,
-         termine:r.termine, q:(r.q===undefined?"":r.q)}).catch(function(){});
+         termine:r.termine, q:(r.q===undefined?"":r.q),
+         nroh:(r.nroh===undefined?"":r.nroh), pn:(r.pn===undefined?"":r.pn),
+         pu:(r.pu===undefined?"":r.pu), pa:(r.pa===undefined?"":r.pa)}).catch(function(){});
 }
 function apiDel(id){ jsonp({a:"del", id:id}).catch(function(){}); }
 
@@ -850,7 +856,7 @@ function apiList(){
   if(db){
     SYNC.push = function(r){
       try{ db.doc("teilnehmer/"+r.id).set({name:r.name,team:r.team,pts:r.pts,calls:r.calls,
-        termine:r.termine,q:r.q,t:Date.now()}); }catch(e){}
+        termine:r.termine,q:r.q,nroh:r.nroh,pn:r.pn,pu:r.pu,pa:r.pa,t:Date.now()}); }catch(e){}
     };
     SYNC.del = function(id){ try{ db.doc("teilnehmer/"+id).delete(); }catch(e){} };
     setState("Verbunden. Die Liste läuft live.");
@@ -882,7 +888,8 @@ function syncSoon(){
   clearTimeout(saveTimer);
   saveTimer=setTimeout(function(){
     SYNC.push({id:me.id,name:me.name,team:me.team,pts:total(),calls:calls(),
-               termine:termine(),q:qSteps()});
+               termine:termine(),q:qSteps(),
+               nroh:namenRoh(),pn:pNamen(),pu:pUeben(),pa:pAktion()});
   },900);
 }
 function setState(s){ var e=document.getElementById("rangState"); if(e) e.textContent=s; }
@@ -1461,8 +1468,10 @@ function jDel(i){
 function pushRoster(){
   if(!me.roster) return;
   me.roster.forEach(function(r){
+    var pa=0; for(var kk in PT) pa+=(r.cnt[kk]||0)*PT[kk].p;
     SYNC.push({id:r.id,name:r.name,team:r.team,pts:rPts(r),calls:(r.cnt.gespraech||0),
-      termine:(r.cnt.terminAks||0)+(r.cnt.terminVl||0)+(r.cnt.karriere||0),q:4});
+      termine:(r.cnt.terminAks||0)+(r.cnt.terminVl||0)+(r.cnt.karriere||0),q:4,
+      nroh:0,pn:0,pu:(r.extra||0),pa:pa});
   });
 }
 function renderJudge(){

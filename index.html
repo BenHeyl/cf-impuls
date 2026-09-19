@@ -865,6 +865,7 @@ function apiList(){
 })();
 
 function syncSoon(){
+  if(BEAMER_URL) return;
   if(!me.name) return;
   clearTimeout(saveTimer);
   saveTimer=setTimeout(function(){
@@ -1387,6 +1388,7 @@ function openBeamer(){
 function closeBeamer(){
   document.getElementById("beamer").classList.remove("on");
   try{ document.fullscreenElement && document.exitFullscreen(); }catch(e){}
+  if(BEAMER_URL && !me.name) openSetup();
 }
 
 /* ---- Kampfrichter ---- */
@@ -1505,6 +1507,9 @@ function resetMe(){
   setTimeout(function(){ location.reload(); }, 400);
 }
 
+/* ---- Beamer per Adresse: ?beamer ---- */
+var BEAMER_URL = (location.search + location.hash).toLowerCase().indexOf("beamer") >= 0;
+
 /* ---- Start ---- */
 document.getElementById("logo").src=LOGO_SRC;
 document.getElementById("logo2").src=LOGO_SRC;
@@ -1529,7 +1534,11 @@ document.getElementById("leitfaden").innerHTML=LEIT.map(function(l){
 document.getElementById("regelnInfo").innerHTML = regelnHTML();
 
 render();
-if(!me.name) openSetup(); else if(!me.seenRules) openRules();
+if(BEAMER_URL){
+  document.getElementById("beamer").classList.add("on");
+  renderRank();
+} else if(!me.name){ openSetup(); }
+else if(!me.seenRules){ openRules(); }
 setInterval(function(){
   renderJetzt();
   if(document.getElementById("p-rang").classList.contains("on")) renderRank();

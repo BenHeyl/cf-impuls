@@ -366,8 +366,8 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
 
   <div id="podium"></div>
   <ol class="rank" id="rankList"></ol>
-  <p class="mut small" style="margin-top:14px">Die Liste läuft live. Die Pfeile zeigen, wer sich seit deinem letzten Blick bewegt hat. Auf dem Treppchen landet nur, wer die vier Schritte durch hat: Liste, laut geübt, Blitz-Check, mindestens ein Gespräch.</p>
-  <div class="warnbar">Du stehst hier nur drin, wenn du mit eigenem Zugang angemeldet bist. Ohne Zugang zählst du trotzdem mit: sag deine Punkte dem Kampfrichter im Raum, er trägt sie ein.</div>
+  <p class="mut small" style="margin-top:14px">Die Liste läuft live. Die Pfeile zeigen, wer sich seit deinem letzten Blick bewegt hat.</p>
+  <div class="warnbar">Gewertet wird nach Punkten. Die Schritte zeigen nur, was du schon durch hast. Ohne eigenen Zugang zählst du trotzdem mit: sag deine Punkte dem Kampfrichter im Raum.</div>
 </section>
 
 <!-- ================= INFO ================= -->
@@ -386,7 +386,7 @@ var LOGO_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAACwCAYAAADpJBDd
   <h3 class="h" style="margin-top:22px">Wie gewertet wird</h3>
   <div class="card">
     <p class="small"><b>Es gibt genau drei Medaillen.</b> Gold, Silber und Bronze gehen an die ersten drei der Gesamtwertung. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche.</p>
-    <p class="small" style="margin-top:8px"><b>Der Haken an der Sache:</b> gewertet wird nur, wer die vier Schritte durch hat. Liste gefüllt, einmal laut geübt, Blitz-Check gemacht und mindestens ein Gespräch geführt. Wer nur Namen aufschreibt, sammelt zwar Punkte, steht aber nicht auf dem Treppchen.</p>
+    <p class="small" style="margin-top:8px"><b>Die vier Schritte</b> zeigen dir, was du in deiner Runde schon durch hast: Liste, laut geübt, Blitz-Check, mindestens ein Gespräch. Für die Platzierung zählen allein die Punkte.</p>
     <p class="small" style="margin-top:8px"><b>Sechs Wege zu Punkten:</b> Gespräche, Wiedervorlagen, Termine, Karrieregespräche, Einwand-Arena und Blitz-Check. Wer beim Telefonieren noch unsicher ist, holt sich die Punkte über die Übungen. Vorne landen kann jeder.</p>
   </div>
 <h3 class="h" style="margin-top:22px">Der Nachmittag</h3>
@@ -511,6 +511,7 @@ function isEventDay(){
 var ROT = { "Rot":["aks","vl","rec"], "Schwarz":["vl","rec","aks"], "Weiß":["rec","aks","vl"] };
 
 var NAME_CAP = 10;   // so viele Namen je Thema bringen Punkte
+var NUR_PUNKTE = true;  // true = Rangliste und Medaillen rein nach Punkten
 
 var PT = {
   gespraech:{l:"Gespräch geführt",p:2},
@@ -986,8 +987,10 @@ function myList(){
     all=all.map(function(r){ return r.id===me.id?Object.assign({},r,{pts:total(),calls:calls(),termine:termine(),q:qSteps()}):r; });
   }
   all.sort(function(a,b){
-    var qa=(a.q>=4)?1:0, qb=(b.q>=4)?1:0;
-    if(qa!==qb) return qb-qa;
+    if(!NUR_PUNKTE){
+      var qa=(a.q>=4)?1:0, qb=(b.q>=4)?1:0;
+      if(qa!==qb) return qb-qa;
+    }
     if((b.pts||0)!==(a.pts||0)) return (b.pts||0)-(a.pts||0);
     if((b.termine||0)!==(a.termine||0)) return (b.termine||0)-(a.termine||0);
     return (b.calls||0)-(a.calls||0);
@@ -1007,7 +1010,7 @@ function renderStand(){
                          '<span class="mini">von '+all.length+'</span>' : '')+'</div>';
 
   if(t===0) o+='<p class="mini" style="margin-top:6px">Noch nichts eingetragen. Der erste Name auf deiner Liste zählt schon.</p>';
-  else if(ahead && qSteps()>=4 && all.length>=3) o+='<p class="mini" style="margin-top:6px">Noch '+Math.max(1,(ahead.pts||0)-t+1)+' Punkte bis Platz '+(pos-1)+'. Das ist ein Termin.</p>';
+  else if(ahead && all.length>=3) o+='<p class="mini" style="margin-top:6px">Noch '+Math.max(1,(ahead.pts||0)-t+1)+' Punkte bis Platz '+(pos-1)+'. Das ist ein Termin.</p>';
   else if(pos===1 && all.length>=3) o+='<p class="mini" style="margin-top:6px">Du führst. Jetzt nicht stehen bleiben.</p>';
   else if(qSteps()<4) o+='<p class="mini" style="margin-top:6px">Noch '+(4-qSteps())+' Schritte, dann bist du fürs Treppchen wertbar.</p>';
 
@@ -1094,6 +1097,10 @@ function renderRank(){
       s:"Gruppe "+(r.team||"–")+((r.q!==undefined)?((r.q>=4)?" · qualifiziert":" · "+r.q+" von 4 Schritten"):""),
       q:(r.q===undefined?4:r.q),p:r.pts||0,tm:r.termine||0,ca:r.calls||0,me:r.id===me.id}; });
   items.sort(function(a,b){
+    if(!NUR_PUNKTE){
+      var qa=(a.q>=4)?1:0, qb=(b.q>=4)?1:0;
+      if(qa!==qb) return qb-qa;
+    }
     if(b.p!==a.p) return b.p-a.p;
     if((b.tm||0)!==(a.tm||0)) return (b.tm||0)-(a.tm||0);
     if((b.ca||0)!==(a.ca||0)) return (b.ca||0)-(a.ca||0);
@@ -1102,7 +1109,7 @@ function renderRank(){
 
   var MED=["🥇","🥈","🥉"], h="";
   var medalOf={};
-  items.filter(function(x){ return x.q>=4 && x.p>0; }).slice(0,3)
+  items.filter(function(x){ return x.p>0 && (NUR_PUNKTE || x.q>=4); }).slice(0,3)
        .forEach(function(x,j){ medalOf[x.k]=j; });
   items.forEach(function(it,i){
     var prev=lastPos[it.k], mv='<span class="mv eq">·</span>';
@@ -1116,7 +1123,7 @@ function renderRank(){
   });
 
   var pod="";
-  var qual=items.filter(function(x){ return x.q>=4 && x.p>0; });
+  var qual=items.filter(function(x){ return x.p>0 && (NUR_PUNKTE || x.q>=4); });
   if(qual.length>=3){
     var ord=[1,0,2], cls=["p2","p1","p3"];
     pod='<div class="podium">'+ord.map(function(x,j){
@@ -1500,7 +1507,7 @@ var REGELN = [
   ["Drei Themen, drei Räume","Arbeitskraft, Vorsorge, Karriere. Deine Gruppenfarbe sagt, in welcher Reihenfolge du sie durchläufst. Erst kurz Input, dann wird gearbeitet."],
   ["Das Portal führt dich durch","Fünf Schritte pro Runde, immer nur eine Aufgabe auf dem Bildschirm. Du musst nichts suchen und nichts auswendig können."],
   ["Punkte gibt es für jeden Schritt","Für deine Liste, fürs laute Üben, fürs Wissen. Und natürlich für Gespräche, Wiedervorlagen und Termine. Auch ein Nein zählt, weil es dich näher an das Ja bringt. Namen zählen bis zu zehn je Thema, danach entscheidet, wen du anrufst."],
-  ["Gold, Silber und Bronze","Für die ersten drei der Gesamtwertung, einzeln gewertet. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche. Auf dem Treppchen landet, wer seine vier Schritte durch hat."],
+  ["Gold, Silber und Bronze","Für die ersten drei der Gesamtwertung, einzeln gewertet. Bei Gleichstand zählen zuerst die Termine, dann die Gespräche."],
   ["Ehrlich eintragen","Termine mit Namen und Uhrzeit auf die Telefonkarte. Was heute nicht notiert ist, ist am Montag weg."]
 ];
 function regelnHTML(){
